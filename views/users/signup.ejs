@@ -1,0 +1,48 @@
+<%- layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/flash.ejs") %>
+
+<div class="signup-page">
+    <div class="signup-box">
+        <a class="navbar-brand " href="/"><h3 class="Logo" >Inspire</h3></a>
+        <div class="col-10 offset-1 signup-card">
+            <h3 style="text-align: center;">Sign up</h3>
+            <p style="text-align: center;">Create an account</p>
+
+            <form action="/signup" class="needs-validation" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Name</label> <i class="fa-solid fa-user"></i>
+                    <input name="username" id="username" type="text" class="form-control" maxlength="17" placeholder="Please Enter Name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label> <i class="fa-solid fa-envelope"></i>
+                    <input name="email" id="email" type="email" class="form-control" placeholder="Please Enter Email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label> <i class="fa-solid fa-lock"></i>
+                    <input name="password" id="password" type="password" class="form-control" placeholder="Create a Strong Password" required>
+                </div>
+
+                <button class="btn btn-light signup-btn mt-3" >SignUp</button>
+            </form>
+            <p style="text-align: center;" class="mt-3">Already have an account?</p>
+            <a class="btn btn-light signup-btn " href="/login">LogIn</a>
+        </div>
+    </div>
+
+    <footer class="signup-footer">
+        <div class="f-info" style="background-color: transparent;">
+            <div class="f-info-socials signup-login-socials" style="font-size: 20px;">
+                <a href=""><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-instagram"></i></a>
+                <a href=""><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-twitter-square"></i></a>
+                <a href=""><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-facebook-square"></i></a>
+            </div>
+            <div class="f-info-brand signup-login-brand" style="word-spacing: 2px;">&copy; Inspire Private Limited</div>
+            <div class="f-info-links signup-login-links">
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+            </div>
+        </div>
+    </footer>
+</div>

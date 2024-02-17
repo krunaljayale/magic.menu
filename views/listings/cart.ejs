@@ -1,0 +1,41 @@
+<%- layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/navbar.ejs") %>
+<%- include("../includes/flash.ejs") %>
+<%- include("../includes/footer.ejs") %>
+<head><title>Cart</title></head>
+<h3 class="card-title cart-title"> Items in Cart <i class="fa-solid fa-cart-shopping"></i></h3>
+
+<% if(!items.length){ %>
+    <div class="row  row-col-sm-1 row-col-1 mt-3 " style= "justify-content:center;">
+        <div class="card mt-3 " style="width: 20rem; border: none;">
+            <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
+            <div class="card-body">
+            <h5 class="card-title text-info"> <b>Cart is Empty</b></h5>
+            <p class="card-text text-info"><i>You didn't add item in your Cart yet!</i> </p>
+            <a href="/home" class="btn btn-outline-info">Explore Menu</a>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+
+
+<% for(item of items){ %>
+    <% if(sessionId === item.customerId){ %>
+        
+        <div class="order-item-div">
+            <img src="<%= item.image %>" alt="" class="order-item-img">
+            <div class="order-text-div">
+                <h5 class="card-title"><b><%= item.name %></b></h5>
+                <p class="card-text ord-price">&#8377; <%= item.price.toLocaleString("en-IN") %></p>
+            </div >
+            
+            <div class="remove-btn-div d-block">
+                <input class="form-control  value-input"  type="number" name="qty" value="1" min="1">
+                <a href="/cart/<%= item._id %>/remove" class="btn btn-danger remove-btn">Remove</a>
+            </div>
+        </div>
+
+    <% } %>
+    
+<% } %>

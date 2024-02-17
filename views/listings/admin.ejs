@@ -1,0 +1,47 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/adminNav.ejs") %>
+<head><title>Admin Home</title></head>
+
+<a href="/admin/new" class="btn btn-add mt-2 mx-3">Add New</a>
+<h1 class="card-title admin-title">All Your Listings</h1>
+
+
+
+
+
+  <% if( !items.length ){ %>
+    
+    <div class="row  row-col-sm-1 row-col-1 mt-3 " style= "justify-content:center;">
+        <div class="card mt-3 " style="width: 20rem; border: none;">
+            <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
+            <div class="card-body mt-2">
+            <h5 class="card-title text-primary"> <b>No Listings</b></h5>
+            <p class="card-text mt-3 text-primary"><i>You didn't list any item yet!</i> </p>
+            <a href="/admin/new" class="btn btn-add">Add New</a>
+            </div>
+        </div>
+    </div>
+<% } %>
+
+
+    <% for(let item of items){ %>
+      <div class="row row-col-lg-4 row-col-md-3 row-col-sm-1 row-col-1 " style="margin-right:0; padding: 0; justify-content: center;">
+        <div class="card mt-3 admin-home-card" style="width:20rem;">
+            <img src="<%= item.image.url %>" class="admin-card-img" alt="loading" style="height:20rem;" >
+            <!-- This is a button for admin to disable any item temporary  -->
+            <!-- <div class="form-check form-switch switch" style="display: none;">
+              <input type="checkbox" class="form-check-input switch-btn" role="switch" checked >
+            </div> -->
+            <!--  -->
+            <div class="card-body">
+              <h5 class="card-title"><b><%=item.name %></b></h5>
+              <p class="card-text" ><%= item.info %></p>
+              <p class="card-text"><b> &#8377; <%= item.price %> </b></p>
+              <div>
+                <a href="/admin/<%= item._id %>/show" class="btn show-btn">Show</a>
+              </div>
+            </div>
+        </div>
+      </div>
+    <% } %>
+

@@ -1,0 +1,31 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/adminNav.ejs") %>
+<%- include("../includes/flash.ejs") %>
+<%- include("../includes/footer.ejs") %>
+<head><title>Admin Show</title></head>
+
+  <div class="master-div row" style="margin:0; padding: 0; justify-content: center;">
+
+    <div class="card mt-3 admin-home-card" style="width:25rem;height: fit-content;">
+        <img 
+        src="<%= item.image.url %>" class="admin-card-img" alt="loading" style="height:25rem;" >
+        
+        <div class="card-body">
+          <h5 class="card-title"><b><%=item.name %></b></h5>
+          <p class="card-text" name="info"><i>Owned by:- <%= item.owner.username %></i></p>
+          <p class="card-text" name="info"><%= item.info %></p>
+          <p class="card-text"> &#8377; <%= item.price.toLocaleString("en-IN") %></p>
+          
+          <% if(item.owner.equals(currUser)){ %>
+            <div class="btns-form">
+              <a href="/admin/<%= item._id %>/edit" class="btn btn-primary mx-2">Edit</a>
+              <form action="/admin/<%= item._id %>/delete?_method=delete" method="post">
+                <button class="btn btn-primary mx-2">Delete</button>
+              </form>
+            </div>
+          <% } %>
+          
+        </div>
+    </div>
+  </div>
+  

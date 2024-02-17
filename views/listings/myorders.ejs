@@ -1,0 +1,49 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/navbar.ejs") %>
+<%- include("../includes/flash.ejs") %>
+
+<head><title>Orders</title></head>
+<h3 class="card-title cart-title"> Your Orders  <i class="fa-solid fa-truck"></i></h3>
+
+
+<% if( !items.length ){ %>
+    
+        <div class="row  row-col-sm-1 row-col-1 mt-3 " style= "justify-content:center;">
+            <div class="card mt-3 " style="width: 20rem; border: none;">
+                <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
+                <div class="card-body mt-2">
+                <h5 class="card-title text-primary"> <b>No Orders</b></h5>
+                <p class="card-text mt-3 text-primary"><i>You didn't make any order yet!</i> </p>
+                <a href="/home" class="btn btn-secondary mt-3">Explore Menu</a>
+                </div>
+            </div>
+        </div>
+<% } %>
+
+<% for(item of items){ %>
+    <% if(sessionId === item.customerId){ %>
+        
+            <div class="order-item-div">
+                <img src="<%= item.image.url %>" alt="" class="order-item-img">
+
+                <div class="order-text-div">
+                    <h5 class="card-title"><b><%= item.name %></b></h5>
+                    <div class="price-qty-div"> 
+                        <p class="card-text ord-price">Price : &#8377; <%= item.price.toLocaleString("en-IN") %></p>
+                        <p class="card-text ord-qty"> Qty : <%= item.qty %> </p>
+                    </div>
+                </div>
+                
+                <div class="cancel-btn-div">
+                    <form action="/myorders/<%= item._id %>/cancel" method="post" >
+                        <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>" name="created_at" style="display:none;">
+                        <button class="btn btn-danger cancel-btn" >Cancel</button>
+                    </form>
+                </div>
+            </div>
+
+            
+        <% } %>
+
+    <% } %>
+    

@@ -1,0 +1,36 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/navbar.ejs") %>
+<%- include("../includes/flash.ejs") %>
+<%- include("../includes/footer.ejs") %>
+
+<head>
+    <title>Home</title>
+</head>
+
+<div class="master-div" >
+    <h3 class="card-title mt-3 order-page-title" style="margin:0 3rem 0 3rem;">Great Choice !</h3>
+    <div class="row row-col-lg-3 row-col-md-3 row-col-sm-1 row-col-1  " style= "justify-content:center;">
+
+        <div class="card mt-3 order-card" style="width:20rem;">
+            <img 
+            src="<%= item.image.url %>" class="mt-3" alt="loading" style="height:15rem; border-radius: 1rem;" >
+            
+            <div class="card-body">
+                <h5 class="card-title"><b><%=item.name %></b></h5>
+                <p class="card-text" name="info"><%= item.info %></p>
+                <p class="card-text"><b> &#8377; <%= item.price.toLocaleString("en-IN") %></b></p>
+
+                <form  action="/orders/<%= item._id %>" method="post" class="order-form needs-validation">
+                    <input type="text" name="personName" class="form-control me-2 " placeholder="Enter Your Name" required >
+                    <div class="invalid-feedback">This should be mentioned</div>
+                    <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>" name="created_at"  style="display: none;">
+                    <div class="d-flex mt-2">
+                      <input class="form-control me-3" type="number" name="qty" value="1" min="1">
+                      <button class="btn orderPage-order-btn">Order</button>  
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>

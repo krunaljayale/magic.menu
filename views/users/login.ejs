@@ -1,0 +1,42 @@
+<%- layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/flash.ejs") %>
+
+<div class="login-page">
+    <a class="navbar-brand " href="/"><h3 class="Logo" >Inspire</h3></a>
+    <div class="signup-box">
+        <div class="col-10 offset-1 signup-card">
+            <h3 style="text-align: center;">Login</h3>
+
+            <form action="/login" class="needs-validation" method="post">
+                <div class="mb-3">
+                    <label for="username" class="form-label">Name</label> <i class="fa-solid fa-user"></i>
+                    <input name="username" id="username" type="text" class="form-control" maxlength="17" placeholder="Enter your name" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label> <i class="fa-solid fa-lock"></i>
+                    <input name="password" id="password" type="password" class="form-control" placeholder="Enter your password" required>
+                </div>
+
+                <button class="btn btn-light signup-btn mt-3" >Login</button>
+            </form>
+            <p style="text-align: center;" class="mt-3">Didn't have an account?</p>
+            <a class="btn btn-light signup-btn " href="/signup">Create account</a>
+    </div>
+</div>
+
+    <footer class="signup-footer">
+        <div class="f-info" style="background-color: transparent;">
+            <div class="f-info-socials signup-login-socials" style="font-size: 20px;">
+                <a href="" ><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-instagram"></i></a>
+                <a href="" ><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-twitter-square"></i></a>
+                <a href="" ><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-facebook-square"></i></a>
+            </div>
+            <div class="f-info-brand signup-login-brand" style="word-spacing: 2px;">&copy; Inspire Private Limited</div>
+            <div class="f-info-links signup-login-links">
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+            </div>
+        </div>
+    </footer>
+</div>
