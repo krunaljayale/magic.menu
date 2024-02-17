@@ -94,14 +94,6 @@ main().then(()=>{
 });
 
 
-app.get("/",(req,res)=>{
-        res.send("Hii I am Root!")
-    });
-
-
-
-
-
 
 app.use("/admin", admin);
 app.use("/", api);

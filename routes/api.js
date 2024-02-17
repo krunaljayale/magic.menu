@@ -7,7 +7,7 @@ const Listing = require("../models/listing.js");
 
 // Root Route //
 // Home Route //
-    router.get("/home", wrapAsync(
+    router.get("/", wrapAsync(
     async (req,res)=>{
         const items = await Listing.find({});
         res.render("listings/home.ejs", {items});
@@ -32,7 +32,7 @@ const Listing = require("../models/listing.js");
         newMyOrders.customerId = res.locals.sessionId;
         await newMyOrders.save();
         req.flash("flashSuccess", "Order Placed");
-        res.redirect("/home");
+        res.redirect("/");
     }));
     
     // My Orders //
@@ -65,7 +65,7 @@ const Listing = require("../models/listing.js");
         newCart.customerId = res.locals.sessionId;
         await newCart.save();
         req.flash("flashSuccess", "Item added to Cart");
-        res.redirect("/home");
+        res.redirect("/");
     }));
     
     router.get("/cart", wrapAsync(
