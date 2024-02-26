@@ -1,0 +1,152 @@
+.regretMessage{
+    display: none;
+}
+
+.master-div{
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.admin-show-card{
+    border-radius: 25px;
+    margin: 2rem auto 0 auto;
+    display:block ;
+    width: 70vw ;
+    max-width: 300px;
+    height: fit-content;
+    max-height: 450px;
+    color: #fff;
+}
+
+.admin-show-card-img{
+    width: 70vw;
+    min-width: 126px;
+    max-width: 300px;
+    height: 70vw;
+    min-height: 126px;
+    max-height: 200px;
+    margin-bottom: 5px;
+    animation: left-animation 1.5s ;
+    border-top-left-radius: 2px;
+    border-top-right-radius: 45px;
+    border-bottom-left-radius: 45px;
+    border-bottom-right-radius: 2px;
+}
+
+.content-div{
+    border-top-left-radius: 2px;
+    border-top-right-radius: 45px;
+    border-bottom-left-radius: 45px;
+    border-bottom-right-radius: 2px;
+    background-color: #00AF91 ;
+    width: 70vw;
+    min-width: 126px;
+    max-width: 300px;
+    height: 70vw;
+    min-height: 126px;
+    max-height: 200px;
+    display: block;
+    padding:8px 18px 0 18px;
+    align-items: center;
+    animation: right-animation 1.5s;
+}
+
+.name-price-div{
+    display:flex;
+    width:100%;
+    min-height: 30%;
+    gap: 1rem;
+    overflow: hidden;
+    align-items: center;
+    font-size: 4vw;
+}
+
+.item-name-div{
+    width:68%;
+    text-align:left;
+    padding-left: 3px;
+    font-weight: 800;
+}
+
+.item-name,
+.item-price,
+.item-info{
+    margin: 0 !important;
+}
+.item-price-div{
+    width: 32%;
+    float: right;
+    text-align: center;
+    font-weight: 800;
+}
+
+.item-info-div{
+    width: 100%;
+    height: 47.5%;
+    padding-left: 3px;
+    font-size: 3.5vw;
+    font-family: 'Arial Narrow', Arial, sans-serif;
+    font-weight: 200 !important;
+}
+
+.buttons-div{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap:1rem;
+}
+
+.admin-edit-btn{
+    background-color: #F58634 !important;
+    border-radius: 10px !important;
+    color:#000 !important;
+    font-size: 4vw;
+    font-weight: 800 !important;
+}
+
+.admin-delete-btn{
+    background-color: #FFCC29 !important;
+    border-radius: 10px !important;
+    color:#000 !important;
+    font-size: 4vw;
+    font-weight: 800 !important;
+}
+
+@media screen and (min-width:430px) {
+    .item-name
+    ,.item-price{
+        font-size: 20px;
+    }
+    .item-info{
+        font-size: 16px;
+    }
+    
+    .admin-delete-btn,
+    .admin-edit-btn{
+        font-size: 16px !important;
+    }
+}
+
+@media screen and (max-width:279px) {
+    .regretMessage{
+        display:inline;
+        text-align: center;
+        font-weight: 500;
+        color: #fc1919;
+    }
+    
+    .admin-show-card{
+        display: none;
+    }
+}
+
+@keyframes left-animation{
+    0% {margin-left: -120vh;}
+    100% {margin-left: initial;}
+}
+
+@keyframes right-animation{
+    0% {margin-left: 120vh;}
+    100% {margin-left: initial;}
+}

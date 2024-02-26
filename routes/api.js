@@ -7,7 +7,7 @@ const Listing = require("../models/listing.js");
 
 // Root Route //
 // Home Route //
-    router.get("/", wrapAsync(
+    router.get("/home", wrapAsync(
     async (req,res)=>{
         const items = await Listing.find({});
         res.render("listings/home.ejs", {items});
@@ -32,7 +32,7 @@ const Listing = require("../models/listing.js");
         newMyOrders.customerId = res.locals.sessionId;
         await newMyOrders.save();
         req.flash("flashSuccess", "Order Placed");
-        res.redirect("/");
+        res.redirect("/home");
     }));
     
     // My Orders //
@@ -44,10 +44,10 @@ const Listing = require("../models/listing.js");
     }));
     
     
-    router.post("/myorders/:id/cancel",wrapAsync(
+    router.get("/myorders/:id/cancel",wrapAsync(
     async(req,res)=>{
         let { id } = req.params;
-        let  { created_at }  = req.body;
+        let { created_at } = new Date().toString().split(" ").slice(1,5).join(" ");
         let  { personName,name,qty}  = await MyOrders.findById(id);
         console.log( `Order of ${qty} ${name} from ${personName} is cancelled on ${created_at}` );
         await MyOrders.findByIdAndDelete(id);
@@ -65,7 +65,7 @@ const Listing = require("../models/listing.js");
         newCart.customerId = res.locals.sessionId;
         await newCart.save();
         req.flash("flashSuccess", "Item added to Cart");
-        res.redirect("/");
+        res.redirect("/home");
     }));
     
     router.get("/cart", wrapAsync(

@@ -48,7 +48,7 @@ async (req,res)=>{
 }));
 
 // Admin Delete Route //
-router.delete("/:id/delete",isLoggedIn,
+router.get("/:id/delete",isLoggedIn,
     wrapAsync(
         async (req,res)=>{
             let { id } = req.params;

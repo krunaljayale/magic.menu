@@ -20,11 +20,11 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
-const dbUrl = process.env.ATLASDB_URL;
-
+// const dbUrl = process.env.ATLASDB_URL;
+const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
 
 async function main(){
-    mongoose.connect(dbUrl);
+    mongoose.connect(MONGO_URL);
 }
 
 
@@ -39,7 +39,7 @@ app.use(cookieParser());
 
 
 const store = MongoStore.create({
-    mongoUrl:dbUrl,
+    mongoUrl:MONGO_URL,
     crypto: {
         secret: process.env.SECRET,
       },
@@ -103,8 +103,9 @@ app.use("/", user);
 // Middlewares
 // Error handling middleware
 app.all("*",(req,res,next)=>{
-      next(new ExpressError(404, " Sorry, Page does not exist"));  
+    next(new ExpressError(404, " Sorry, Page does not exist"));  
 });
+
 app.use((err,req,res,next)=> {
     let { statusCode = 500, message = "Something went wrong" } = err;
     res.status(statusCode).render("error.ejs", {err});

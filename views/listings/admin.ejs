@@ -1,17 +1,15 @@
 <% layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/adminNav.ejs") %>
-<head><title>Admin Home</title></head>
 
-<a href="/admin/new" class="btn btn-add mt-2 mx-3">Add New</a>
-<h1 class="card-title admin-title">All Your Listings</h1>
-
-
-
+<head>
+  <title>Admin Home</title>
+  <link rel="stylesheet" href="/css/adminPage.css">
+</head>
 
 
   <% if( !items.length ){ %>
     
-    <div class="row  row-col-sm-1 row-col-1 mt-3 " style= "justify-content:center;">
+    <div class="row mt-3 " style= "justify-content:center;">
         <div class="card mt-3 " style="width: 20rem; border: none;">
             <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
             <div class="card-body mt-2">
@@ -23,25 +21,33 @@
     </div>
 <% } %>
 
+<a href="/admin/new" class="btn admin-add-btn ">Add New Item</a>
+<h1 class="admin-page-title">Welcome to Creative Cafe</h1>
 
-    <% for(let item of items){ %>
-      <div class="row row-col-lg-4 row-col-md-3 row-col-sm-1 row-col-1 " style="margin-right:0; padding: 0; justify-content: center;">
-        <div class="card mt-3 admin-home-card" style="width:20rem;">
-            <img src="<%= item.image.url %>" class="admin-card-img" alt="loading" style="height:20rem;" >
-            <!-- This is a button for admin to disable any item temporary  -->
-            <!-- <div class="form-check form-switch switch" style="display: none;">
-              <input type="checkbox" class="form-check-input switch-btn" role="switch" checked >
-            </div> -->
-            <!--  -->
-            <div class="card-body">
-              <h5 class="card-title"><b><%=item.name %></b></h5>
-              <p class="card-text" ><%= item.info %></p>
-              <p class="card-text"><b> &#8377; <%= item.price %> </b></p>
-              <div>
-                <a href="/admin/<%= item._id %>/show" class="btn show-btn">Show</a>
-              </div>
+<div class="master-div">
+  
+  <% for(let item of items){ %>
+
+      <div class=" admin-home-card">
+
+          <img src="<%= item.image.url %>" class="admin-home-card-img" alt="loading" >
+
+          <div class="content-div">
+
+            <div class="name-price-div">
+              <div class="item-name-div"><p class="card-text item-name"><%=item.name %></p></div>
+              <div class="item-price-div"><p class="card-text i9tem-price"> &#8377; <%= item.price %></p></div>
             </div>
-        </div>
-      </div>
-    <% } %>
 
+            <div class="item-info-div"><p class="card-text item-info"><%= item.info %></p></div>
+            
+
+            <div class="buttons-div">
+              <a href="/admin/<%= item._id %>/show" class="btn admin-show-btn">Show</a>
+            </div>
+
+          </div>
+      </div>
+
+  <% } %>
+</div>

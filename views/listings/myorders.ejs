@@ -2,8 +2,13 @@
 <%- include("../includes/navbar.ejs") %>
 <%- include("../includes/flash.ejs") %>
 
-<head><title>Orders</title></head>
-<h3 class="card-title cart-title"> Your Orders  <i class="fa-solid fa-truck"></i></h3>
+<head>
+    <title>Orders</title>
+    <link rel="stylesheet" href="/css/myorderPage.css">
+</head>
+
+
+<h3 class="myorder-title"> Your Orders  <i class="fa-solid fa-truck"></i></h3>
 
 
 <% if( !items.length ){ %>
@@ -20,25 +25,28 @@
         </div>
 <% } %>
 
+
+<div class="master-div">
 <% for(item of items){ %>
     <% if(sessionId === item.customerId){ %>
         
-            <div class="order-item-div">
-                <img src="<%= item.image.url %>" alt="" class="order-item-img">
-
-                <div class="order-text-div">
-                    <h5 class="card-title"><b><%= item.name %></b></h5>
-                    <div class="price-qty-div"> 
-                        <p class="card-text ord-price">Price : &#8377; <%= item.price.toLocaleString("en-IN") %></p>
-                        <p class="card-text ord-qty"> Qty : <%= item.qty %> </p>
-                    </div>
+            <div class="myorder-card">
+                <div class="img-div">
+                    <img src="<%= item.image.url %>" alt="" class="myorder-card-img">
                 </div>
+
+                <div class="content-div">
+
+                   <div class="item-name-div"><p class="card-text item-name"><%= item.name %></p></div>
+
+                    <div class="price-qty-div"> 
+                        <p class="card-text item-price">Price : &#8377; <%= item.price.toLocaleString("en-IN") %></p>
+                        <p class="card-text item-qty"> Qty : <%= item.qty %> </p>
+                    </div>
                 
-                <div class="cancel-btn-div">
-                    <form action="/myorders/<%= item._id %>/cancel" method="post" >
-                        <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>" name="created_at" style="display:none;">
-                        <button class="btn btn-danger cancel-btn" >Cancel</button>
-                    </form>
+                    <div class="buttons-div">
+                        <a class="btn myorder-cancel-btn" href="/myorders/<%= item._id %>/cancel">Cancel</a>
+                    </div>
                 </div>
             </div>
 
@@ -46,4 +54,4 @@
         <% } %>
 
     <% } %>
-    
+</div>

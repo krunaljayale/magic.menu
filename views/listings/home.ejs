@@ -1,34 +1,42 @@
 <%- layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/navbar.ejs") %>
 <%- include("../includes/flash.ejs") %>
-<head><title> Cafe Name</title></head>
+<head>
+  <title> Cafe Name</title>
+  <link rel="stylesheet" href="/css/homePage.css">
+</head>
 
-    <h1 class="home-title mt-3"> <b> Welcome to Creative Cafe </b></h1>
+    <div class="home-title"><h1><b> Welcome to Creative Cafe </b></h1></div>
       
 
-
+  <div class="master-div">
     <% for(item of items){ %>
               
       <div class="home-card">
-          <div><img src="<%= item.image.url %>" alt="" class="home-card-img"></div>
 
-          <div style="display: block;">
+        <div class="img-div"><img src="<%= item.image.url %>" alt="" class="home-card-img"></div>
+
+        <div class="content-div">
+          
+            <div class="name-price-div">
+              <div class="item-name-div"><p class="card-text item-name"><%= item.name %></p></div> 
+              <div class="item-price-div"><p class="card-text item-price">&#8377; <%= item.price %></p></div>
+            </div>
+          
+            <div class="item-info-div">
+              <p class=" item-info"> <%= item.info %> </p> 
+            </div>
             
-              <div style="display: flex; width:100%;">
-                <div class="item-name-div"><p class="card-text item-name"><b><%= item.name %></b></p></div> 
-                <div class="item-price-div"><p class="card-text item-price"> <b> &#8377; <%= item.price %> </b></p></div>
-              </div>
-            
-             <div > <p class=" item-info" style="height: 4.85rem;"> <%= item.info %> </p> </div>
-             
-              <div class="btns-form">
-                  <a class="btn home-order-btn" href="/orders/<%= item._id %>">Order</a>
-                  <form action="cart/<%= item._id %>" method="post">
-                    <button class="btn btn-cart"><i class="fa-solid fa-cart-shopping"></i></button>
-                  </form>
-              </div>
+            <div class="buttons-div">
+                <a class="btn home-order-btn" href="/orders/<%= item._id %>">Order</a>
+                <form action="cart/<%= item._id %>" method="post">
+                  <button class="btn home-cart-btn"><i class="fa-solid fa-cart-shopping"></i></button>
+                </form>
+            </div>
             
           </div>
+
       </div>
 
     <% } %>
+  </div>

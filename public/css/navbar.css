@@ -1,0 +1,107 @@
+#checkbox {
+    display: none;
+  }
+  
+  
+
+  .toggle {
+    position: relative;
+    width: 35px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8.5px;
+    transition-duration: .5s;
+    /* animation: right-animation 1.5s; */
+  }
+  
+  @media screen and (min-width: 992px) {
+    .toggle{
+      display: none;
+    }
+  }
+
+  .bars {
+    width: 100%;
+    height: 4px;
+    background-color: #12296c;
+    border-radius: 4px;
+  }
+  
+  #bar2 {
+    transition-duration: .8s;
+  }
+  
+  #bar1,#bar3 {
+    width: 70%;
+  }
+  
+  #checkbox:checked + .toggle .bars {
+    position: absolute;
+    transition-duration: .5s;
+  }
+  
+  #checkbox:checked + .toggle #bar2 {
+    transform: scaleX(0);
+    transition-duration: .5s;
+  }
+  
+  #checkbox:checked + .toggle #bar1 {
+    width: 100%;
+    transform: rotate(45deg);
+    transition-duration: .5s;
+  }
+  
+  #checkbox:checked + .toggle #bar3 {
+    width: 100%;
+    transform: rotate(-45deg);
+    transition-duration: .5s;
+  }
+  
+  #checkbox:checked + .toggle {
+    transition-duration: .5s;
+    transform: rotate(180deg);
+    animation: rotate-animation 2.5s linear infinite !important;
+  }
+  
+
+  /* Navbar */
+.navbar,.collapse,.navbar-nav,.container-fluid{
+  background-color: rgb(255 249 234)  !important;
+  border-bottom-left-radius: 10px !important;
+  border-bottom-right-radius: 10px !important;
+}
+.navbar-brand,.navbar-toggler,.navbar-nav a{
+  margin-right:2rem !important;
+  color:#12296c !important;
+  font-weight: 600 !important;
+}
+
+.nav-link{
+  text-align: center !important;
+}
+.show{
+  padding-bottom: 1rem !important;
+}
+.navbar-search-form{
+  display: flex;
+  gap: 1rem;
+}
+
+@keyframes left-animation{
+  0% { margin-left: -100%; }
+  100% { margin-left: initial; }
+}
+
+@keyframes right-animation{
+  0% { margin-left: -100%; }
+  100% { margin-left: initial; }
+}
+
+@keyframes rotate-animation{
+  0%{transform:rotate(0deg);}
+  100%{transform: rotate(360deg);}
+}
