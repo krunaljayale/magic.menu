@@ -9,7 +9,7 @@
 
     <div class="regretMessage">
         <p>Sorry Minimum width required is 280 pixels <br>
-        Will be available soon !
+           Will be available soon !
         </p>
     </div>
 
@@ -26,13 +26,13 @@
                 <div class="item-price-div"><p class="item-price">  &#8377; <%= item.price.toLocaleString("en-IN") %></p></div>
 
                 <div class="buttons-div">
-                    <form  action="/orders/<%= item._id %>" method="post" class="order-form needs-validation" >
-                        <input type="text" name="personName" class="form-control order-input" placeholder="Enter Your Name" required >
-                        <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>" name="created_at"  style="display: none;">
-
+                    <form  action="/orders/<%= item._id %>" method="post" id="order-form" class="order-form"  >
+                        <input type="text" name="personName" id="personName" class="form-control order-input" placeholder="Enter Your Name" required >
+                        <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>"  name="created_at"  style="display: none;">
+                        
                         <div class="qty-button-div">
-                        <input class="form-control order-input" type="number" name="qty" value="1" min="1">
-                        <button class="btn order-btn">Order</button>  
+                        <input class="form-control order-input" type="number" id="orderQuantity" name="qty" value="1" min="1">
+                        <button type="submit" class="btn order-btn">Order</button>  
                         </div>
                     </form>
                 </div>
@@ -40,3 +40,28 @@
              
         </div>
     </div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+<script>
+    const item = <%-  JSON.stringify(item) %>;
+
+    const socket = io();
+    
+    const orderForm = document.getElementById('order-form');
+    let itemName = item.name;
+    let personName = document.getElementById('personName');
+    let orderQuantity = document.getElementById('orderQuantity');
+    let orderTime = new Date().toString().split(" ").slice(1,5).join(" ");
+
+    orderForm.addEventListener('submit', event => {
+
+        socket.emit("clientOrder", {
+            itemName:itemName,
+            orderQuantity:orderQuantity.value,
+            personName:personName.value,
+            orderTime:orderTime 
+        });
+    });
+    
+</script>

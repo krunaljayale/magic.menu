@@ -5,4 +5,4 @@ module.exports.listingSchema = Joi.object({
     info:Joi.string().required(),
     img :Joi.string().allow("",null),
     price:Joi.number().required(),
-    }).required()
+}).required()

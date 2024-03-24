@@ -22,7 +22,7 @@
 <% } %>
 
 <a href="/admin/new" class="btn admin-add-btn ">Add New Item</a>
-<h1 class="admin-page-title">Welcome to Creative Cafe</h1>
+<h1 class="admin-page-title"><b>Welcome to Creative Cafe</b> <br> Your Owner ID is :-<%= currUser._id %></h1>
 
 <div class="master-div">
   
@@ -41,7 +41,6 @@
 
             <div class="item-info-div"><p class="card-text item-info"><%= item.info %></p></div>
             
-
             <div class="buttons-div">
               <a href="/admin/<%= item._id %>/show" class="btn admin-show-btn">Show</a>
             </div>

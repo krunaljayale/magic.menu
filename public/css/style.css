@@ -1,6 +1,6 @@
 body{
     font-family: 'Plus Jakarta Sans', sans-serif !important;
-    background: rgb(254 226 226) !important;
+    /* background: rgb(254 226 226) !important; */
 }
 .containers{
     /* flex: 1 !important; */
@@ -75,7 +75,8 @@ body{
     color: #fff !important;
 }
 .signup-page,
-.login-page {
+.login-page,
+.navbar {
     width: 100%;
     height: fit-content;
     align-items: center !important;

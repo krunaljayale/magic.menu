@@ -20,6 +20,11 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
+const http = require("http").Server(app);
+const io = require("socket.io")(http);
+
+
+
 // const dbUrl = process.env.ATLASDB_URL;
 const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
 
@@ -32,6 +37,7 @@ async function main(){
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname,"views"));
 app.use(express.urlencoded({extended:true})); 
+app.use(express.json());
 app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
@@ -111,7 +117,24 @@ app.use((err,req,res,next)=> {
     res.status(statusCode).render("error.ejs", {err});
 });
 
+
+io.on("connection", (socket)=>{
+    console.log('A user is connected');
+  
+    // socket.emit("msg", {msg:"Hii everyone!"});This is to send a event from Server to client side
+  
+    socket.on("clientOrder", (data)=>{
+        console.log(`${data.personName} ordered ${data.orderQuantity} ${data.itemName} at ${data.orderTime}`)
+    })
+  
+    socket.on('disconnect', ()=>{
+      console.log('A user disconnected');
+    });
+  
+  });
+
+
 // Server //
-app.listen(3000,()=>{
+http.listen(3000,()=>{
     console.log("SERVER is ON");
 });

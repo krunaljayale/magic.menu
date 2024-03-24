@@ -4,13 +4,17 @@ const wrapAsync = require("../utils/wrapAsync.js");
 const Cart = require("../models/cart.js");
 const MyOrders = require("../models/myOrders.js");
 const Listing = require("../models/listing.js");
+ 
+
 
 // Root Route //
 // Home Route //
     router.get("/home", wrapAsync(
     async (req,res)=>{
         const items = await Listing.find({});
-        res.render("listings/home.ejs", {items});
+        let {hotelID} = req.query;
+        res.cookie("hotelID", hotelID);
+        res.render("listings/home.ejs", {items,hotelID});
     }));
     
     // Order Route //
@@ -27,12 +31,14 @@ const Listing = require("../models/listing.js");
         let { id } = req.params;
         let {name, price,image} = await Listing.findById(id);
         let { personName,qty,created_at} = req.body;
-        console.log( `${personName} ordered ${qty} ${name} on ${created_at}`);
+        
+        // console.log( `${personName} ordered ${qty} ${name} on ${created_at}`);
         let newMyOrders = new MyOrders({personName,name,image,price,qty,created_at});
         newMyOrders.customerId = res.locals.sessionId;
         await newMyOrders.save();
         req.flash("flashSuccess", "Order Placed");
-        res.redirect("/home");
+        let hotelID = req.cookies.hotelID;
+        res.redirect(`/home?hotelID=${hotelID}`);
     }));
     
     // My Orders //
@@ -47,9 +53,8 @@ const Listing = require("../models/listing.js");
     router.get("/myorders/:id/cancel",wrapAsync(
     async(req,res)=>{
         let { id } = req.params;
-        let { created_at } = new Date().toString().split(" ").slice(1,5).join(" ");
-        let  { personName,name,qty}  = await MyOrders.findById(id);
-        console.log( `Order of ${qty} ${name} from ${personName} is cancelled on ${created_at}` );
+        let { personName,name,qty}  = await MyOrders.findById(id);
+        console.log( `Order of ${qty} ${name} from ${personName} is cancelled on ${Date().toString().split(" ").slice(1,5).join(" ")}` );
         await MyOrders.findByIdAndDelete(id);
         req.flash("flashSuccess", "Order Cancelled");
         res.redirect("/myorders");
@@ -65,12 +70,13 @@ const Listing = require("../models/listing.js");
         newCart.customerId = res.locals.sessionId;
         await newCart.save();
         req.flash("flashSuccess", "Item added to Cart");
-        res.redirect("/home");
+        let hotelID = req.cookies.hotelID;
+        res.redirect(`/home?query1=${hotelID}`);
     }));
     
     router.get("/cart", wrapAsync(
     async(req,res)=>{
-        const items = await Cart.find({});
+        const items =await Cart.find({});
         res.render("listings/cart.ejs" ,{items});
     }));
     
