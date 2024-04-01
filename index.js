@@ -80,7 +80,7 @@ const sessionOptions = {
 const publicVapidKey = 'BDwBGuu5C6-XdkYo05NarqpKiA-gTrm3bG6U6ckBDKvNMy9l4wE7k1Y9IG8wbQwUUFkESsf46c1oXJFmVYXflfE';
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 
-webPush.setVapidDetails("mailto:mail@gmail.com", publicVapidKey, privateVapidKey);
+// webPush.setVapidDetails("mailto:mail@gmail.com", publicVapidKey, privateVapidKey);
 
 // Subscribe Route //
 
