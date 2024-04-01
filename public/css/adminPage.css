@@ -1,18 +1,40 @@
-.admin-add-btn{
-    display: block !important;
-    width: 95vw !important;
-    max-width: 470px !important;
-    height:fit-content;
-    background-color: #fc1919 !important;
-    color: #fff !important;
-    font-weight: 700 !important;
-    margin: 1rem auto !important;
+.notification-popup{
+display: none;
+padding: 1rem ;
+margin:0 auto;
+right: 1rem;
+text-align: start;
+position:absolute;
+width:90vw;
+max-width: 25rem;
+height: fit-content;
+min-height: 4.25rem;
+border-radius: 20px;
+border-top-right-radius: 0;
+color: #ffffff;
+}
+  
+.notification-message{
+border-radius: 35px;
+font-size: 15px;
+font-weight: 400;
+margin: 0;
 }
 
 .admin-page-title{
+    margin:1rem 0 2rem 0 ;
+    color:#12296c;
+    text-align: center;
+    font-family: "Style Script", cursive;
+    letter-spacing: 1.35px;
+    word-spacing: 2.5px ;
+    animation:top-animation 1.85s;
+}
+
+.admin-page-title-id{
     color: #12296c ;
     margin:1rem 2rem 0;
-    font-size: 20px;
+    font-size: 16px;
 }
 
 .master-div{
@@ -93,4 +115,16 @@
 @keyframes bottom-animation{
     0% {margin-top: 120vh;}
     100% {margin-top: initial;}
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+    background-position: 0% 50%;
+    }
 }

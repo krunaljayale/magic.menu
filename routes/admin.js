@@ -1,5 +1,6 @@
 const express = require("express");
 const Listing = require("../models/listing.js");
+const User = require("../models/user.js");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const {isLoggedIn} = require("../middleware.js");
@@ -8,14 +9,16 @@ const {storage} = require("../cloudConfig.js");
 const upload = multer({ storage });
 
 // Admin Dashboard Route //
-router.get("/",wrapAsync(
+router.get("/",isLoggedIn,wrapAsync(
     async (req,res)=>{
-        const items = await Listing.find({});
-        res.render("listings/admin.ejs",{ items });
+        let owner = res.locals.currUser;
+        const items = await Listing.find({owner:owner});
+        const hotel = await User.findById(owner);
+        res.render("listings/admin.ejs",{ items,hotel });
 }));
 
 // Admin Show Route //
-router.get("/:id/show",wrapAsync(
+router.get("/:id/show",isLoggedIn,wrapAsync(
     async (req,res)=>{
         const { id } = req.params;
         const item = await Listing.findById(id).populate("owner");
@@ -31,7 +34,7 @@ router.get("/:id/edit",isLoggedIn,
             res.render("listings/edit.ejs",{item});
 }));
 // Update Route //
-router.put("/:id/edit" ,isLoggedIn,upload.single('image')
+router.put("/:id/edit" ,isLoggedIn
 , wrapAsync(
 async (req,res)=>{
     const { id } = req.params;

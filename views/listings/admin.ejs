@@ -7,6 +7,13 @@
 </head>
 
 
+<div class="admin-page-title"><h1><b> Welcome to <%= hotel.hotelname %> </b></h1></div>
+<h3 class="admin-page-title-id">Your Owner ID is :-<%= currUser._id %></h3>
+<div class="notification-popup" id="notificationPopup">
+  <p class="notification-message" id="notificationMessage"></p>
+</div>
+
+
   <% if( !items.length ){ %>
     
     <div class="row mt-3 " style= "justify-content:center;">
@@ -14,29 +21,27 @@
             <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
             <div class="card-body mt-2">
             <h5 class="card-title text-primary"> <b>No Listings</b></h5>
-            <p class="card-text mt-3 text-primary"><i>You didn't list any item yet!</i> </p>
-            <a href="/admin/new" class="btn btn-add">Add New</a>
+            <p class="card-text mt-3 text-primary"><i>You didn't list any item yet! <br> Please add some listings to show...</i> </p>
             </div>
         </div>
     </div>
 <% } %>
 
-<a href="/admin/new" class="btn admin-add-btn ">Add New Item</a>
-<h1 class="admin-page-title"><b>Welcome to Creative Cafe</b> <br> Your Owner ID is :-<%= currUser._id %></h1>
 
 <div class="master-div">
   
   <% for(let item of items){ %>
-
+    
       <div class=" admin-home-card">
-
+          <!-- <audio src="/audio/audio.mp3" id="audioTag"  style="display: none;"></audio> -->
+          <!-- <iframe src="audio/audio.mp3" allow="autoplay" style="display:none" id="iframeAudio">
+          </iframe> -->
           <img src="<%= item.image.url %>" class="admin-home-card-img" alt="loading" >
 
           <div class="content-div">
-
             <div class="name-price-div">
               <div class="item-name-div"><p class="card-text item-name"><%=item.name %></p></div>
-              <div class="item-price-div"><p class="card-text i9tem-price"> &#8377; <%= item.price %></p></div>
+              <div class="item-price-div"><p class="card-text item-price"> &#8377; <%= item.price %></p></div>
             </div>
 
             <div class="item-info-div"><p class="card-text item-info"><%= item.info %></p></div>
@@ -47,6 +52,52 @@
 
           </div>
       </div>
-
   <% } %>
 </div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+<script>
+  const socket = io();
+  const currUser = <%-  JSON.stringify(currUser) %>;
+  let notificationDiv = document.getElementById('notificationPopup');
+  let notificationMessage = document.getElementById('notificationMessage');
+  // let audio = document.getElementById('audioTag');
+  // let notifyAudio = document.getElementById('iframeAudio');
+
+
+
+  // function playAudio(){
+  //   audio.play();
+  // }
+
+  socket.on("orderNotification", (data)=>{
+      // audio.play();
+      if(data.owner === currUser._id){
+        setTimeout(()=>{
+          notificationDiv.style.display="none";
+          notificationMessage.innerHTML=" ";
+        },5000);
+        notificationDiv.style.display="block";
+        notificationDiv.style.backgroundColor="black";
+        notificationMessage.innerHTML=data.message;
+      }else{
+        notificationDiv.style.display="none"
+      }
+  });
+
+  socket.on("cancelNotification", (data)=>{
+      // audio.play();
+      if(data.owner === currUser._id){
+        setTimeout(()=>{
+          notificationDiv.style.display="none";
+          notificationMessage.innerHTML=" ";
+        },5000);
+        notificationDiv.style.display="block";
+        notificationDiv.style.backgroundColor="red";
+        notificationMessage.innerHTML=data.message;
+      }else{
+        notificationDiv.style.display="none"
+      }
+  });
+</script>

@@ -27,12 +27,16 @@
 
                 <div class="buttons-div">
                     <form  action="/orders/<%= item._id %>" method="post" id="order-form" class="order-form"  >
-                        <input type="text" name="personName" id="personName" class="form-control order-input" placeholder="Enter Your Name" required >
+                        <input type="text" name="customername" id="customerName" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required >
                         <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>"  name="created_at"  style="display: none;">
                         
                         <div class="qty-button-div">
-                        <input class="form-control order-input" type="number" id="orderQuantity" name="qty" value="1" min="1">
-                        <button type="submit" class="btn order-btn">Order</button>  
+                            <div class="quantity-div">
+                                <button id="subtractBtn" class="subtract-btn" type="button" onclick="substraction();"><i class="fa-solid fa-minus"></i></button>
+                                <input class="form-control order-input qty-order-input" type="input" id="orderQuantity" name="qty" value="1" min="1" readonly>
+                                <button id="addBtn" class="addition-btn" type="button" onclick="addition();"><i class="fa-solid fa-plus"></i></button>
+                            </div>
+                            <button type="submit" class="btn order-btn" id="orderBtn">Order</button>  
                         </div>
                     </form>
                 </div>
@@ -50,18 +54,25 @@
     
     const orderForm = document.getElementById('order-form');
     let itemName = item.name;
-    let personName = document.getElementById('personName');
+    let owner = item.owner;
+    let customerName = document.getElementById('customerName');
     let orderQuantity = document.getElementById('orderQuantity');
-    let orderTime = new Date().toString().split(" ").slice(1,5).join(" ");
 
-    orderForm.addEventListener('submit', event => {
-
-        socket.emit("clientOrder", {
-            itemName:itemName,
-            orderQuantity:orderQuantity.value,
-            personName:personName.value,
-            orderTime:orderTime 
-        });
+    orderForm.addEventListener('submit', () => {
+        socket.emit("clientOrder",{message: `${customerName.value} ordered ${orderQuantity.value} ${itemName} just now`, owner:owner});
     });
     
+
+
+
+    // For order-quantity buttons
+    function addition(){
+        orderQuantity.value++;
+    }
+
+    function substraction(){
+        if(orderQuantity.value>1){
+            orderQuantity.value--;
+        }
+    }
 </script>

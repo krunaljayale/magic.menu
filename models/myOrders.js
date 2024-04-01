@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const myOrdersSchema = new Schema({
-    personName:String,
+const MyOrdersSchema = new Schema({
+    customername:String,
     name : String,
     image :{
         url:String,
@@ -10,9 +10,10 @@ const myOrdersSchema = new Schema({
     },
     price:Number,
     qty:Number,
-    created_at :Date,
+    owner:String,
+    created_at :String,
     customerId:String,
 });
 
-const myOrders = mongoose.model("myOrders", myOrdersSchema);
-module.exports = myOrders;
+const MyOrders = mongoose.model("MyOrders", MyOrdersSchema);
+module.exports = MyOrders;

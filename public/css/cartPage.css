@@ -86,6 +86,32 @@
 }
 
 
+.master-home-btn-div{
+    width: 100vw;
+    height: 4rem;
+    position: fixed;
+    bottom: 0;
+    background-color: transparent;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.master-home-btn{
+    width: fit-content !important;
+    height: fit-content !important;
+    min-width: 7rem !important;
+    min-height: 3rem !important;
+    background-color: azure !important;
+    color: #ffffff !important; 
+    font-weight: 900 !important;
+    font-size: 18px !important;
+    background: linear-gradient(250deg, #f78664, #f74d8e, #3bc5f7, #3cface);
+    animation: gradient 5s ease infinite;
+    background-size: 400% 400%;
+}
+
+
 /* After 430 Px */
 
 @media screen and (min-width: 431px) {
@@ -171,5 +197,17 @@
         font-size: 3.85vw;
         width: auto !important;
         height: auto !important;
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+    background-position: 0% 50%;
     }
 }

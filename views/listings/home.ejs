@@ -6,12 +6,11 @@
   <link rel="stylesheet" href="/css/homePage.css">
 </head>
 
-    <div class="home-title"><h1><b> Welcome to Creative Cafe </b></h1></div>
+<div class="home-title"><h1><b> Welcome to <%= hotel.hotelname %> </b></h1></div>
       
 
   <div class="master-div">
-    <% for(item of items){ %>
-      <% if(item.owner.equals(hotelID)) { %>  
+    <% for(item of items){ %>  
         <div class="home-card">
 
           <div class="img-div"><img src="<%= item.image.url %>" alt="" class="home-card-img"></div>
@@ -38,6 +37,5 @@
             </div>
 
         </div>
-      <% } %>
     <% } %>
   </div>

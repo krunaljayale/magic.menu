@@ -7,8 +7,13 @@ const userSchema = new Schema({
         type:String,
         required:true,
     },
+    hotelname:{
+        type:String,
+        required:true
+    }
 });
 
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model("User", userSchema);
+const User = mongoose.model("User", userSchema);
+module.exports =  User;

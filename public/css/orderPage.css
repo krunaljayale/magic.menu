@@ -32,7 +32,7 @@
     min-height: 126px;
     max-height: 230px;
     margin-bottom: 5px;
-    animation: left-animation 1.5s ;
+    animation: left-animation 1.25s ;
     border-top-left-radius: 2px;
     border-top-right-radius: 45px;
     border-bottom-left-radius: 45px;
@@ -54,8 +54,9 @@
     display: block;
     padding:8px 18px 0 18px;
     align-items: center;
-    animation: right-animation 1.5s;
+    animation: right-animation 1.25s;
 }
+
 
 .item-name-div{
     width: 100%;
@@ -76,16 +77,37 @@
     margin: 0 !important;
 }
 
+.order-input{
+    font-size: 3.5vw !important;
+    font-weight: bolder !important;
+}
+
 .buttons-div{
     width: 100%;
     display: block;
 }
 
-.order-input{
+.quantity-div{
     width: 100%;
-    height: 7.85vw !important;
-    font-size: 3.5vw !important;
+    max-height: 33.75px;
+    background-color:transparent;
+    display: flex;
+    gap: 2%;
+}
+
+.addition-btn,
+.subtract-btn{
+    width: 30%;
+    border-radius: 5px;
+    border: 1px solid navy;
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    background-color: #fff !important;
+}
+.qty-order-input{
+    width: 48%;
     text-align: center !important;
+    border: 1px solid navy !important;
 }
 
 .qty-button-div{
@@ -98,7 +120,7 @@
     background-color: #9ED2BE !important;
     color:#5F0F40 !important;
     font-weight: 800 !important;
-    font-size: 3.5vw;
+    font-size: 3.35vw;
     border-radius: 10px !important;
 }
 

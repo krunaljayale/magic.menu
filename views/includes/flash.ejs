@@ -1,12 +1,12 @@
 <% if( flashSuccess && flashSuccess.length) { %>
-    <div class="alert col-8 offset-2 alert-success alert-dismissible fade show" role="alert">
+    <div class="alert col-8 offset-2 alert-success alert-dismissible fade show" style="position: absolute;" role="alert">
     <%= flashSuccess %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>
 
 <% if(flashError && flashError.length) { %>
-  <div class="alert col-8 offset-2 alert-danger alert-dismissible fade show"  role="alert">
+  <div class="alert col-8 offset-2 alert-danger alert-dismissible fade show" style="position: absolute;"  role="alert">
     <%= flashError %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>

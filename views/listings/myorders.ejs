@@ -27,31 +27,84 @@
 
 
 <div class="master-div">
-<% for(item of items){ %>
-    <% if(sessionId === item.customerId){ %>
-        
-            <div class="myorder-card">
-                <div class="img-div">
-                    <img src="<%= item.image.url %>" alt="" class="myorder-card-img">
-                </div>
+    <% for(item of items){ %>
 
-                <div class="content-div">
-
-                   <div class="item-name-div"><p class="card-text item-name"><%= item.name %></p></div>
-
-                    <div class="price-qty-div"> 
-                        <p class="card-text item-price">Price : &#8377; <%= item.price.toLocaleString("en-IN") %></p>
-                        <p class="card-text item-qty"> Qty : <%= item.qty %> </p>
-                    </div>
-                
-                    <div class="buttons-div">
-                        <a class="btn myorder-cancel-btn" href="/myorders/<%= item._id %>/cancel">Cancel</a>
-                    </div>
-                </div>
+        <div class="myorder-card">
+            <div class="img-div">
+                <img src="<%= item.image.url %>" alt="" class="myorder-card-img">
             </div>
 
+            <div class="content-div">
+
+                <div class="item-name-div"><p class="card-text item-name"><%= item.name %></p></div>
+
+                <div class="price-qty-div"> 
+                    <p class="card-text item-price">Price : &#8377; <%= item.price.toLocaleString("en-IN") %></p>
+                    <p class="card-text item-qty"> Qty : <%= item.qty %> </p>
+                </div>
             
-        <% } %>
+                <div class="order-info-div">
+                    <p class="order-customer">By:- <%= item.customername %></p>
+                    <p class="order-time">On <%= item.created_at %></p>
+                </div>
+                
+                <div class="buttons-div">
+                    <form method="post" id="cancelForm" action="/myorders/<%= item._id %>/cancel?_method=DELETE">
+                        <input type="text" id="orderCustomer" value="<%= item.customername%>" style="display: none;">
+                        <input type="text" id="orderName" value="<%= item.name%>" style="display: none;">
+                        <input type="text" id="orderQuantity" value="<%= item.qty%>" style="display: none;">
+                        <input type="text" id="orderOwner" value="<%= item.owner%>" style="display: none;">
+                        <button class="btn myorder-cancel-btn" id="<%= item._id %>">Cancel</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
     <% } %>
 </div>
+
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+<script>
+    const socket = io();
+    // const items = < JSON.stringify(items) %>;
+    
+    //  for(item of items){
+    //     const cancelBtn = document.getElementById(`${item._id}`)
+
+    //     let orderTimeHr = item.created_at.toString().split(" ").slice(3,4).join(" ").slice(0,2);
+    //     let currTimeHr = Date().split(" ").slice(4,5).join(" ").slice(0,2);
+    //     let orderTimeMin = item.created_at.toString().split(" ").slice(3,4).join(" ").slice(3,5);
+    //     let currTimeMin = Date().split(" ").slice(4,5).join(" ").slice(3,5);
+
+    //     let personName = item.personname;
+    //     let orderQuantity = item.qty;
+    //     let itemName = item.name;
+    //     let owner = item.owner;
+
+    //     if((currTimeHr === orderTimeHr && currTimeMin-orderTimeMin >= 2) || (currTimeHr != orderTimeHr)){
+    //         cancelBtn.style.display="none";
+    //     }else{
+    //         cancelBtn.style.display="inline-block";
+    //     } 
+    // }
+    
+    // const cancelBtn = document.getElementById('cancelBtn');
+    // cancelBtn.addEventListener('click', ()=>{
+    //     socket.emit("cancelOrder", {message:"hehe"})
+    // });
+
+    let cancelForm = document.getElementById('cancelForm');
+    let orderCustomer = document.getElementById('orderCustomer');
+    let orderName = document.getElementById('orderName');
+    let orderQuantity = document.getElementById('orderQuantity');
+    let orderOwner = document.getElementById('orderOwner')
+    
+
+    cancelForm.addEventListener('submit', event => {    
+        socket.emit("cancelOrder", {message:`${orderCustomer.value} cancelled order of ${orderQuantity.value} ${orderName.value} just now `, owner:orderOwner.value});
+    });
+    
+
+    
+</script>

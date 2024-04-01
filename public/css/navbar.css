@@ -82,6 +82,10 @@
   font-weight: 600 !important;
 }
 
+.admin-add-btn{
+  text-align: center !important;
+}
+
 .nav-link{
   text-align: center !important;
 }
@@ -107,6 +111,3 @@
   0%{transform:rotate(0deg);}
   100%{transform: rotate(360deg);}
 }
-
-
-

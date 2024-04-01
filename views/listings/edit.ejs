@@ -6,7 +6,7 @@
     <div class="row mt-3">
         <div class="col-8 offset-2 mb-3">
     <h1>Edit Listing</h1>
-    <form method="POST" action="/admin/<%= item._id %>/edit?_method=PUT"  class="needs-validation" novalidate>
+    <form method="POST" action="/admin/<%= item._id %>/edit?_method=PUT"  class="needs-validation" enctype="multipart/form-data" novalidate>
 
 
         <div class="mb-3">
@@ -20,8 +20,8 @@
         </div>
 
         <div class="mb-3">
-            <label for="image" class="form-label">Image URL</label>
-            <input name="listing[img]" value="<%= item.img %>" type="text" class="form-control" id="image">
+            <label for="image" class="form-label">Upload New Image</label>
+            <input name="listing[image]"  type="file" class="form-control" >
         </div>
 
         <div class="mb-3">

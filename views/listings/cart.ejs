@@ -23,12 +23,9 @@
 <% } %>
 
 <div class="master-div">
-
 <% for(item of items){ %>
-    <% if(sessionId === item.customerId){ %>
-        
+    
         <div class="cart-card">
-
 
             <div class="img-div">
                 <img src="<%= item.image.url %>" alt="" class="cart-card-img">
@@ -56,7 +53,22 @@
 
         </div>
 
-    <% } %>
-    
 <% } %>
 </div>
+
+<!-- <div class="master-home-btn-div">
+    <a id="masterHomeBtn" class="btn master-home-btn" >Home Page</a>
+</div> -->
+
+
+
+<!-- <script>
+    const hotelID = < JSON.stringify(hotelID) %> ;
+
+    let masterHomeBtn = document.getElementById('masterHomeBtn');
+    function homeFunction(){
+        masterHomeBtn.href = `/home?hotelID=${hotelID}`;
+    }
+
+    masterHomeBtn.addEventListener('click',homeFunction);
+</script> -->

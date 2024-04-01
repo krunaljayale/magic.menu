@@ -5,6 +5,7 @@ if(process.env.NODE_ENV != "production"){
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
+// const cors = require("cors");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -19,17 +20,21 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-
-const http = require("http").Server(app);
-const io = require("socket.io")(http);
+// const webPush = require("web-push");
 
 
+const { createServer } = require("http"); // you can use https as well
+const socketIo = require("socket.io");
+const server = createServer(app);
+const io = socketIo(server, { cors: { origin: "*" } }); // you can change the cors to your own domain
 
-// const dbUrl = process.env.ATLASDB_URL;
-const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
+
+
+const dbUrl = process.env.ATLASDB_URL;
+// const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
 
 async function main(){
-    mongoose.connect(MONGO_URL);
+    mongoose.connect(dbUrl);
 }
 
 
@@ -44,8 +49,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
 
+
 const store = MongoStore.create({
-    mongoUrl:MONGO_URL,
+    mongoUrl:dbUrl,
     crypto: {
         secret: process.env.SECRET,
       },
@@ -69,10 +75,18 @@ const sessionOptions = {
      }
   };
 
+// Push Notification //
+
+const publicVapidKey = 'BDwBGuu5C6-XdkYo05NarqpKiA-gTrm3bG6U6ckBDKvNMy9l4wE7k1Y9IG8wbQwUUFkESsf46c1oXJFmVYXflfE';
+const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
+
+webPush.setVapidDetails("mailto:mail@gmail.com", publicVapidKey, privateVapidKey);
+
+// Subscribe Route //
+
+
 app.use(session(sessionOptions));
 app.use(flash());
-
-
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
@@ -88,6 +102,8 @@ app.use((req,res,next)=>{
     
     res.locals.currUser = req.user;
     res.locals.sessionId = req.sessionID;
+    res.locals.hotelID = req.hotelID;
+    res.locals.customerName = req.customerName;
     next();
 })
 
@@ -99,7 +115,10 @@ main().then(()=>{
     console.log("Some Error In DB")
 });
 
-
+// app.use((req, res, next) => {
+//     req.io = io;
+//     return next();
+//   });
 
 app.use("/admin", admin);
 app.use("/", api);
@@ -118,23 +137,25 @@ app.use((err,req,res,next)=> {
 });
 
 
+
 io.on("connection", (socket)=>{
-    console.log('A user is connected');
+
+socket.on("clientOrder",(data)=>{
+    // console.log(data.message);
+    io.emit("orderNotification",data);
+});
+
+socket.on("cancelOrder",(data)=>{
+    // console.log(data)
+    io.emit("cancelNotification",data);
+});
+
+socket.on('disconnect', ()=>{});
   
-    // socket.emit("msg", {msg:"Hii everyone!"});This is to send a event from Server to client side
-  
-    socket.on("clientOrder", (data)=>{
-        console.log(`${data.personName} ordered ${data.orderQuantity} ${data.itemName} at ${data.orderTime}`)
-    })
-  
-    socket.on('disconnect', ()=>{
-      console.log('A user disconnected');
-    });
-  
-  });
+});
 
 
 // Server //
-http.listen(3000,()=>{
+server.listen(3000,()=>{
     console.log("SERVER is ON");
 });

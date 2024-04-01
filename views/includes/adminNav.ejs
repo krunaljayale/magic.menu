@@ -1,7 +1,7 @@
 <head><link href="/css/navbar.css" rel="stylesheet"></head>
 
 
-<nav class="navbar navbar-expand-lg  sticky-top" >
+<nav class="navbar navbar-expand-lg admin-navbar sticky-top" >
   <div class="container-fluid ">
     <a class="navbar-brand" href="/admin">Inspire</a>
     <input type="checkbox" id="checkbox" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -11,21 +11,10 @@
         <div class="bars" id="bar3"></div>
     </label>
     <div class="collapse navbar-collapse " id="navbarNavAltMarkup" >
-
-      <div class="navbar-nav ">
-        <a class="nav-link active" aria-current="page" href="/admin">Dashboard</a>
-      </div>
-
       <div class="navbar-nav ms-auto">
-      <% if(!currUser){ %>
-        <a class="nav-link active" aria-current="page" href="/signup">Sign up</a>
-        <a class="nav-link active" aria-current="page" href="/login">Log in</a>
-      <% }  %>
-      
-      <% if(currUser){ %>
+        <a class="nav-link active" aria-current="page" href="/admin">Dashboard</a>
+        <a href="/admin/new" class="nav-link admin-add-btn ">Add New Item</a>
         <a class="nav-link active" aria-current="page" href="/logout">Log out</a>
-      <% } %>
-      
         <form class="navbar-search-form" role="search">
           <input class="form-control" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-primary btn-search" type="submit">Search</button>
