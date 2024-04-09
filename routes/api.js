@@ -5,7 +5,28 @@ const Cart = require("../models/cart.js");
 const MyOrders = require("../models/myOrders.js");
 const Listing = require("../models/listing.js");
 const User = require("../models/user.js");
-// const socket = req.app.get("socket");
+const Subscription = require("../models/subscription.js");
+const webPush = require("web-push");
+
+
+
+// Push Notification //
+
+const publicVapidKey = 'BMZCa-abHsQbxoO6k8M1hucKVk4vTU3UzOHJBh34gABfKjpvay3j2_xhxADWUZiNHH3YTfvBtDLJn64yGYbLAA4';
+const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
+
+webPush.setVapidDetails("mailto:krunaljayale5@gmail.com", publicVapidKey, privateVapidKey);
+
+
+
+router.post("/service",async (req,res)=>{
+    let subscription = req.body;
+    let newSubscription = new Subscription(subscription);
+    newSubscription.userID = req.user._id;
+    await newSubscription.save();
+    res.json({status: "Success", message:""})
+});
+
 
 // Root Route //
 // Home Route //
@@ -42,6 +63,8 @@ const User = require("../models/user.js");
         let newMyOrders = new MyOrders({customername,name,image,price,qty,owner,created_at});
         newMyOrders.customerId = res.locals.sessionId;
         await newMyOrders.save();
+        let endPoint = await Subscription.find({userID:owner});
+        webPush.sendNotification(endPoint[0], `${customername} ordered ${qty} ${name} just now` )
         req.flash("flashSuccess", "Order Placed");
         res.redirect(`/home?hotelID=${owner}`);
     }));
@@ -58,21 +81,23 @@ const User = require("../models/user.js");
     router.delete("/myorders/:id/cancel",wrapAsync(
     async(req,res)=>{
         let { id } = req.params;
-        // let {created_at} =  await MyOrders.findById(id);
+        let {created_at, owner,customername,qty,name} =  await MyOrders.findById(id);
 
-        // let orderTimeHr = created_at.toString().split(" ").slice(3,4).join(" ").slice(0,2);
-        // let currTimeHr = Date().split(" ").slice(4,5).join(" ").slice(0,2);
-        // let orderTimeMin = created_at.toString().split(" ").slice(3,4).join(" ").slice(3,5);
-        // let currTimeMin = Date().split(" ").slice(4,5).join(" ").slice(3,5);
+        let orderTimeHr = created_at.toString().split(" ").slice(3,4).join(" ").slice(0,2);
+        let currTimeHr = Date().split(" ").slice(4,5).join(" ").slice(0,2);
+        let orderTimeMin = created_at.toString().split(" ").slice(3,4).join(" ").slice(3,5);
+        let currTimeMin = Date().split(" ").slice(4,5).join(" ").slice(3,5);
 
-        //     if((currTimeHr === orderTimeHr && currTimeMin-orderTimeMin >= 2) || (currTimeHr != orderTimeHr)){
-        //         req.flash("flashError", "Sorry orders can not be cancelled after 2 minutes of placing");
-        //         res.redirect("/myorders")
-        //     }else{
+            if((currTimeHr === orderTimeHr && currTimeMin-orderTimeMin >= 2) || (currTimeHr != orderTimeHr)){
+                req.flash("flashError", "Sorry orders can not be cancelled after 2 minutes of placing");
+                res.redirect("/myorders")
+            }else{
                 await MyOrders.findByIdAndDelete(id);
+                let endPoint = await Subscription.find({userID:owner});
+                webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` )
                 req.flash("flashSuccess", "Order Cancelled");
                 res.redirect("/myorders");
-            // };
+            };
     }));
     
     //Cart Route //

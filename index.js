@@ -5,7 +5,7 @@ if(process.env.NODE_ENV != "production"){
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-// const cors = require("cors");
+const cors = require("cors");
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
@@ -20,13 +20,13 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
-// const webPush = require("web-push");
+
 
 
 const { createServer } = require("http"); // you can use https as well
 const socketIo = require("socket.io");
 const server = createServer(app);
-const io = socketIo(server, { cors: { origin: "*" } }); // you can change the cors to your own domain
+const io = socketIo(server); // you can change the cors to your own domain
 
 
 
@@ -47,6 +47,7 @@ app.use(methodOverride("_method"));
 app.engine("ejs", ejsMate);
 app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
+app.use(cors());
 
 
 
@@ -75,14 +76,6 @@ const sessionOptions = {
      }
   };
 
-// Push Notification //
-
-const publicVapidKey = 'BDwBGuu5C6-XdkYo05NarqpKiA-gTrm3bG6U6ckBDKvNMy9l4wE7k1Y9IG8wbQwUUFkESsf46c1oXJFmVYXflfE';
-const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
-
-// webPush.setVapidDetails("mailto:mail@gmail.com", publicVapidKey, privateVapidKey);
-
-// Subscribe Route //
 
 
 app.use(session(sessionOptions));
@@ -107,7 +100,6 @@ app.use((req,res,next)=>{
     next();
 })
 
-
 // Connection to Data-Base //
 main().then(()=>{
     console.log("connected to DB")
@@ -115,10 +107,6 @@ main().then(()=>{
     console.log("Some Error In DB")
 });
 
-// app.use((req, res, next) => {
-//     req.io = io;
-//     return next();
-//   });
 
 app.use("/admin", admin);
 app.use("/", api);
@@ -135,7 +123,6 @@ app.use((err,req,res,next)=> {
     let { statusCode = 500, message = "Something went wrong" } = err;
     res.status(statusCode).render("error.ejs", {err});
 });
-
 
 
 io.on("connection", (socket)=>{

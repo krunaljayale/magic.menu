@@ -64,9 +64,9 @@
 </div>
 
 
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+<!-- <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script> -->
 <script>
-    const socket = io();
+    // const socket = io();
     // const items = < JSON.stringify(items) %>;
     
     //  for(item of items){
@@ -94,16 +94,16 @@
     //     socket.emit("cancelOrder", {message:"hehe"})
     // });
 
-    let cancelForm = document.getElementById('cancelForm');
-    let orderCustomer = document.getElementById('orderCustomer');
-    let orderName = document.getElementById('orderName');
-    let orderQuantity = document.getElementById('orderQuantity');
-    let orderOwner = document.getElementById('orderOwner')
+    // let cancelForm = document.getElementById('cancelForm');
+    // let orderCustomer = document.getElementById('orderCustomer');
+    // let orderName = document.getElementById('orderName');
+    // let orderQuantity = document.getElementById('orderQuantity');
+    // let orderOwner = document.getElementById('orderOwner')
     
 
-    cancelForm.addEventListener('submit', event => {    
-        socket.emit("cancelOrder", {message:`${orderCustomer.value} cancelled order of ${orderQuantity.value} ${orderName.value} just now `, owner:orderOwner.value});
-    });
+    // cancelForm.addEventListener('submit', event => {    
+    //     socket.emit("cancelOrder", {message:`${orderCustomer.value} cancelled order of ${orderQuantity.value} ${orderName.value} just now `, owner:orderOwner.value});
+    // });
     
 
     

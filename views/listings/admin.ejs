@@ -8,34 +8,32 @@
 
 
 <div class="admin-page-title"><h1><b> Welcome to <%= hotel.hotelname %> </b></h1></div>
-<h3 class="admin-page-title-id">Your Owner ID is :-<%= currUser._id %></h3>
+<button class="btn btn-primary" onclick="main();">Get Notified</button>
+<h3 class="admin-page-title-id" id="idAdmin">Your Owner ID is :- <%= currUser._id %></h3>
 <div class="notification-popup" id="notificationPopup">
   <p class="notification-message" id="notificationMessage"></p>
 </div>
 
 
-  <% if( !items.length ){ %>
+<% if( !items.length ){ %>
     
-    <div class="row mt-3 " style= "justify-content:center;">
-        <div class="card mt-3 " style="width: 20rem; border: none;">
-            <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
-            <div class="card-body mt-2">
-            <h5 class="card-title text-primary"> <b>No Listings</b></h5>
-            <p class="card-text mt-3 text-primary"><i>You didn't list any item yet! <br> Please add some listings to show...</i> </p>
-            </div>
-        </div>
-    </div>
+  <div class="row mt-3 " style= "justify-content:center;">
+      <div class="card mt-3 " style="width: 20rem; border: none;">
+          <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
+          <div class="card-body mt-2">
+          <h5 class="card-title text-primary"> <b>No Listings</b></h5>
+          <p class="card-text mt-3 text-primary"><i>You didn't list any item yet! <br> Please add some listings to show...</i> </p>
+          </div>
+      </div>
+  </div>
 <% } %>
 
 
-<div class="master-div">
+<div class="master-div" id="masterDiv">
   
   <% for(let item of items){ %>
     
       <div class=" admin-home-card">
-          <!-- <audio src="/audio/audio.mp3" id="audioTag"  style="display: none;"></audio> -->
-          <!-- <iframe src="audio/audio.mp3" allow="autoplay" style="display:none" id="iframeAudio">
-          </iframe> -->
           <img src="<%= item.image.url %>" class="admin-home-card-img" alt="loading" >
 
           <div class="content-div">
@@ -54,12 +52,12 @@
       </div>
   <% } %>
 </div>
+<script src="/js/Notification.js"></script>
+<!-- <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script> -->
 
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
-
-<script>
+<!-- <script>
   const socket = io();
-  const currUser = <%-  JSON.stringify(currUser) %>;
+  const currUser = <  JSON.stringify(currUser) %>;
   let notificationDiv = document.getElementById('notificationPopup');
   let notificationMessage = document.getElementById('notificationMessage');
   // let audio = document.getElementById('audioTag');
@@ -100,4 +98,4 @@
         notificationDiv.style.display="none"
       }
   });
-</script>
+</script> -->
