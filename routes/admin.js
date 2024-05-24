@@ -1,6 +1,6 @@
 const express = require("express");
 const Listing = require("../models/listing.js");
-const MyOrders = require("../models/myorders.js");
+const MyOrders = require("../models/myorder.js");
 const User = require("../models/user.js");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
