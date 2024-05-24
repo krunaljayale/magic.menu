@@ -1,5 +1,6 @@
 <% layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/navbar.ejs") %>
+<%- include("../includes/masterFooter.ejs") %>
 <%- include("../includes/flash.ejs") %>
 
 <head>
@@ -19,7 +20,7 @@
                 <div class="card-body mt-2">
                 <h5 class="card-title text-primary"> <b>No Orders</b></h5>
                 <p class="card-text mt-3 text-primary"><i>You didn't make any order yet!</i> </p>
-                <!-- <button type="button" class="btn btn-secondary mt-3">Explore Menu</button> -->
+                <a href="/menu" class="btn btn-outline-primary">Explore Menu</a>
                 </div>
             </div>
         </div>

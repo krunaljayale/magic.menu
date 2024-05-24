@@ -3,7 +3,7 @@
 
 <nav class="navbar navbar-expand-lg admin-navbar sticky-top" >
   <div class="container-fluid ">
-    <a class="navbar-brand" href="/admin">Inspire</a>
+    <a class="navbar-brand" href="/admin">Magic Menu</a>
     <input type="checkbox" id="checkbox" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <label for="checkbox" class="toggle">
         <div class="bars" id="bar1"></div>
@@ -13,14 +13,38 @@
     <div class="collapse navbar-collapse " id="navbarNavAltMarkup" >
       <div class="navbar-nav ms-auto">
         <a class="nav-link active" aria-current="page" href="/admin">Dashboard</a>
-        <a href="/admin/new" class="nav-link admin-add-btn ">Add New Item</a>
-        <a class="nav-link active" aria-current="page" href="/logout">Log out</a>
-        <form class="navbar-search-form" role="search">
+        <a href="/admin/orders" class="nav-link active">All Orders</a>
+        <button class="navbar-profile-btn" id="navbar-profile-btn">
+          <i class="fa-solid fa-bars"></i>
+          <i class="fa-solid fa-user"></i>
+        </button>
+        <div class="navbar-popup" id="navbar-popup">
+          <a href="/admin/new" class="nav-link admin-pop-btns">Add Item</a>
+          <hr>
+          <!-- <a href="admin/profile" class="nav-link admin-pop-btns">Profile</a> -->
+          <a class="nav-link admin-pop-btns" href="/logout">Logout</a>
+        </div>
+        <!-- <form class="navbar-search-form" role="search">
           <input class="form-control" type="search" placeholder="Search" aria-label="Search">
           <button class="btn btn-outline-primary btn-search" type="submit">Search</button>
-        </form>
+        </form> -->
       </div>
     </div>
 
   </div>
 </nav>
+
+<script>
+  // Navbar //
+const navBarToggleBtn = document.getElementById("navbar-profile-btn");
+
+function clicked(){
+  let popup = document.getElementById("navbar-popup");
+  if(popup.style.display !== "block"){
+    popup.style.display="block"
+  }else{
+    popup.style.display="none"
+  }
+}
+navBarToggleBtn.addEventListener('click',clicked)
+</script>

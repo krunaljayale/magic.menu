@@ -1,0 +1,170 @@
+.masterDiv{
+    width: 100%;
+    padding: 0 2vw 5vw;
+    align-items: center;
+    justify-content: center;
+}
+.childDiv{
+    height: fit-content;
+    width: 100%;
+    justify-content: space-evenly;
+    align-items: center;
+    display: flex;
+    gap: 5rem;
+    margin: 10rem 0;
+}
+.heroDiv{
+    height: 100vh;
+    margin-top: 0;
+}
+.heroImageDiv{
+    animation: right-animation 1.5s;
+}
+.heroImage{
+    width: 35vw;
+    border-radius: 50%;
+    box-shadow:0px 5px 130px 5px #ee949b;
+    animation:rotate-animation 1.5s linear;
+}
+.textDiv{
+    width: 40vw;
+}
+
+.h1Text{
+    background: linear-gradient(to right, #f32170,#00DBDE, #cf23cf, #eedd44); 
+    -webkit-text-fill-color: transparent; 
+    -webkit-background-clip: text;
+    font-weight: 900;
+    font-size: 3vw;
+}
+.h3Text{
+    font-weight: 400;
+}
+.pText{
+    margin-top: 15%;
+}
+.reqBtn{
+    color: #fff;
+    font-weight: 600;
+    width:max-content !important;
+}
+.reqBtn2{
+    display: none;
+}
+
+.rootImage{
+    width: 17vw;
+    border-radius: 15px;
+}
+
+.qrImage{
+    width: 25vw;
+}
+
+.center{
+    margin: 0;
+    text-align: center;
+    font-weight: 900;
+    font-size: 20px;
+}
+.iconCrown{
+    color: #ff0000;
+}
+
+.portfolioImage{
+    width: 15vw;
+    margin-bottom: 2rem;
+}
+@media screen and (min-width: 1000px){
+    .pText{
+        font-size: 14px;
+    }
+    .portfolioImage{
+        width: 13vw;
+    }
+}
+
+@media screen and (min-width: 1600px){
+    .h1Text{
+        font-size: 50px;
+    }
+    .pText{
+        font-size: 16px;
+    }
+    .heroImage{
+        width: 570px;
+    }
+    .rootImage{
+        width: 250px;
+    }
+    .qrImage{
+        width: 400px;
+    }
+    .portfolioImage{
+        width: 225px;
+    }
+}
+
+
+
+
+@media screen and (max-width: 800px){
+    .childDiv{
+        display: block;
+        margin-top: 5rem;
+    }
+    .heroDiv{
+        margin: 0;
+        padding-top: 5rem;
+    }
+    .textDiv{
+        width: 100%;
+        text-align: center;
+    }
+    .h1Text{
+        font-size: 24px;
+    }
+    .h3Text{
+        font-size: 20px;
+    }
+    .pText{
+        margin-top: 5%;
+    }
+    .imageDiv{
+        display: block;
+        text-align: center;
+    }
+    .heroImage{
+        margin-top: 10%;
+        width:230px ;
+    }
+    .rootImage{
+        margin-top: 5%;
+        width: 200px;
+    }
+    .qrImage{
+        width: 250px;
+    }
+    .reqBtn1{ 
+        display: none;
+    }
+    .reqBtn2{
+        display:block;
+        margin: 5rem auto;
+    }
+} 
+
+@keyframes right-animation{
+    0% { margin-left: -100%; }
+    100% { margin-left: initial; }
+}
+
+@keyframes left-animation{
+    0% { margin-left: -100%; }
+    100% { margin-left: initial; }
+}
+@keyframes rotate-animation{
+    0%{transform:rotate(90deg);}
+    100%{transform: rotate(0deg);}
+}
+

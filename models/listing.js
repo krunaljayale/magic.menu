@@ -12,7 +12,8 @@ const listingSchema = new Schema({
     owner:{
         type:Schema.Types.ObjectId,
         ref:"User"
-    }
+    },
+    promote:String,
 });
 
 const Listing = mongoose.model("Listing", listingSchema);

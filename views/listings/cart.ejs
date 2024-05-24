@@ -1,5 +1,6 @@
 <%- layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/navbar.ejs") %>
+<%- include("../includes/masterFooter.ejs") %>
 <%- include("../includes/flash.ejs") %>
 <head>
     <title>Cart</title>
@@ -16,7 +17,7 @@
             <div class="card-body">
             <h5 class="card-title text-info"> <b> Oops! Cart is Empty</b></h5>
             <p class="card-text text-info"><i>You didn't have any item in your Cart!</i> </p>
-            <!-- <a href="/home" class="btn btn-outline-info">Explore Menu</a> -->
+            <a href="/menu" class="btn btn-outline-info">Explore Menu</a>
             </div>
         </div>
     </div>
@@ -46,7 +47,11 @@
                 </div >
                 
                 <div class="buttons-div">
-                    <input class="form-control  order-input"  type="number" name="qty" value="1" min="1">
+                    <!-- <div class="quantity-div">
+                        <button id="subtractBtn" class="subtract-btn" type="button" onclick="substraction();"><i class="fa-solid fa-minus"></i></button>
+                        <input class="form-control order-input qty-order-input" type="input" id="orderQuantity" name="qty" value="1" min="1" readonly>
+                        <button id="addBtn" class="addition-btn" type="button" onclick="addition();"><i class="fa-solid fa-plus"></i></button>
+                    </div> -->
                     <a href="/cart/<%= item._id %>/remove" class="btn cart-remove-btn">Remove</a>
                 </div>
             </div>
@@ -55,20 +60,46 @@
 
 <% } %>
 </div>
+<% if(items.length){ %>
+    <div class="orderBtnDiv">
+        <div class="detailsDiv">
+            <p class="totalItems"> Total items : <b><%= items.length %></b> </p>
+            <p class="totalValue"> Total price: <b id="price">&#8377;</b></p>
+        </div>
+        <form action="/cart" method="post"  class="needs-validation" novalidate>
+            <input type="text" name="customername" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required >
+            <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>"  name="created_at"  style="display: none;">
+            <button class="orderBtn btn btn-info">Order All</button>  
+        </form>
+        
+    </div>
+<% } %>
 
-<!-- <div class="master-home-btn-div">
-    <a id="masterHomeBtn" class="btn master-home-btn" >Home Page</a>
-</div> -->
 
 
-
-<!-- <script>
-    const hotelID = < JSON.stringify(hotelID) %> ;
-
-    let masterHomeBtn = document.getElementById('masterHomeBtn');
-    function homeFunction(){
-        masterHomeBtn.href = `/home?hotelID=${hotelID}`;
+<script>
+        // For order-quantity buttons
+        function addition(){
+        orderQuantity.value++;
     }
 
-    masterHomeBtn.addEventListener('click',homeFunction);
-</script> -->
+    function substraction(){
+        if(orderQuantity.value>1){
+            orderQuantity.value--;
+        }
+    }
+
+    let items = <%- JSON.stringify(items) %>;
+    if(items.length){
+        const cartValue = []; 
+        for(item of items){
+        cartValue.push(item.price)
+    }
+    let price = cartValue.reduce((accumulator, current) => accumulator + current);
+    let value = document.getElementById("price");
+    value.innerText = price;
+    }
+    
+    
+    
+</script>

@@ -32,6 +32,13 @@
             <div class="buttons-div">
               <a href="/admin/<%= item._id %>/edit" class="btn admin-edit-btn">Edit</a>
               <a href="/admin/<%= item._id %>/delete" class="btn admin-delete-btn">Delete</a>
+              <% if(item.promote === "Yes"){ %>
+                <a href="/admin/<%= item._id %>/demote" class="btn admin-promote-btn btn-danger">Demote</a>
+                <% } %>
+              <% if(item.promote != "Yes"){ %>
+                <a href="/admin/<%= item._id %>/promote" class="btn admin-promote-btn btn-primary">Promote</a>
+              <% } %>
+              
             </div>
           <% } %>
           

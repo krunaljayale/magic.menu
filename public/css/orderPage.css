@@ -98,7 +98,7 @@
 .addition-btn,
 .subtract-btn{
     width: 30%;
-    border-radius: 5px;
+    border-radius: 10px;
     border: 1px solid navy;
     font-size: 12px !important;
     font-weight: 900 !important;
@@ -108,7 +108,7 @@
     width: 48%;
     text-align: center !important;
     border: 1px solid navy !important;
-}
+}   
 
 .qty-button-div{
     display: flex;
@@ -140,7 +140,7 @@
     }
 }
 
-@media screen and (min-width:430px) {
+@media screen and (min-width:480px) {
     .item-name{
         font-size: 20px;
     }

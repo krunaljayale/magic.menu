@@ -1,0 +1,36 @@
+<head><link href="/css/masterFooter.css" rel="stylesheet"></head>
+
+<div class="masterDiv">
+    <a id="homeBtn" class="icon">
+        <i class="fa-solid fa-house"></i>
+        <p>Home</p>
+    </a>
+
+    
+    <a class="icon" href="/menu" >
+        <i class="fa-solid fa-utensils"></i>
+        <p>Menu</p>
+    </a>
+
+    <a class="icon" href="/cart">
+        <i class="fa-solid fa-cart-shopping"></i>
+        <p>Cart</p>
+    </a>
+
+    <a class="icon" href="/myorders">
+        <i class="fa-solid fa-truck"></i>
+        <p>Orders</p>
+    </a>
+</div>
+
+
+<script>
+    const hotelID = <%- JSON.stringify(hotelID) %>;
+
+    let masterHomeBtn = document.getElementById('homeBtn');
+    function homeFunction(){
+        masterHomeBtn.href = `/home?hotelID=${hotelID}`;
+    }
+
+    masterHomeBtn.addEventListener('click',homeFunction);
+</script>

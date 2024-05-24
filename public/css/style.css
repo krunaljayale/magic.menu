@@ -25,7 +25,7 @@ body{
 /* Footer */
 .footer{
     width: 100%;
-    position: absolute ;
+    /* position: absolute ; */
     bottom: 0;
 }
 .f-info{

@@ -10,6 +10,10 @@ const cartSchema = new Schema({
     },
     price:Number,
     customerId:String,
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    }
 });
 
 const Cart = mongoose.model("Cart", cartSchema);

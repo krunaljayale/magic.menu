@@ -1,5 +1,6 @@
 const express = require("express");
 const Listing = require("../models/listing.js");
+const MyOrders = require("../models/myorders.js");
 const User = require("../models/user.js");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
@@ -60,6 +61,44 @@ router.get("/:id/delete",isLoggedIn,
             res.redirect("/admin");
 }));
 
+// Admin Promote Route //
+router.get("/:id/promote", isLoggedIn,
+    wrapAsync(
+        async(req,res)=>{
+            let {id} = req.params;
+            let listing = await Listing.findById(id);
+            
+            if(listing.promote === "No"){
+                listing.promote="Yes";
+                await listing.save();
+                req.flash("flashSuccess", "Item Promoted Successfully.");  
+            }else{
+                req.flash("flashError", "Item was already promoted.");
+            }
+            res.redirect(`/admin/${id}/show`);
+        }
+    )
+)
+
+// Admin Demote Route // 
+router.get("/:id/demote", isLoggedIn,
+    wrapAsync(
+        async(req,res)=>{
+            let {id} = req.params;
+            let listing = await Listing.findById(id);
+            
+            if(listing.promote === "Yes"){
+                listing.promote="No";
+                await listing.save();
+                req.flash("flashSuccess", "Item removed from promotion successfully.");  
+            }else{
+                req.flash("flashError", "Item was already demoted.");
+            }
+            res.redirect(`/admin/${id}/show`);
+        }
+    )
+)
+
 // Admin New Route //
 router.get("/new",isLoggedIn,
     (req,res)=>{
@@ -80,7 +119,15 @@ async (req,res,next)=>{
     res.redirect("/admin");
 }));
 
-router.get("/orders", (req,res)=> {
-    res.send("Will take orders soon...")
+router.get("/orders", async(req,res)=> {
+    let owner = res.locals.currUser;
+    const orders = await MyOrders.find({});
+    res.render("listings/allOrders.ejs", {orders});
 })
+
+// router.get("/profile", (req,res)=>{
+//     res.render("listings/profile.ejs")
+// })
+
+
 module.exports = router;

@@ -93,14 +93,13 @@
 .buttons-div{
     width: 100%;
     display: flex;
-    justify-content: center;
-    gap:1rem;
+    justify-content: space-evenly;
 }
 
 .admin-edit-btn{
     background-color: #F58634 !important;
     border-radius: 10px !important;
-    color:#000 !important;
+    /* color:#000 !important; */
     font-size: 4vw;
     font-weight: 800 !important;
 }
@@ -112,7 +111,12 @@
     font-size: 4vw;
     font-weight: 800 !important;
 }
-
+.admin-promote-btn{
+    border-radius: 10px !important;
+    /* color:#fff !important; */
+    font-size: 4vw;
+    font-weight: 800 !important;
+}
 @media screen and (min-width:430px) {
     .item-name
     ,.item-price{
@@ -123,7 +127,8 @@
     }
     
     .admin-delete-btn,
-    .admin-edit-btn{
+    .admin-edit-btn,
+    .admin-promote-btn{
         font-size: 16px !important;
     }
 }

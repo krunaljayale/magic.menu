@@ -17,6 +17,7 @@
     transition-duration: .5s;
     /* animation: right-animation 1.5s; */
   }
+
   
   @media screen and (min-width: 992px) {
     .toggle{
@@ -78,10 +79,12 @@
 .navbar-brand,.navbar-toggler,.navbar-nav a{
   margin-right:2rem !important;
   /* color:#12296c !important; */
-  color: #fff !important;
+  /* color: #fff !important; */
   font-weight: 600 !important;
 }
-
+/* .navbar-nav{
+  align-items: center;
+} */
 .admin-add-btn{
   text-align: center !important;
 }
@@ -97,6 +100,39 @@
   gap: 1rem;
 }
 
+.navbar-profile-btn{
+  width: 80px;
+  height: 48px;
+  border: 1px solid #00000029;
+  background-color: #fff;
+  border-radius: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  gap:1rem;
+  margin: 0 auto;
+}
+
+.navbar-popup{
+  display: none;
+  padding: 1rem ;
+  margin:2.5rem auto;
+  right: 1rem;
+  text-align: start;
+  position:absolute;
+  width: 15rem;
+  border-radius: 20px;
+  border: 1px solid #00000020;
+  background-color: #fff;
+  color: #000 !important;
+  box-shadow: 0px 1px 1px 1.2px rgba(0,0,0,0.1);
+}
+
+.admin-pop-btns:hover{
+  background-color: #00000009;
+  border-radius: 20px;
+}
 @keyframes left-animation{
   0% { margin-left: -100%; }
   100% { margin-left: initial; }

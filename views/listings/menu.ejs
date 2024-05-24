@@ -1,0 +1,40 @@
+<%- layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/navbar.ejs") %>
+<%- include("../includes/masterFooter.ejs") %>
+<%- include("../includes/flash.ejs") %>
+
+<head>
+    <link rel="stylesheet" href="/css/menuPage.css">
+  </head>
+
+
+<div class="master-div">
+    <% for(item of items){ %>  
+        <div class="menu-card">
+
+          <div class="img-div"><img src="<%= item.image.url %>" alt="" class="menu-card-img"></div>
+
+          <div class="content-div">
+            
+              <div class="name-price-div">
+                <div class="item-name-div"><p class="card-text item-name"><%= item.name %></p></div> 
+                <div class="item-price-div"><p class="card-text item-price">&#8377; <%= item.price %></p></div>
+              </div>
+            
+              <div class="item-info-div">
+                <p class=" item-info"> <%= item.info %> </p> 
+              </div>
+              
+              <div class="buttons-div">
+                  <a class="btn menu-order-btn" href="/orders/<%= item._id %>">Order</a>
+
+                  <form method="post" action="/cart/<%= item._id %>">
+                    <button class="btn menu-cart-btn"><i class="fa-solid fa-cart-shopping"></i></button>
+                  </form>
+              </div>
+              
+            </div>
+
+        </div>
+    <% } %>
+  </div>

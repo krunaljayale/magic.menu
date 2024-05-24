@@ -10,9 +10,9 @@
 <div class="admin-page-title"><h1><b> Welcome to <%= hotel.hotelname %> </b></h1></div>
 <button class="btn btn-primary" onclick="main();">Get Notified</button>
 <h3 class="admin-page-title-id" id="idAdmin">Your Owner ID is :- <%= currUser._id %></h3>
-<div class="notification-popup" id="notificationPopup">
+<!-- <div class="notification-popup" id="notificationPopup">
   <p class="notification-message" id="notificationMessage"></p>
-</div>
+</div> -->
 
 
 <% if( !items.length ){ %>
@@ -34,25 +34,33 @@
   <% for(let item of items){ %>
     
       <div class=" admin-home-card">
+        <div class="admin-home-card-img-div">
+          <% if(item.promote === "Yes"){ %>
+            <p class="star"><i class="fa-solid fa-star"></i></p>
+          <% } %>
           <img src="<%= item.image.url %>" class="admin-home-card-img" alt="loading" >
-
-          <div class="content-div">
-            <div class="name-price-div">
-              <div class="item-name-div"><p class="card-text item-name"><%=item.name %></p></div>
-              <div class="item-price-div"><p class="card-text item-price"> &#8377; <%= item.price %></p></div>
-            </div>
-
-            <div class="item-info-div"><p class="card-text item-info"><%= item.info %></p></div>
-            
-            <div class="buttons-div">
-              <a href="/admin/<%= item._id %>/show" class="btn admin-show-btn">Show</a>
-            </div>
-
+        </div>
+        <div class="content-div">
+          <div class="name-price-div">
+            <div class="item-name-div"><p class="card-text item-name"><%=item.name %></p></div>
+            <div class="item-price-div"><p class="card-text item-price"> &#8377; <%= item.price %></p></div>
           </div>
+
+          <div class="item-info-div"><p class="card-text item-info"><%= item.info %></p></div>
+          
+          <div class="buttons-div">
+            <a href="/admin/<%= item._id %>/show" class="btn admin-show-btn">Show</a>
+          </div>
+
+        </div>
       </div>
   <% } %>
 </div>
+
+
 <script src="/js/Notification.js"></script>
+
+
 <!-- <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script> -->
 
 <!-- <script>

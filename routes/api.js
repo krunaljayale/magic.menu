@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Cart = require("../models/cart.js");
-const MyOrders = require("../models/myOrders.js");
+const MyOrders = require("../models/myorders.js");
 const Listing = require("../models/listing.js");
 const User = require("../models/user.js");
 const Subscription = require("../models/subscription.js");
@@ -29,30 +29,46 @@ router.post("/service",async (req,res)=>{
 
 
 // Root Route //
+router.get("/", (req,res)=>{
+    res.render("listings/root.ejs");
+})
+
 // Home Route //
+
     router.get("/home", wrapAsync(
     async (req,res)=>{
         let {hotelID} = req.query;
+        const specialItems = await Listing.find({owner:hotelID , promote:"Yes"}).limit(3);
+        const recommendItems = await Listing.find({owner:hotelID}).limit(2);
+        const hotel = await User.findById(hotelID);
+        const banner = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP2qETnf11rg8zD1GeMbyugTUR4UqgIku15WjWOP4mjA&s";
+        res.cookie("hotelID", hotelID);
+        res.render("listings/home.ejs", {specialItems, hotel, hotelID, banner,recommendItems})
+    }));
+
+// Menu Route //
+    router.get("/menu",async (req,res)=>{
+        let hotelID = req.cookies.hotelID;
         const items = await Listing.find({owner:hotelID});
         const hotel = await User.findById(hotelID);
-        res.cookie("hotelID", hotelID);
-        res.render("listings/home.ejs", {items, hotel});
-    }));
+        res.render("listings/menu.ejs", {items, hotel,hotelID});
+    });
+    
     
     // Order Route //
     router.get("/orders/:id", wrapAsync(
     async(req,res)=>{
         let { id } = req.params;
+        const hotelID = req.cookies.hotelID;
         const item = await Listing.findById(id);
         if(req.cookies.customerName){
             let customerName = req.cookies.customerName;
-            res.render("listings/order.ejs",{item, customerName});
+            res.render("listings/order.ejs",{item, customerName,hotelID});
         }else{
-           res.render("listings/order.ejs",{item}); 
+           res.render("listings/order.ejs",{item,hotelID}); 
         }
         
     }));
-    
     router.post("/orders/:id",
     wrapAsync(
     async (req,res)=>{
@@ -73,8 +89,9 @@ router.post("/service",async (req,res)=>{
     router.get("/myorders",
     wrapAsync(
     async(req,res)=>{
+        const hotelID = req.cookies.hotelID;
         const items  = (await MyOrders.find({customerId:res.locals.sessionId})).reverse();
-        res.render("listings/myorders.ejs",{items}) ;
+        res.render("listings/myorders.ejs",{items,hotelID}) ;
     }));
     
     
@@ -105,19 +122,24 @@ router.post("/service",async (req,res)=>{
     router.post("/cart/:id", wrapAsync(
     async (req,res)=>{
         let { id } = req.params;
-        let {name,info,image,price} = await Listing.findById(id);
-        const newCart = new Cart({name,info,image,price});
+        let {name,info,image,price,owner} = await Listing.findById(id);
+        const newCart = new Cart({name,info,image,price,owner});
         newCart.customerId = res.locals.sessionId;
         await newCart.save();
         req.flash("flashSuccess", "Item added to Cart");
-        let hotelID = req.cookies.hotelID;
-        res.redirect(`/home?hotelID=${hotelID}`);
+        res.redirect("/menu");
     }));
     
     router.get("/cart", wrapAsync(
     async(req,res)=>{
-        const items =await Cart.find({customerId:res.locals.sessionId});
-        res.render("listings/cart.ejs" ,{items});
+        const hotelID = req.cookies.hotelID;
+        const items = await Cart.find({customerId:res.locals.sessionId});
+        if(req.cookies.customerName){
+            let customerName = req.cookies.customerName;
+            res.render("listings/cart.ejs" ,{items,hotelID,customerName});
+        }else{
+        res.render("listings/cart.ejs" ,{items,hotelID});
+        }
     }));
     
     
@@ -129,14 +151,32 @@ router.post("/service",async (req,res)=>{
         res.redirect("/cart");
     }));
 
-        //     app.post("/cartOrder", async (req,res)=> {
-        //     let { personName,name,img,price, qty,created_at} = req.body;
-        //     let newMyOrders = new MyOrders({personName,name,img,price,qty,created_at});
-        //     await newMyOrders.save();
-        //     console.log( `${personName} ordered ${qty} ${name} on ${created_at}`);
-        //     await Cart.deleteMany({});
-        //     res.redirect("/");
-        // });
+    router.post("/cart", async (req,res)=> {
+    const items = await Cart.find({customerId:res.locals.sessionId});
+    let { customername,created_at} = req.body;
+    for (let item of items){
+        let name = item.name;
+        image = item.image;
+        price = item.price;
+        owner = item.owner;
+        qty = 1;
+        const newMyOrders = new MyOrders({customername,name,image,qty,owner,price,created_at});
+        newMyOrders.customerId = res.locals.sessionId;
+        await newMyOrders.save();
+    }
+    let endPoint = await Subscription.find({userID:owner});
+
+    if (items.length === 1){
+        for(let item of items){
+            webPush.sendNotification(endPoint[0], `${customername} ordered 1 ${item.name} on ${created_at}` );
+        }
+    }else{
+        webPush.sendNotification(endPoint[0], `${customername} ordered bulk order on ${created_at}` );
+    }
+    res.cookie("customerName", customername);
+    await Cart.deleteMany({customerId:res.locals.sessionId});
+    res.redirect("/cart");
+});
         
 
-    module.exports = router;
+module.exports = router;
