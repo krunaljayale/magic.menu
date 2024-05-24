@@ -30,11 +30,11 @@ const io = socketIo(server); // you can change the cors to your own domain
 
 
 
-// const dbUrl = process.env.ATLASDB_URL;
-const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
+const dbUrl = process.env.ATLASDB_URL;
+// const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
 
 async function main(){
-    mongoose.connect(MONGO_URL);
+    mongoose.connect(dbUrl);
 }
 
 
@@ -52,7 +52,7 @@ app.use(cors());
 
 
 const store = MongoStore.create({
-    mongoUrl:MONGO_URL,
+    mongoUrl:dbUrl,
     crypto: {
         secret: process.env.SECRET,
       },
