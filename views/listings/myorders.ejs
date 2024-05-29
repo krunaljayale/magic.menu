@@ -6,6 +6,7 @@
 <head>
     <title>Orders</title>
     <link rel="stylesheet" href="/css/myorderPage.css">
+    <meta http-equiv="refresh" content="15">
 </head>
 
 
@@ -48,64 +49,21 @@
                     <p class="order-customer">By:- <%= item.customername %></p>
                     <p class="order-time">On <%= item.created_at %></p>
                 </div>
-                
+                <% if(item.status != "Confirmed"){ %>
                 <div class="buttons-div">
                     <form method="post" id="cancelForm" action="/myorders/<%= item._id %>/cancel?_method=DELETE">
-                        <input type="text" id="orderCustomer" value="<%= item.customername%>" style="display: none;">
-                        <input type="text" id="orderName" value="<%= item.name%>" style="display: none;">
-                        <input type="text" id="orderQuantity" value="<%= item.qty%>" style="display: none;">
-                        <input type="text" id="orderOwner" value="<%= item.owner%>" style="display: none;">
                         <button class="btn myorder-cancel-btn" id="<%= item._id %>">Cancel</button>
                     </form>
                 </div>
+                <% } %>
+
+                <% if(item.status === "Confirmed"){ %> 
+                    <div class="buttons-div">
+                       <b><p class="card-text" style="color: green;">Order is Confirmed <i class="fa-solid fa-circle-check"></i></p></b>
+                    </div>
+                <% } %>
             </div>
         </div>
 
     <% } %>
 </div>
-
-
-<!-- <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script> -->
-<script>
-    // const socket = io();
-    // const items = < JSON.stringify(items) %>;
-    
-    //  for(item of items){
-    //     const cancelBtn = document.getElementById(`${item._id}`)
-
-    //     let orderTimeHr = item.created_at.toString().split(" ").slice(3,4).join(" ").slice(0,2);
-    //     let currTimeHr = Date().split(" ").slice(4,5).join(" ").slice(0,2);
-    //     let orderTimeMin = item.created_at.toString().split(" ").slice(3,4).join(" ").slice(3,5);
-    //     let currTimeMin = Date().split(" ").slice(4,5).join(" ").slice(3,5);
-
-    //     let personName = item.personname;
-    //     let orderQuantity = item.qty;
-    //     let itemName = item.name;
-    //     let owner = item.owner;
-
-    //     if((currTimeHr === orderTimeHr && currTimeMin-orderTimeMin >= 2) || (currTimeHr != orderTimeHr)){
-    //         cancelBtn.style.display="none";
-    //     }else{
-    //         cancelBtn.style.display="inline-block";
-    //     } 
-    // }
-    
-    // const cancelBtn = document.getElementById('cancelBtn');
-    // cancelBtn.addEventListener('click', ()=>{
-    //     socket.emit("cancelOrder", {message:"hehe"})
-    // });
-
-    // let cancelForm = document.getElementById('cancelForm');
-    // let orderCustomer = document.getElementById('orderCustomer');
-    // let orderName = document.getElementById('orderName');
-    // let orderQuantity = document.getElementById('orderQuantity');
-    // let orderOwner = document.getElementById('orderOwner')
-    
-
-    // cancelForm.addEventListener('submit', event => {    
-    //     socket.emit("cancelOrder", {message:`${orderCustomer.value} cancelled order of ${orderQuantity.value} ${orderName.value} just now `, owner:orderOwner.value});
-    // });
-    
-
-    
-</script>

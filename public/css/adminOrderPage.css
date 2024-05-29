@@ -1,14 +1,19 @@
+h3,h5{
+    margin-top:1rem;
+    text-align: center;
+}
+
 .master-div{
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start !important;
     display: flex;
+    gap: 1.5rem;
     flex-wrap: wrap;
-    padding-bottom: 2rem;
+    padding: 0 2rem 2rem ;
 }
 
 .admin-home-card{
     border-radius: 25px;
-    margin: 2rem auto 0 auto;
     display:block ;
     width: 17.75rem ;
     height: 25.2rem;
@@ -82,9 +87,6 @@
     height: fit-content;
     justify-content: center;
 }
-
-.admin-show-btn{
-    color:#fff !important;
-    background-color: #fc8019 !important;
+.admin-confirm-btn{
     font-weight: 800 !important;
 }

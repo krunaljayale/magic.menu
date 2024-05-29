@@ -13,6 +13,7 @@ const MyOrdersSchema = new Schema({
     owner:String,
     created_at :String,
     customerId:String,
+    status:String
 });
 
 const MyOrders = mongoose.model("MyOrders", MyOrdersSchema);

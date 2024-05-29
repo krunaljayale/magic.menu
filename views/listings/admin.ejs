@@ -9,7 +9,6 @@
 
 <div class="admin-page-title"><h1><b> Welcome to <%= hotel.hotelname %> </b></h1></div>
 <button class="btn btn-primary" onclick="main();">Get Notified</button>
-<h3 class="admin-page-title-id" id="idAdmin">Your Owner ID is :- <%= currUser._id %></h3>
 <!-- <div class="notification-popup" id="notificationPopup">
   <p class="notification-message" id="notificationMessage"></p>
 </div> -->
@@ -59,51 +58,3 @@
 
 
 <script src="/js/Notification.js"></script>
-
-
-<!-- <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script> -->
-
-<!-- <script>
-  const socket = io();
-  const currUser = <  JSON.stringify(currUser) %>;
-  let notificationDiv = document.getElementById('notificationPopup');
-  let notificationMessage = document.getElementById('notificationMessage');
-  // let audio = document.getElementById('audioTag');
-  // let notifyAudio = document.getElementById('iframeAudio');
-
-
-
-  // function playAudio(){
-  //   audio.play();
-  // }
-
-  socket.on("orderNotification", (data)=>{
-      // audio.play();
-      if(data.owner === currUser._id){
-        setTimeout(()=>{
-          notificationDiv.style.display="none";
-          notificationMessage.innerHTML=" ";
-        },5000);
-        notificationDiv.style.display="block";
-        notificationDiv.style.backgroundColor="black";
-        notificationMessage.innerHTML=data.message;
-      }else{
-        notificationDiv.style.display="none"
-      }
-  });
-
-  socket.on("cancelNotification", (data)=>{
-      // audio.play();
-      if(data.owner === currUser._id){
-        setTimeout(()=>{
-          notificationDiv.style.display="none";
-          notificationMessage.innerHTML=" ";
-        },5000);
-        notificationDiv.style.display="block";
-        notificationDiv.style.backgroundColor="red";
-        notificationMessage.innerHTML=data.message;
-      }else{
-        notificationDiv.style.display="none"
-      }
-  });
-</script> -->

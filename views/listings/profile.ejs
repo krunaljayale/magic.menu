@@ -1,3 +1,31 @@
 <% layout("/layouts/boilerplate.ejs") %>
-<%- include("../includes/navbar.ejs") %>
+<%- include("../includes/adminNav.ejs") %>
 <%- include("../includes/flash.ejs") %>
+
+<div class="row mt-3" >
+    <div class="col-8 offset-2 mb-3">
+        <h1>Profile</h1>
+        <h3 class="admin-page-title-id" id="idAdmin">Your Owner ID is :- <%= currUser._id %></h3>
+        <form method="POST" action="/admin/profile/edit?_method=PUT"  class="needs-validation" novalidate>
+
+            <div class="mb-3">
+                <label for="name" class="form-label">User Name</label>
+                <input name="user[username]" value="<%= user.username%>" type="text" class="form-control" id="name" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">Hotel Name</label>
+                <input name="user[hotelname]" class="form-control" id="description" value="<%= user.hotelname %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input name="user[email]" class="form-control" id="description" value="<%= user.email %>" required>
+            </div>
+            
+            <button class="btn btn-dark edit-btn">Edit</button>
+        </form>
+    </div>
+</div>
+
+<!-- < include("../includes/footer.ejs") %> -->

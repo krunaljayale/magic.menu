@@ -76,8 +76,10 @@ router.get("/", (req,res)=>{
         let {name, price,image,owner} = await Listing.findById(id);
         let { customername,qty,created_at} = req.body;
         res.cookie("customerName", customername);
+        console.log(created_at);
         let newMyOrders = new MyOrders({customername,name,image,price,qty,owner,created_at});
         newMyOrders.customerId = res.locals.sessionId;
+        newMyOrders.status ="Waiting";
         await newMyOrders.save();
         let endPoint = await Subscription.find({userID:owner});
         webPush.sendNotification(endPoint[0], `${customername} ordered ${qty} ${name} just now` )
@@ -98,23 +100,22 @@ router.get("/", (req,res)=>{
     router.delete("/myorders/:id/cancel",wrapAsync(
     async(req,res)=>{
         let { id } = req.params;
-        let {created_at, owner,customername,qty,name} =  await MyOrders.findById(id);
+        let order =  await MyOrders.findById(id);
+        let owner = order.owner;
+        let customername = order.customername;
+        let name = order.name;
+        let qty = order.qty;
 
-        let orderTimeHr = created_at.toString().split(" ").slice(3,4).join(" ").slice(0,2);
-        let currTimeHr = Date().split(" ").slice(4,5).join(" ").slice(0,2);
-        let orderTimeMin = created_at.toString().split(" ").slice(3,4).join(" ").slice(3,5);
-        let currTimeMin = Date().split(" ").slice(4,5).join(" ").slice(3,5);
-
-            if((currTimeHr === orderTimeHr && currTimeMin-orderTimeMin >= 2) || (currTimeHr != orderTimeHr)){
-                req.flash("flashError", "Sorry orders can not be cancelled after 2 minutes of placing");
-                res.redirect("/myorders")
-            }else{
-                await MyOrders.findByIdAndDelete(id);
-                let endPoint = await Subscription.find({userID:owner});
-                webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` )
-                req.flash("flashSuccess", "Order Cancelled");
-                res.redirect("/myorders");
-            };
+        if(order.status === "Confirmed"){
+            req.flash("flashError", "Sorry order is confirmed can not be cancelled");
+            res.redirect("/myorders")
+        }else{
+            await MyOrders.findByIdAndDelete(id);
+            let endPoint = await Subscription.find({userID:owner});
+            webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` )
+            req.flash("flashSuccess", "Order Cancelled");
+            res.redirect("/myorders");
+        };
     }));
     
     //Cart Route //
@@ -132,6 +133,13 @@ router.get("/", (req,res)=>{
     
     router.get("/cart", wrapAsync(
     async(req,res)=>{
+        // For testing purpose //
+        let listings = await Cart.find();
+        for(listing of listings){
+            if(listing.created_at != new Date().toString().split(" ").slice(2,3).join(" ")){
+                await Cart.findByIdAndDelete(listing._id);
+            }
+        }
         const hotelID = req.cookies.hotelID;
         const items = await Cart.find({customerId:res.locals.sessionId});
         if(req.cookies.customerName){
@@ -162,6 +170,7 @@ router.get("/", (req,res)=>{
         qty = 1;
         const newMyOrders = new MyOrders({customername,name,image,qty,owner,price,created_at});
         newMyOrders.customerId = res.locals.sessionId;
+        newMyOrders.status ="Waiting";
         await newMyOrders.save();
     }
     let endPoint = await Subscription.find({userID:owner});

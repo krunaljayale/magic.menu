@@ -4,25 +4,60 @@
 
 <head>
     <link rel="stylesheet" href="/css/adminOrderPage.css">
+    <meta http-equiv="refresh" content="15">
 </head>
 
-<% if( !orders.length ){ %>
+<% if( !confirmOrders.length ){ %>
     
     <div class="row mt-3 " style= "justify-content:center;">
         <div class="card mt-3 " style="width: 20rem; border: none;">
             <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
             <div class="card-body mt-2">
-                <h5 class="card-title text-primary"> <b>No order to serve</b></h5>
+                <h5 class="card-title text-primary"> <b>No order to confirm</b></h5>
             </div>
         </div>
     </div>
   <% } %>
   
-  
+<% if(confirmOrders.length) { %>
+  <h5>Orders to confirm</h5>
+  <div class="master-div" id="masterDiv">
+    <% for(let order of confirmOrders){ %>
+      
+        <div class=" admin-home-card">
+
+          <div class="admin-home-card-img-div">
+            <img src="<%= order.image.url %>" class="admin-home-card-img" alt="loading" >
+          </div>
+
+          <div class="content-div">
+            
+            <div class="name-price-div">
+              <div class="item-name-div"><p class="card-text item-name"><%=order.name %></p></div>
+              <div class="item-price-div"><p class="card-text item-price"> &#8377; <%= order.price %>/</p></div>
+            </div>
+
+            <div class="customername-qty-div">
+                <div class="item-customername-div"><p class="card-text item-info">Order by :- <%= order.customername %></p></div>
+                <div class="item-qty-div"><p class="card-text item-qty">Qty:- <%=order.qty %></p></div>
+            </div>
+
+            <div class="buttons-div">
+              <a href="/admin/<%= order._id %>/confirm" class="btn btn-info admin-confirm-btn">Confirm</a>
+            </div>
+
+          </div>
+        </div>
+      <% } %>
+    </div>
+<% } %>
+
+
+<% if(allOrders.length) { %>
+  <h3>All Orders</h3> <h5>Total Order Number : <%= allOrders.length %></h5>
   <div class="master-div" id="masterDiv">
     
-    <% for(let order of orders){ %>
-      
+    <% for(let order of allOrders){ %>
         <div class=" admin-home-card">
           <div class="admin-home-card-img-div">
             <img src="<%= order.image.url %>" class="admin-home-card-img" alt="loading" >
@@ -35,12 +70,13 @@
             <div class="customername-qty-div">
                 <div class="item-customername-div"><p class="card-text item-info">Order by :- <%= order.customername %></p></div>
                 <div class="item-qty-div"><p class="card-text item-qty">Qty:- <%=order.qty %></p></div>
+                <p>On : <%= order.created_at %></p>
             </div>
             <div class="buttons-div">
-              <a href="/admin/<%= order._id %>/show" class="btn admin-show-btn">Show</a>
+              <p class="card-text" >Order is confirmed </p>
             </div>
-  
           </div>
         </div>
     <% } %>
   </div>
+<% } %>

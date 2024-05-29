@@ -3,22 +3,24 @@ const initData = require("./data.js");
 const Listing = require ("../models/listing.js");
 const User = require("../models/user.js");
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
+// const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
+const dbUrl = "mongodb+srv://buisnessteamtop5:a2axeqa7px@magicmenu.iatnpxk.mongodb.net/?retryWrites=true&w=majority&appName=Magicmenu";
 
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(dbUrl);
 };
 
 main().then(()=>{
     console.log("connected to DB");
 }).catch((err)=>{
     console.log("Some error in DB");
+    console.log(err)
 })
 
 const initDB = async ()=>{
-    await Listing.deleteMany({});
+    // await Listing.deleteMany({});
     initData.data = initData.data.map((obj) =>(
-        {...obj, owner:"66030c1767710fa99b3ef911",promote:"No"}
+        {...obj, owner:"665754127dcae604dcde76cf",promote:"No"}
     ));
     await Listing.insertMany(initData.data);
 

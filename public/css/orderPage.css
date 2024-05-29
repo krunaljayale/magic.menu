@@ -10,9 +10,13 @@
 .master-div{
     align-items: center;
     justify-content: center;
-    display: flex;
+    display: block;
+    text-align: center;
 }
-
+.orderNote{
+    color: rgb(98, 0, 255);
+    margin-top: 2rem;
+}
 .order-card{
     border-radius: 25px;
     margin: 2rem auto 0 auto;
@@ -136,6 +140,9 @@
         display: none;
     }
     .order-card{
+        display: none;
+    }
+    .orderNote{
         display: none;
     }
 }

@@ -10,6 +10,10 @@ const cartSchema = new Schema({
     },
     price:Number,
     customerId:String,
+    created_at:{
+        type:Number,
+        default:new Date().toString().split(" ").slice(2,3).join(" "),
+    },
     owner:{
         type:Schema.Types.ObjectId,
         ref:"User"

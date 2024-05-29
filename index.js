@@ -22,14 +22,6 @@ const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
 
-
-const { createServer } = require("http"); // you can use https as well
-const socketIo = require("socket.io");
-const server = createServer(app);
-const io = socketIo(server); // you can change the cors to your own domain
-
-
-
 const dbUrl = process.env.ATLASDB_URL;
 // const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
 
@@ -124,26 +116,8 @@ app.use((err,req,res,next)=> {
     res.status(statusCode).render("error.ejs", {err});
 });
 
+// Server //
 
-io.on("connection", (socket)=>{
-
-socket.on("clientOrder",(data)=>{
-    // console.log(data.message);
-    io.emit("orderNotification",data);
-});
-
-socket.on("cancelOrder",(data)=>{
-    // console.log(data)
-    io.emit("cancelNotification",data);
-});
-
-socket.on('disconnect', ()=>{});
-  
-});
-
-
-// Server //]
-
-server.listen(3000,()=>{
+app.listen(3000,()=>{
     console.log("SERVER is ON");
 });
