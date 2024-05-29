@@ -14,7 +14,7 @@ const urlBase64ToUint8Array = base64String =>{
 }
 
 const saveSubscription = async (subscription) =>{
-    const response = await fetch('http://localhost:3000/service', {
+    const response = await fetch('https://magic-menu.onrender.com/service', {
         method:'post',
         headers:{'Content-type':"application/json"},
         body: JSON.stringify(subscription)
