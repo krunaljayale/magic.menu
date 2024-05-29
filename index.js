@@ -21,9 +21,12 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> dc109ffea56fa37862f029d0878a6b7638c292d7
 const dbUrl = process.env.ATLASDB_URL;
 // const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
 
@@ -119,6 +122,11 @@ app.use((err,req,res,next)=> {
 });
 
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> dc109ffea56fa37862f029d0878a6b7638c292d7
 
 // Server //]
 
