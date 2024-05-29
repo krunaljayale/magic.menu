@@ -20,7 +20,7 @@ main().then(()=>{
 const initDB = async ()=>{
     // await Listing.deleteMany({});
     initData.data = initData.data.map((obj) =>(
-        {...obj, owner:"665754127dcae604dcde76cf",promote:"No"}
+        {...obj, owner:"66576292cc82fafaf5ba4182",promote:"No"}
     ));
     await Listing.insertMany(initData.data);
 
