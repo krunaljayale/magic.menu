@@ -9,7 +9,7 @@ if(!("Notification" in window)){
 }
 
 const registerSW = async ()=>{
-    const registration = await navigator.serviceWorker.register("/js/ServiceWorker.js");
+    const registration = await navigator.serviceWorker.register("/ServiceWorker.js");
     return registration;
 }
 
