@@ -23,6 +23,7 @@ router.post("/service",async (req,res)=>{
     let subscription = req.body;
     let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
+    console.log(newSubscription);
     await newSubscription.save();
     res.json({status: "Success", message:""})
 });
