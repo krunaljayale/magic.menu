@@ -54,8 +54,10 @@ router.get("/:id/edit",isLoggedIn,
             const item = await Listing.findById(id);
             res.render("listings/edit.ejs",{item});
 }));
+
+
 // Update Route //
-router.put("/:id/edit" ,isLoggedIn
+router.put("/:id/edit" ,isLoggedIn, upload.single('image')
 , wrapAsync(
 async (req,res)=>{
     const { id } = req.params;

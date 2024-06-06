@@ -99,15 +99,15 @@
 .admin-edit-btn{
     background-color: #F58634 !important;
     border-radius: 10px !important;
-    /* color:#000 !important; */
+    color:#fff !important;
     font-size: 4vw;
     font-weight: 800 !important;
 }
 
 .admin-delete-btn{
-    background-color: #FFCC29 !important;
+    background-color: red !important;
     border-radius: 10px !important;
-    color:#000 !important;
+    color:#fff !important;
     font-size: 4vw;
     font-weight: 800 !important;
 }
