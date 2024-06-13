@@ -76,7 +76,6 @@ router.get("/", (req,res)=>{
         let {name, price,image,owner} = await Listing.findById(id);
         let { customername,qty,created_at} = req.body;
         res.cookie("customerName", customername);
-        console.log(created_at);
         let newMyOrders = new MyOrders({customername,name,image,price,qty,owner,created_at});
         newMyOrders.customerId = res.locals.sessionId;
         newMyOrders.status ="Waiting";
@@ -112,7 +111,7 @@ router.get("/", (req,res)=>{
         }else{
             await MyOrders.findByIdAndDelete(id);
             let endPoint = await Subscription.find({userID:owner});
-            webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` )
+            await webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` )
             req.flash("flashSuccess", "Order Cancelled");
             res.redirect("/myorders");
         };

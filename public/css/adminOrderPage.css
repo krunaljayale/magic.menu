@@ -2,7 +2,9 @@ h3,h5{
     margin-top:1rem;
     text-align: center;
 }
-
+.notify-div,.card{
+    max-width: 20rem !important;
+}
 .master-div{
     align-items: center;
     justify-content: flex-start !important;

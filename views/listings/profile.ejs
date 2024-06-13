@@ -6,6 +6,7 @@
     <div class="col-8 offset-2 mb-3">
         <h1>Profile</h1>
         <h3 class="admin-page-title-id" id="idAdmin">Your Owner ID is :- <%= currUser._id %></h3>
+        <button class="btn btn-primary" onclick="main();">Get Notified</button>
         <form method="POST" action="/admin/profile/edit?_method=PUT"  class="needs-validation" novalidate>
 
             <div class="mb-3">
@@ -27,5 +28,5 @@
         </form>
     </div>
 </div>
-
+<script src="/js/Notification.js"></script>
 <!-- < include("../includes/footer.ejs") %> -->

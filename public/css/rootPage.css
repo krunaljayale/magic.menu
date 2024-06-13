@@ -31,11 +31,14 @@
 }
 
 .h1Text{
-    background: linear-gradient(to right, #f32170,#00DBDE, #cf23cf, #eedd44); 
+    background: linear-gradient(250deg, #f32170,#eedd44, #cf23cf,#00DBDE ); 
     -webkit-text-fill-color: transparent; 
     -webkit-background-clip: text;
     font-weight: 900;
     font-size: 3vw;
+    font-family: "Ubuntu", sans-serif;
+    font-weight: 700;
+    font-style: normal;
 }
 .h3Text{
     font-weight: 400;
