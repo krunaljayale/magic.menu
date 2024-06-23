@@ -147,21 +147,25 @@ async (req,res,next)=>{
     res.redirect("/admin");
 }));
 
-router.get("/orders", async(req,res)=> {
-    let owner = res.locals.currUser._id;
-    const allOrders = (await MyOrder.find({owner:owner, status:"Confirmed"})).reverse();
-    const confirmOrders = await MyOrder.find({owner:owner, status:"Waiting"});
-    res.render("listings/allOrders.ejs", {allOrders,confirmOrders});
-});
+router.get("/orders",isLoggedIn,
+    wrapAsync(
+        async(req,res)=> {
+        let owner = res.locals.currUser._id;
+        const allOrders = (await MyOrder.find({owner:owner, status:"Confirmed"})).reverse();
+        const confirmOrders = await MyOrder.find({owner:owner, status:"Waiting"});
+        res.render("listings/allOrders.ejs", {allOrders,confirmOrders});
+}));
 
-router.get("/:id/confirm", async(req,res)=>{
-    let {id}= req.params;
-    const order = await MyOrder.findById(id);
-    order.status ="Confirmed";
-    order.save();
-    req.flash("flashSuccess", "Order confirmed successfully.");
-    res.redirect("/admin/orders");
-});
+router.get("/:id/confirm",isLoggedIn,
+    wrapAsync( 
+        async(req,res)=>{
+        let {id}= req.params;
+        const order = await MyOrder.findById(id);
+        order.status ="Confirmed";
+        order.save();
+        req.flash("flashSuccess", "Order confirmed successfully.");
+        res.redirect("/admin/orders");
+}));
 
 
 

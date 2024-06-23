@@ -38,12 +38,18 @@ router.get("/", (req,res)=>{
     router.get("/home", wrapAsync(
     async (req,res)=>{
         let {hotelID} = req.query;
-        const specialItems = await Listing.find({owner:hotelID , promote:"Yes"}).limit(3);
-        const recommendItems = await Listing.find({owner:hotelID}).limit(2);
-        const hotel = await User.findById(hotelID);
         const banner = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTP2qETnf11rg8zD1GeMbyugTUR4UqgIku15WjWOP4mjA&s";
+        const hotel = await User.findById(hotelID);
+        const recommendItems = await Listing.find({owner:hotelID}).limit(2);
         res.cookie("hotelID", hotelID);
-        res.render("listings/home.ejs", {specialItems, hotel, hotelID, banner,recommendItems})
+
+        const specialItems = await Listing.find({owner:hotelID , promote:"Yes"}).limit(3);
+        if(!specialItems.length){
+            const specialItems = await Listing.find({owner:hotelID}).limit(3);
+            res.render("listings/home.ejs", {specialItems, hotel, hotelID, banner,recommendItems})
+        }else{
+            res.render("listings/home.ejs", {specialItems, hotel, hotelID, banner,recommendItems});
+        }
     }));
 
 // Menu Route //

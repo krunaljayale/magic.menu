@@ -15,19 +15,19 @@
 
 <% if( !items.length ){ %>
     
-        <div class="row  row-col-sm-1 row-col-1 mt-3 " style= "justify-content:center;">
-            <div class="card mt-3 " style="width: 20rem; border: none;">
+        <div class=" notify-div mt-3">
+            <div class="card mt-3" >
                 <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
                 <div class="card-body mt-2">
-                <h5 class="card-title text-primary"> <b>No Orders</b></h5>
-                <p class="card-text mt-3 text-primary"><i>You didn't make any order yet!</i> </p>
-                <a href="/menu" class="btn btn-outline-primary">Explore Menu</a>
+                    <h5 class="card-title text-primary"> <b>No Orders</b></h5>
+                    <p class="card-text mt-3 text-primary"><i>You didn't make any order yet!</i> </p>
+                    <a href="/menu" class="btn btn-outline-primary">Explore Menu</a>
                 </div>
             </div>
         </div>
 <% } %>
 
-
+<% if( items.length ){ %>
 <div class="master-div">
     <% for(item of items){ %>
 
@@ -67,3 +67,4 @@
 
     <% } %>
 </div>
+<% } %>

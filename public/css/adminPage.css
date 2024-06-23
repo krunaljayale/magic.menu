@@ -44,7 +44,6 @@ margin: 0;
     flex-wrap: wrap;
     padding-bottom: 2rem;
 }
-
 .admin-home-card{
     border-radius: 25px;
     margin: 2rem auto 0 auto;
@@ -63,9 +62,16 @@ margin: 0;
 }
 .star{
     position: absolute;
-    margin:0.5rem 0 0 0.5rem;
-    font-size: 18px;
-    /* color: #FFD700; */
+    font-size: 20px;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    background-color: #fff;
+    width: 17.75rem;
+    height: fit-content;
+    border-radius: 1.25rem;
+    margin: 0.5rem 0;
+    color: #12296c;
+    font-weight: 900;
+    text-align: center;
 }
 .admin-home-card-img{
     width: 17.75rem;

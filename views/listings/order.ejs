@@ -27,7 +27,7 @@
                 <div class="item-price-div"><p class="item-price">  &#8377; <%= item.price.toLocaleString("en-IN") %></p></div>
 
                 <div class="buttons-div">
-                    <form  action="/orders/<%= item._id %>" method="post" id="order-form" class="order-form"  >
+                    <form  action="/orders/<%= item._id %>" method="post" id="order-form" class="order-form needs-validation" novalidate >
                         <input type="text" name="customername" id="customerName" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required >
                         <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>"  name="created_at"  style="display: none;">
                         

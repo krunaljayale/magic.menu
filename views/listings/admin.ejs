@@ -32,10 +32,10 @@
   
   <% for(let item of items){ %>
     
-      <div class=" admin-home-card">
+      <div class=" admin-home-card" id="adminCard">
         <div class="admin-home-card-img-div">
           <% if(item.promote === "Yes"){ %>
-            <p class="star"><i class="fa-solid fa-star"></i></p>
+            <p class="star"><i class="fa-solid fa-star"></i> PROMOTED</p>
           <% } %>
           <img src="<%= item.image.url %>" class="admin-home-card-img" alt="loading" >
         </div>
