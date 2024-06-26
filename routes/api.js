@@ -27,7 +27,10 @@ router.post("/service",async (req,res)=>{
     res.json({status: "Success", message:""})
 });
 
-
+// Policy Route //
+router.get("/policy", (req,res)=>{
+    res.render("listings/policy.ejs");
+})
 // Root Route //
 router.get("/", (req,res)=>{
     res.render("listings/root.ejs");
