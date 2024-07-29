@@ -9,6 +9,7 @@ const listingSchema = new Schema({
         filename:String,
     },
     price:Number,
+    category:String,
     owner:{
         type:Schema.Types.ObjectId,
         ref:"User"

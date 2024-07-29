@@ -17,7 +17,7 @@
   <% } %>
 
   <div class="specialDiv">
-    <h4>Top Picks For You</h4>
+    <h4>Best Seller Items</h4>
     <div class="specialContentDiv">
       <% for(item of specialItems){ %>
         <a href="/orders/<%= item._id %>" class="specialItemCard">
@@ -31,14 +31,17 @@
     </div>
   </div>
 
-  <div class="recommendDiv">
-    <h4>Recommended</h4>
-    <div class="recommendContentDiv">
-      <% for(item of recommendItems){ %>
-        <a href="/orders/<%= item._id %>" class="recommendItemCard">
-          <img src="<%= item.image.url %>" alt="" class="recommendContentImage">
-        </a>
-      <%  } %>
+  <div class="categoryDiv">
+    <h4 class="mb-3">Categories</h4>
+    <div class="categoryCardDiv">
+      <a href="/beverage" class="categoryCard">
+        <h6>Beverage</h6>
+        <img src="/images/Beverage Img.jpg" alt="" class="categoryCardImage">
+      </a>
+      <a href="/menu" class="categoryCard">
+        <h6>Food</h6>
+        <img src="/images/Food Img.jpg" alt="" class="categoryCardImage">
+      </a>
     </div>
   </div>
 

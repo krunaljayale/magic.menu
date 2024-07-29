@@ -1,0 +1,16 @@
+/* Flash */
+.flash{
+    background-color: #fff !important;
+    position: absolute !important;
+}
+
+.alert{
+    text-align: center;
+    font-size: 18px;
+    font-weight: 900;
+    border-radius: 50px;
+}
+
+.btn-close{
+    color: rgba(0, 0, 0, 0.082) !important;
+}

@@ -15,8 +15,7 @@
                 <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <!-- here to use the direct code mentioned in app.js we have to replace the name="title" into name="listing[title]"; -->
-                        <input name="name"  type="text" class="form-control" maxlength="17" placeholder="Write a c
-                        atchy name">
+                        <input name="name"  type="text" class="form-control" maxlength="17" placeholder="Write a catchy name">
                 </div>
 
                 <div class="mb-3">
@@ -33,6 +32,13 @@
                     <label for="price" class="form-label">Price</label>
                     <input name="price"  type="number" class="form-control" placeholder="In &#8377;">
                 </div>
+
+                <select class="form-select mb-3" aria-label="Default select example" name="category">
+                    <option selected>Please Select Food Category</option>
+                    <option value="Veg">Veg</option>
+                    <option value="Non-Veg">Non-Veg</option>
+                    <option value="Beverage">Beverage</option>
+                  </select>
 
                 <button class="btn btn-dark add-btn">Add</button>
 

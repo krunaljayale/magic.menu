@@ -8,6 +8,11 @@ const {isLoggedIn} = require("../middleware.js");
 const multer  = require('multer');
 const {storage} = require("../cloudConfig.js");
 const upload = multer({ storage });
+const Mixpanel = require('mixpanel');
+
+// Mixpanel Setup //
+const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+
 
 // Admin Dashboard Route //
 router.get("/",isLoggedIn,wrapAsync(
@@ -62,6 +67,7 @@ router.put("/:id/edit" ,isLoggedIn, upload.single('image')
 async (req,res)=>{
     const { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
+
 
     if(typeof req.file != "undefined"){
         let url = req.file.path;
@@ -136,10 +142,10 @@ router.get("/new",isLoggedIn,
 router.post("/new",isLoggedIn,upload.single('image')
 ,wrapAsync(
 async (req,res,next)=>{
-    let { name,info,price } = req.body;
+    let { name,info,price,category } = req.body;
     let url = req.file.path;
     let filename = req.file.filename;
-    const newListing = new Listing ({name,info,price});
+    const newListing = new Listing ({name,info,price,category});
     newListing.owner = req.user._id;
     newListing.image = { url, filename};
     await newListing.save();
@@ -147,6 +153,7 @@ async (req,res,next)=>{
     res.redirect("/admin");
 }));
 
+// All orders dashboard for Admin //
 router.get("/orders",isLoggedIn,
     wrapAsync(
         async(req,res)=> {
@@ -156,17 +163,53 @@ router.get("/orders",isLoggedIn,
         res.render("listings/allOrders.ejs", {allOrders,confirmOrders});
 }));
 
+// Order Confirm Route
 router.get("/:id/confirm",isLoggedIn,
     wrapAsync( 
         async(req,res)=>{
         let {id}= req.params;
         const order = await MyOrder.findById(id);
+        order.created_at = new Date().toString().split(" ").slice(4,5).join(" ");
         order.status ="Confirmed";
         order.save();
+
+        // // MIXPANEL SETUP //
+        mixpanel.track("Order Confirmed", {
+            distinct_id: req.user._id ,
+            hotel_name:req.user.hotelname,
+            address:req.user.location,
+            order_name:order.name,
+            order_price:order.price,
+            order_quantity:order.qty,
+            customer_name:order.customername,
+            order_id:id,
+            });
         req.flash("flashSuccess", "Order confirmed successfully.");
         res.redirect("/admin/orders");
 }));
 
+router.get("/:id/reject",isLoggedIn,
+    wrapAsync( 
+        async(req,res)=>{
+        let {id}= req.params;
+        const order = await MyOrder.findById(id);
+        order.status ="Rejected";
+        order.save();
 
+            // // MIXPANEL SETUP //
+        mixpanel.track("Order Rejected", {
+            distinct_id: req.user._id ,
+            hotel_name:req.user.hotelname,
+            address:req.user.location,
+            order_name:order.name,
+            order_price:order.price,
+            order_quantity:order.qty,
+            customer_name:order.customername,
+            order_id:id,
+            });
+
+        req.flash("flashSuccess", "Order rejected successfully.");
+        res.redirect("/admin/orders");
+}));
 
 module.exports = router;

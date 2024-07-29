@@ -28,6 +28,7 @@
 <% } %>
 
 <% if( items.length ){ %>
+    <p class="note">Order will be served within 10 mins after confirmation</p>
 <div class="master-div">
     <% for(item of items){ %>
 
@@ -47,9 +48,16 @@
             
                 <div class="order-info-div">
                     <p class="order-customer">By:- <%= item.customername %></p>
-                    <p class="order-time">On <%= item.created_at %></p>
+                    <% if(item.status === "Confirmed"){ %>
+                        <p class="order-time">Confirmed at <%= item.created_at %></p>  
+                    <% } %>
+
+                    <% if(item.status != "Confirmed"){ %>
+                        <p class="order-time">On <%= item.created_at %></p>
+                    <% } %>
+                    
                 </div>
-                <% if(item.status != "Confirmed"){ %>
+                <% if(item.status != "Confirmed" && item.status != "Rejected"){ %>
                 <div class="buttons-div">
                     <form method="post" id="cancelForm" action="/myorders/<%= item._id %>/cancel?_method=DELETE">
                         <button class="btn myorder-cancel-btn" id="<%= item._id %>">Cancel</button>
@@ -60,6 +68,11 @@
                 <% if(item.status === "Confirmed"){ %> 
                     <div class="buttons-div">
                        <b><p class="card-text" style="color: green;">Order is Confirmed <i class="fa-solid fa-circle-check"></i></p></b>
+                    </div>
+                <% } %>
+                <% if(item.status === "Rejected"){ %> 
+                    <div class="buttons-div">
+                       <b><p class="card-text" style="color: #876E4B;">Sorry!, Your order cannot be served <i class="fa-solid fa-ghost"></i></p></b>
                     </div>
                 <% } %>
             </div>

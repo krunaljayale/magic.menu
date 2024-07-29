@@ -41,11 +41,17 @@
 
             <div class="customername-qty-div">
                 <div class="item-customername-div"><p class="card-text item-info">Order by :- <%= order.customername %></p></div>
-                <div class="item-qty-div"><p class="card-text item-qty">Qty:- <%=order.qty %></p></div>
+                <div class="item-qty-div">
+                  <p class="card-text item-qty">Qty:- <%=order.qty %></p> 
+                  <% if(order.tableno){ %>
+                    <p class="card-text">Table No:- <%=order.tableno%></p>
+                  <%}%>
+                </div>
             </div>
 
             <div class="buttons-div">
               <a href="/admin/<%= order._id %>/confirm" class="btn btn-info admin-confirm-btn">Confirm</a>
+              <a href="/admin/<%= order._id %>/reject" class="btn btn-danger admin-confirm-btn">Reject</a>
             </div>
 
           </div>

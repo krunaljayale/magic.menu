@@ -28,8 +28,10 @@ const dbUrl = process.env.ATLASDB_URL;
 const MONGO_URL = "mongodb://127.0.0.1:27017/cafe";
 
 async function main(){
-    mongoose.connect(dbUrl);
+    mongoose.connect(MONGO_URL);
 }
+
+
 
 
 // Required Stuff
@@ -46,7 +48,7 @@ app.use(cors());
 
 
 const store = MongoStore.create({
-    mongoUrl:dbUrl,
+    mongoUrl:MONGO_URL,
     crypto: {
         secret: process.env.SECRET,
       },

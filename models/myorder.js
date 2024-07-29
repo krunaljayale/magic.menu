@@ -11,6 +11,7 @@ const MyOrdersSchema = new Schema({
     price:Number,
     qty:Number,
     owner:String,
+    tableno:Number,
     created_at :String,
     customerId:String,
     status:String

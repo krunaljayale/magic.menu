@@ -80,7 +80,9 @@ h3,h5{
     width: 75%;
 }
 .item-qty-div{
-    width: 25%;
+    width: 80%;
+    display: flex;
+    justify-content: space-between
 }
 
 .buttons-div{
@@ -88,6 +90,7 @@ h3,h5{
     display: flex;
     height: fit-content;
     justify-content: center;
+    gap: 1rem;
 }
 .admin-confirm-btn{
     font-weight: 800 !important;

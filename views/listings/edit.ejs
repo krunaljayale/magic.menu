@@ -3,6 +3,7 @@
 <%- include("../includes/flash.ejs") %>
 <head><title>Edit items</title></head>
 
+
 <div class="row mt-3">
     <div class="col-8 offset-2 mb-3">
         <h1>Edit Item</h1>
@@ -29,7 +30,20 @@
                 <input name="listing[price]" value="<%= item.price %>" type="number" class="form-control" id="price" required>
             </div>
             
+            <select class="form-select mb-3" aria-label="Default select example" name="listing[category]" id="dropdown">
+                <option>Please Select Food Category</option>
+                <option value="Veg">Veg</option>
+                <option value="Non-Veg">Non-Veg</option>
+                <option value="Beverage">Beverage</option>
+            </select>
+
             <button class="btn btn-dark edit-btn">Edit</button>
         </form>
     </div>
 </div>
+
+
+<script>
+    const item = <%- JSON.stringify(item) %>;
+    const dropdown = document.getElementById("dropdown").value = item.category;
+</script>

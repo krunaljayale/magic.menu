@@ -56,25 +56,27 @@
 .card-text{
     margin: 0 !important;
 }
-.recommendDiv{
+.categoryDiv{
     width: 100%;
     padding: 1rem 1.5rem;
     margin-bottom: 4rem;
+    text-align: center;
 }
-.recommendDiv h4{
-    font-size: 17px;
+.categoryDiv h4{
+    font-size: 24px;
     font-weight: 900;
 }
-.recommendContentDiv{
+.categoryCardDiv{
     display: flex;
     width: 100%;
     justify-content: space-between;
 }
-.recommendItemCard{
+.categoryCard{
     text-decoration: none;
     color: #000;
+    text-align: center;
 }
-.recommendContentImage{
+.categoryCardImage{
     width: 42vw;
     height: 45vw;
     border-radius: 1rem;

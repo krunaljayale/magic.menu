@@ -10,7 +10,11 @@ const userSchema = new Schema({
     hotelname:{
         type:String,
         required:true
-    }
+    },
+    location:{
+        type:String,
+        required:true
+    },
 });
 
 userSchema.plugin(passportLocalMongoose);

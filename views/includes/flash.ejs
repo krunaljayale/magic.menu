@@ -1,13 +1,17 @@
+<head>
+  <link rel="stylesheet" href="/css/flash.css">
+</head>
+
 <% if( flashSuccess && flashSuccess.length) { %>
-    <div class="alert col-8 offset-2 alert-success alert-dismissible fade show" style="position: absolute;" role="alert">
-    <%= flashSuccess %>
+    <div class="alert col-8 offset-2 alert-success alert-dismissible fade show flash flashSuccess"  role="alert">
+      <i class="fa-regular fa-circle-check" style="font-size: 22px; color: green;"></i> &nbsp;&nbsp;&nbsp;&nbsp;<%= flashSuccess %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>
 
 <% if(flashError && flashError.length) { %>
-  <div class="alert col-8 offset-2 alert-danger alert-dismissible fade show" style="position: absolute;"  role="alert">
-    <%= flashError %>
+  <div class="alert col-8 offset-2 alert-danger alert-dismissible fade show flash flashError" role="alert">
+    <i class="fa-regular fa-circle-xmark" style="font-size: 22px; color: red;"></i> &nbsp;&nbsp;&nbsp;&nbsp;<%= flashError %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
   </div>
 <% } %>

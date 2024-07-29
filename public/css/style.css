@@ -12,15 +12,7 @@ body{
     
 }
 
-/* Flash */
-.flash{
-    width: fit-content !important;
-    background-color: aliceblue !important;
-    position: absolute !important;
-    z-index: 1 !important;
-    font-size:16px !important;
-    font-weight: 700 !important;
-}
+
 
 /* Footer */
 .footer{
