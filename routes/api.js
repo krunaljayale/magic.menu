@@ -23,9 +23,18 @@ webPush.setVapidDetails("mailto:krunaljayale5@gmail.com", publicVapidKey, privat
 
 router.post("/service",async (req,res)=>{
     let subscription = req.body;
-    let newSubscription = new Subscription(subscription);
+    console.log(subscription.endpoint, subscription.keys)
+    const user = await Subscription.find({userID:req.user._id});
+    if(user){
+        user.endpoint=subscription.endpoint;
+        user.keys=subscription.keys;
+        await user.save();
+    }else{
+      let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
-    await newSubscription.save();
+    await newSubscription.save();  
+    }
+    
     res.json({status: "Success", message:""})
 });
 
@@ -145,7 +154,6 @@ router.get("/", (req,res)=>{
           });
 
         let endPoint = await Subscription.find({userID:owner});
-        console.log(endPoint[0], "Test Krunal")
         if(tableno){
            webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered ${qty} ${name} just now` ) 
         }else{
