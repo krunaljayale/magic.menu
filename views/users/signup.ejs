@@ -2,13 +2,13 @@
 <%- include("../includes/flash.ejs") %>
 
 <div class="signup-page">
-    <div class="signup-box">
+    <div class="signup-box" >
         <a class="navbar-brand " href="/"><h3 class="Logo" >magic menu</h3></a>
         <div class="col-10 offset-1 signup-card">
             <h3 style="text-align: center;">Sign up</h3>
             <p style="text-align: center;">Create an account</p>
 
-            <form action="/signup" class="needs-validation" method="post">
+            <form action="/signup" class="needs-validation" method="post" novalidate>
                 <div class="mb-3">
                     <label for="username" class="form-label">Name</label> <i class="fa-solid fa-user"></i>
                     <input name="username" id="username" type="text" class="form-control" maxlength="17" placeholder="Please Enter Accout Holder Name" required>
@@ -21,12 +21,17 @@
 
                 <div class="mb-3">
                     <label for="location" class="form-label">Address</label> <i class="fa-solid fa-location-dot"></i>
-                    <input name="location" id="location" type="text" class="form-control" maxlength="17" placeholder="Please Enter Hotel Address" required>
+                    <input name="location" id="location" type="text" class="form-control" maxlength="30" placeholder="Please Enter Hotel Address" required>
                 </div>
 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label> <i class="fa-solid fa-envelope"></i>
                     <input name="email" id="email" type="email" class="form-control" placeholder="Please Enter Email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="number" class="form-label">Mobile Number</label> <i class="fa-solid fa-phone"></i>
+                    <input name="number" id="number" type="text" class="form-control" maxlength="10" placeholder="Enter Mobile Number" required>
                 </div>
 
                 <div class="mb-3">
@@ -45,9 +50,9 @@
         </div>
     </div>
 
-    <footer class="signup-footer">
+    <footer class="signup-footer" >
         <div class="f-info" style="background-color: transparent;">
-            <div class="f-info-socials signup-login-socials" style="font-size: 20px;">
+            <div class="f-info-socials signup-login-socials" style="font-size: 20px;display: none;">
                 <a href=""><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-instagram"></i></a>
                 <a href=""><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-twitter-square"></i></a>
                 <a href=""><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-facebook-square"></i></a>

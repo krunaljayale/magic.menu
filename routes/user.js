@@ -13,12 +13,12 @@ router.get("/signup", ( req ,res) => {
 
 router.post("/signup",wrapAsync(async (req, res) => {
     try{
-        let { username,hotelname,location, email, password, masterkey } = req.body;
+        let { username,hotelname,location, email, password, masterkey, number } = req.body;
         if(masterkey != "5264284"){
             req.flash("flashError", "Sorry Please Enter Valid Master Key");
             res.redirect("/signup");
         }else{
-           const newUser = new User({username,hotelname,location,email});
+           const newUser = new User({username,hotelname,location,email,number});
             const registeredUser =  await User.register(newUser, password);
             req.login(registeredUser, (err)=>{
                 if(err){

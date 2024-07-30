@@ -145,6 +145,7 @@ router.get("/", (req,res)=>{
           });
 
         let endPoint = await Subscription.find({userID:owner});
+        console.log(endPoint[0], "Test Krunal")
         if(tableno){
            webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered ${qty} ${name} just now` ) 
         }else{

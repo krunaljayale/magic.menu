@@ -2,6 +2,7 @@
 .flash{
     background-color: #fff !important;
     position: absolute !important;
+    z-index: 10 !important;
 }
 
 .alert{
@@ -13,4 +14,10 @@
 
 .btn-close{
     color: rgba(0, 0, 0, 0.082) !important;
+}
+
+@media screen and (max-width: 480px) {
+    .alert{
+        font-size: 14px;
+    }
 }

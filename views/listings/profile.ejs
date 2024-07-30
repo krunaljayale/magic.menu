@@ -20,6 +20,16 @@
             </div>
 
             <div class="mb-3">
+                <label for="number" class="form-label">Mobile Number</label>
+                <input name="user[number]" class="form-control" id="description" type="number" value="<%= user.number %>" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="address" class="form-label">Address</label>
+                <input name="user[location]" class="form-control" id="description" value="<%= user.location %>" required>
+            </div>
+
+            <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
                 <input name="user[email]" class="form-control" id="description" value="<%= user.email %>" required>
             </div>

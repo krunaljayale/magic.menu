@@ -78,9 +78,32 @@ app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
+// passport.use(new LocalStrategy({
+//     usernameField: 'number', // Change 'username' to 'number'
+//     passwordField: 'password'
+// },
+// function(number, password, done) {
+//     console.log(User.find({number:number}).username);
+//     User.find({ number: number }, function (err, user) {
+//         // console.log(user)
+//         if (err) {return done(err); }
+//         if (!user) {
+//             return done(null, false, { message: 'Incorrect mobile number.' });
+//         }
+//         if (!user.validPassword(password)) { // Assume 'validPassword' is a method in your User model
+//             console.log("Password not found");
+//             return done(null, false, { message: 'Incorrect password.' });
+//         }
+//         console.log(user);
+//         return done(null, user);
+        
+//     });
+// }));
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+
 
 
 app.use((req,res,next)=>{
@@ -122,8 +145,8 @@ app.use((err,req,res,next)=> {
 
 
 
-// Server //]
-const PORT = 3000;
-app.listen(PORT || 3000,()=>{
+// Server //
+const PORT = 8000;
+app.listen(PORT || 8000,()=>{
     console.log(`SERVER is ON to PORT ${PORT}`);
 });

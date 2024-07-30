@@ -7,6 +7,10 @@ const userSchema = new Schema({
         type:String,
         required:true,
     },
+    number:{
+        type:Number,
+        required:true,
+    },
     hotelname:{
         type:String,
         required:true
