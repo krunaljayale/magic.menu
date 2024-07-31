@@ -125,7 +125,7 @@ app.use((err,req,res,next)=> {
 
 
 // Server //
-const PORT = 8000;
-app.listen(PORT || 3000,()=>{
+const PORT = process.env.PORT || 3000; // Use the port provided by Render, or default to 3000 for local development
+app.listen(PORT,()=>{
     console.log(`SERVER is ON to PORT ${PORT}`);
 });
