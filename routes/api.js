@@ -27,6 +27,7 @@ router.post("/subscribe",async (req,res)=>{
     if(user.length){
         user.endpoint=subscription.endpoint;
         user.keys=subscription.keys;
+        await user.save();
     }else{
     let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
