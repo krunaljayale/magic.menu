@@ -14,7 +14,7 @@ const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
 
 // Push Notification //
 
-const publicVapidKey = 'BMZCa-abHsQbxoO6k8M1hucKVk4vTU3UzOHJBh34gABfKjpvay3j2_xhxADWUZiNHH3YTfvBtDLJn64yGYbLAA4';
+const publicVapidKey = 'BHq_8RoraWdxr9KCj1h_b2fN-FiTOBQ5fCQqupnmA7Y1H07qybrjLYEAfPyHW5xs1ZIQ1aL5XPRClxVtlLWTcdI';
 const privateVapidKey = process.env.PRIVATE_VAPID_KEY;
 
 webPush.setVapidDetails("mailto:krunaljayale5@gmail.com", publicVapidKey, privateVapidKey);
