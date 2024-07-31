@@ -40,7 +40,6 @@ router.post("/subscribe",async (req,res)=>{
     // console.log("User saved");
     res.json({status: "Success", message:""});
     }
-    
 });
 
 
