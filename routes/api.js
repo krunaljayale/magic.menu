@@ -25,9 +25,9 @@ router.post("/subscribe",async (req,res)=>{
     let subscription = req.body;
     const user = await Subscription.find({userID:req.user._id});
     if(user.length){
-        user.endpoint=subscription.endpoint;
-        user.keys=subscription.keys;
-        await user.save();
+        newEndPoint=subscription.endpoint;
+        newKeys=subscription.keys;
+        await Subscription.findOneAndUpdate({userID:req.user._id}, {$set:{endpoint:endPoint, keys:newKeys}})
     }else{
     let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
