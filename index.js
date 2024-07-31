@@ -105,6 +105,7 @@ main().then(()=>{
 });
 
 
+
 app.use("/admin", admin);
 app.use("/", api);
 app.use("/", user);
@@ -124,7 +125,7 @@ app.use((err,req,res,next)=> {
 
 
 // Server //
-const PORT = 3000;
+const PORT = 8000;
 app.listen(PORT || 3000,()=>{
     console.log(`SERVER is ON to PORT ${PORT}`);
 });

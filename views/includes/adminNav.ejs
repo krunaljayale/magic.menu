@@ -4,7 +4,7 @@
 <nav class="navbar navbar-expand-lg admin-navbar sticky-top" >
   <div class="container-fluid ">
     <a class="navbar-brand" href="/admin">magic menu</a>
-    <input type="checkbox" id="checkbox" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <input type="checkbox" id="checkbox" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
     <label for="checkbox" class="toggle">
         <div class="bars" id="bar1"></div>
         <div class="bars" id="bar2"></div>
@@ -21,7 +21,7 @@
         <div class="navbar-popup" id="navbar-popup">
           <a href="/admin/new" class="nav-link admin-pop-btns">Add Item</a>
           <hr>
-          <a href="admin/profile" class="nav-link admin-pop-btns">Profile</a>
+          <a href="/admin/profile" class="nav-link admin-pop-btns">Profile</a>
           <a class="nav-link admin-pop-btns" href="/logout">Logout</a>
         </div>
         <!-- <form class="navbar-search-form" role="search">
@@ -30,12 +30,11 @@
         </form> -->
       </div>
     </div>
-
   </div>
 </nav>
 
 <script>
-  // Navbar //
+               // Navbar //
 const navBarToggleBtn = document.getElementById("navbar-profile-btn");
 let popup = document.getElementById("navbar-popup");
 function clicked(){

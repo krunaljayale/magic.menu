@@ -21,22 +21,28 @@ webPush.setVapidDetails("mailto:krunaljayale5@gmail.com", publicVapidKey, privat
 
 
 
-router.post("/service",async (req,res)=>{
+router.post("/subscribe",async (req,res)=>{
     let subscription = req.body;
-    console.log(subscription.endpoint, subscription.keys)
     const user = await Subscription.find({userID:req.user._id});
-    if(user){
+    if(user.length){
         user.endpoint=subscription.endpoint;
         user.keys=subscription.keys;
-        await user.save();
     }else{
-      let newSubscription = new Subscription(subscription);
+    let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
     await newSubscription.save();  
     }
     
     res.json({status: "Success", message:""})
 });
+
+router.get("/service",async (req,res)=>{
+    const user = await Subscription.find({userID:req.user._id});
+    console.log(user);
+    res.send("Done")
+});
+
+
 
 // Policy Route //
 router.get("/policy", (req,res)=>{

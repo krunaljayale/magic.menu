@@ -14,19 +14,18 @@ const urlBase64ToUint8Array = base64String =>{
 }
 
 const saveSubscription = async (subscription) =>{
-    const response = await fetch('https://magic-menu.onrender.com/service', {
+    const response = await fetch('/subscribe', {
         method:'post',
         headers:{'Content-type':"application/json"},
         body: JSON.stringify(subscription)
     })
-    
     return response.json();
 }
 
 self.addEventListener("activate",async (e)=> {
     const subscription = await self.registration.pushManager.subscribe({
         userVisibleOnly:true,
-        applicationServerKey :urlBase64ToUint8Array('BMZCa-abHsQbxoO6k8M1hucKVk4vTU3UzOHJBh34gABfKjpvay3j2_xhxADWUZiNHH3YTfvBtDLJn64yGYbLAA4')
+        applicationServerKey :urlBase64ToUint8Array('BHq_8RoraWdxr9KCj1h_b2fN-FiTOBQ5fCQqupnmA7Y1H07qybrjLYEAfPyHW5xs1ZIQ1aL5XPRClxVtlLWTcdI')
     });
     await saveSubscription(subscription);
 });
@@ -34,4 +33,4 @@ self.addEventListener("activate",async (e)=> {
 
 self.addEventListener("push", e=>{     
     self.registration.showNotification("Notification", {body: e.data.text()})
-})
+});

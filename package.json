@@ -2,7 +2,7 @@
   "engines": {
     "node": "v20.10.0"
   },
-  "name": "Magic-Menu",
+  "name": "8",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -19,6 +19,7 @@
     "connect-mongo": "^5.1.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "dot-env": "^0.0.1",
     "dotenv": "^16.4.3",
     "ejs": "^3.1.9",
     "ejs-mate": "^4.0.0",
