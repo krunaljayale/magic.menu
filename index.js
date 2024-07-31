@@ -125,7 +125,7 @@ app.use((err,req,res,next)=> {
 
 
 // Server //
-const PORT = 8000;
+const PORT = 3000;
 app.listen(PORT || 3000,()=>{
     console.log(`SERVER is ON to PORT ${PORT}`);
 });

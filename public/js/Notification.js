@@ -10,13 +10,13 @@ if(!("Notification" in window)){
 
 const registerSW = async ()=>{
     const registration = await navigator.serviceWorker.register("/js/ServiceWorker.js");
-    console.log(registration)
+    // console.log(registration)
     return registration;
 }
 
 const requestNotificationPermission = async() =>{
     const permission = await Notification.requestPermission();
-    console.log(permission)
+    // console.log(permission)
     if(permission != "granted"){
         throw new Error("Notification permission not granted")
     }

@@ -23,25 +23,25 @@ webPush.setVapidDetails("mailto:krunaljayale5@gmail.com", publicVapidKey, privat
 
 router.post("/subscribe",async (req,res)=>{
     let subscription = req.body;
-    const user = await Subscription.find({userID:req.user._id});
-    if(user.length){
-        req.flash("flashError", "Already Registered, Please contact the team");
-        res.redirect("/profile")
+    const user = await Subscription.findOne({userID:req.user._id});
+    if(user){
+        await Subscription.deleteOne({userID:req.user._id});
+
+        let newSubscription = new Subscription(subscription);
+        newSubscription.userID = req.user._id;
+        await newSubscription.save();  
+        // console.log("User resaved");
+        res.json({status: "Success", message:""});
+
     }else{
     let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
     await newSubscription.save();  
+    // console.log("User saved");
+    res.json({status: "Success", message:""});
     }
     
-    res.json({status: "Success", message:""})
 });
-
-router.get("/service",async (req,res)=>{
-    const user = await Subscription.find({userID:req.user._id});
-    console.log(user);
-    res.send("Done")
-});
-
 
 
 // Policy Route //
