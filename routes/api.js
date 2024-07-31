@@ -25,9 +25,8 @@ router.post("/subscribe",async (req,res)=>{
     let subscription = req.body;
     const user = await Subscription.find({userID:req.user._id});
     if(user.length){
-        newEndPoint=subscription.endpoint;
-        newKeys=subscription.keys;
-        await Subscription.findOneAndUpdate({userID:req.user._id}, {$set:{endpoint:endPoint, keys:newKeys}})
+        req.flash("flashError", "Already Registered, Please contact the team");
+        res.redirect("/profile")
     }else{
     let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
