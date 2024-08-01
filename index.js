@@ -25,7 +25,6 @@ const User = require("./models/user.js");
 
 
 const MONGO_URL = process.env.ATLASDB_URL;
-const dburl = "mongodb://127.0.0.1:27017/cafe";
 
 async function main(){
     mongoose.connect(MONGO_URL);
