@@ -103,7 +103,9 @@ main().then(()=>{
     console.log("Some Error In DB")
 });
 
-
+app.get('/sitemap', (req, res) => {
+    res.sendFile(path.join(__dirname, 'sitemap.xml'));
+  });
 
 app.use("/admin", admin);
 app.use("/", api);
