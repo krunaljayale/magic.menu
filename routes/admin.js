@@ -11,8 +11,8 @@ const upload = multer({ storage });
 const Mixpanel = require('mixpanel');
 
 // Mixpanel Setup //
-// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
-const mixpanel = "";
+const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+// const mixpanel = "";
 
 
 // Admin Dashboard Route //
