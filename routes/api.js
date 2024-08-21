@@ -9,8 +9,14 @@ const Subscription = require("../models/subscription.js");
 const webPush = require("web-push");
 const Mixpanel = require('mixpanel');
 
-// Mixpanel Setup //
-const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+
+// Mixpanel Setup //   
+
+const mixpanel = "";
+
+// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+
+
 
 // Push Notification //
 
@@ -67,11 +73,14 @@ router.get("/", (req,res)=>{
         }
 
         // MIXPANEL SETUP //
+        if(mixpanel){
         mixpanel.track("User Onboard", {
             distinct_id:res.locals.sessionId ,
             hotel_name:hotel.hotelname,
             address:hotel.location,
-          });
+          });  
+        }
+        
 
         const specialItems = await Listing.find({owner:hotelID , promote:"Yes"}).limit(3);
         if(!specialItems.length){
@@ -110,21 +119,26 @@ router.get("/", (req,res)=>{
         const hotelID = req.cookies.hotelID;
         const item = await Listing.findById(id);
         const hotel = await User.findById(hotelID);
+        let tableNO = req.cookies.tableNO;
 
         // MIXPANEL SETUP //
-        mixpanel.track("Order Initiated", {
+        if(mixpanel){
+          mixpanel.track("Order Initiated", {
             distinct_id:res.locals.sessionId ,
             // time:new Date().toString().split(" ").slice(0,5).join(" "),
             hotel_name:hotel.hotelname,
             address:hotel.location,
             item_id:item._id,
             item_name:item.name,
-          });
+          });  
+        }
+        
+
         if(req.cookies.customerName){
             let customerName = req.cookies.customerName;
-            res.render("listings/order.ejs",{item, customerName,hotelID});
+            res.render("listings/order.ejs",{item, customerName,tableNO});
         }else{
-           res.render("listings/order.ejs",{item,hotelID});
+           res.render("listings/order.ejs",{item,tableNO});
         }
     }));
     
@@ -145,6 +159,7 @@ router.get("/", (req,res)=>{
 
 
         // MIXPANEL SETUP //
+        if(mixpanel){
         mixpanel.track("Order Placed", {
             distinct_id:res.locals.sessionId ,
             // time:new Date().toString().split(" ").slice(0,5).join(" "),
@@ -156,16 +171,17 @@ router.get("/", (req,res)=>{
             item_quantity:qty,
             customer_name:customername,
             order_id:newMyOrders._id,
-          });
+          });   
+        };
 
         let endPoint = await Subscription.find({userID:owner});
-        if(tableno){
+        if(endPoint.length && tableno){
            webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered ${qty} ${name} just now` ) 
-        }else{
+        }else if(endPoint.length){
             webPush.sendNotification(endPoint[0], `${customername} ordered ${qty} ${name} just now` ) 
         }
         req.flash("flashSuccess", "Order Placed");
-        res.redirect("/myorders")
+        res.redirect(`/orders/${id}`);
         // res.redirect(`/home?hotelID=${owner}`);
     }));
     
@@ -188,7 +204,7 @@ router.get("/", (req,res)=>{
         let name = order.name;
         let qty = order.qty;
         let price= order.price;
-
+        let tableno = req.cookies.tableNO;
         const hotel = await User.findById(owner);
        
         if(order.status === "Confirmed"){
@@ -197,20 +213,28 @@ router.get("/", (req,res)=>{
         }else{
 
             // // MIXPANEL SETUP //
-            mixpanel.track("Order Cancelled", {
-            distinct_id:res.locals.sessionId ,
-            hotel_name:hotel.hotelname,
-            address:hotel.location,
-            item_name:name,
-            item_price:price,
-            item_quantity:qty,
-            customer_name:customername,
-            order_id:id,
-            });
+            if(mixpanel){
+                mixpanel.track("Order Cancelled", {
+                distinct_id:res.locals.sessionId ,
+                hotel_name:hotel.hotelname,
+                address:hotel.location,
+                item_name:name,
+                item_price:price,
+                item_quantity:qty,
+                customer_name:customername,
+                order_id:id,
+                });
+            };
+            
 
             await MyOrders.findByIdAndDelete(id);
             let endPoint = await Subscription.find({userID:owner});
-            await webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` )
+            if(endPoint.length && tableno){
+                await webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} has cancelled order of ${qty} ${name} just now` );
+            }else if(endPoint.length){
+                await webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` );
+            }
+            
             req.flash("flashSuccess", "Order Cancelled");
             res.redirect("/myorders");
         };
@@ -229,14 +253,17 @@ router.get("/", (req,res)=>{
         const hotel = await User.findById(owner);
 
         // // MIXPANEL SETUP //
-        mixpanel.track("Cart Added", {
+        if(mixpanel){
+          mixpanel.track("Cart Added", {
             distinct_id:res.locals.sessionId ,
             hotel_name:hotel.hotelname,
             address:hotel.location,
             item_name:name,
             item_price:price,
             cart_id:newCart._id,
-            });
+            });  
+        };
+        
 
         req.flash("flashSuccess", "Item added to Cart");
         res.redirect("/menu");
@@ -265,14 +292,17 @@ router.get("/", (req,res)=>{
         const hotel = await User.findById(owner);
 
         // // MIXPANEL SETUP //
-        mixpanel.track("Cart Removed", {
+        if(mixpanel){
+          mixpanel.track("Cart Removed", {
             distinct_id:res.locals.sessionId ,
             hotel_name:hotel.hotelname,
             address:hotel.location,
             item_name:name,
             item_price:price,
             cart_id:id,
-            });
+            });  
+        };
+        
 
         req.flash("flashSuccess", "Item Removed");
         res.redirect("/cart");
@@ -308,17 +338,19 @@ router.get("/", (req,res)=>{
             const hotel = await User.findById(owner);
 
             // MIXPANEL SETUP //
-            mixpanel.track("Order Placed", {
-            distinct_id:res.locals.sessionId ,
-            hotel_name:hotel.hotelname,
-            address:hotel.location,
-            item_id:id,
-            item_name:name,
-            item_price:price,
-            item_quantity:qty,
-            customer_name:customername,
-            order_id:newMyOrders._id,
-          });
+            if(mixpanel){
+                mixpanel.track("Order Placed", {
+                distinct_id:res.locals.sessionId ,
+                hotel_name:hotel.hotelname,
+                address:hotel.location,
+                item_id:id,
+                item_name:name,
+                item_price:price,
+                item_quantity:qty,
+                customer_name:customername,
+                order_id:newMyOrders._id,
+            });
+            };
         }
         let endPoint = await Subscription.find({userID:owner});
         let tableno = req.cookies.tableNO;

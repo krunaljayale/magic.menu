@@ -12,12 +12,12 @@
 
             <div class="mb-3">
                 <label for="name" class="form-label">Title</label>
-                <input name="listing[name]" value="<%= item.name%>" type="text" class="form-control" id="name" required>
+                <input name="listing[name]" maxlength="26" value="<%= item.name%>" type="text" class="form-control" id="name" required>
             </div>
             
             <div class="mb-3">
                 <label for="description" class="form-label">Description</label>
-                <textarea name="listing[info]" class="form-control" id="description" required> <%= item.info %></textarea>
+                <textarea name="listing[info]" maxlength="65" class="form-control" id="description" required> <%= item.info %></textarea>
             </div>
 
             <div class="mb-3">
@@ -31,10 +31,31 @@
             </div>
             
             <select class="form-select mb-3" aria-label="Default select example" name="listing[category]" id="dropdown">
-                <option>Please Select Food Category</option>
+                <option value="Default">Please Select Food Category</option>
                 <option value="Veg">Veg</option>
                 <option value="Non-Veg">Non-Veg</option>
                 <option value="Beverage">Beverage</option>
+            </select>
+
+            <select class="form-select mb-3" aria-label="Default select example" name="listing[subcategory]" id="subdropdown">
+                <option value="Default">Please Select Sub Category</option>
+                <option value="Pizza">Pizza</option>
+                <option value="Sandwich">Sandwich</option>
+                <option value="Fries">Fries</option>
+                <option value="Burger">Burger</option>
+                <option value="Maggi">Maggi</option>
+                <option value="Pasta">Pasta</option>
+                <option value="Twisto">Twisto</option>
+                <option value="Manchurian">Manchurian</option>
+                <option value="Appetizer">Appetizer</option>
+                <option value="Noodles">Noodles</option>
+
+                <option value="Shakes">Shakes</option>
+                <option value="Mocktails">Mocktails</option>
+                <option value="Chai">Chai</option>
+                <option value="Coffee">Coffee</option>
+                <option value="Brownie">Brownie</option>
+                <option value="Icecream">Ice-Cream</option>
             </select>
 
             <button class="btn btn-dark edit-btn">Edit</button>
@@ -46,4 +67,11 @@
 <script>
     const item = <%- JSON.stringify(item) %>;
     const dropdown = document.getElementById("dropdown").value = item.category;
+    const subdropdown = document.getElementById("subdropdown").value = item.subcategory;
+    if(!item.subcategory){
+        document.getElementById("subdropdown").value = "Default";
+    }
+    if(!item.category){
+        document.getElementById("dropdown").value = "Default";
+    }
 </script>

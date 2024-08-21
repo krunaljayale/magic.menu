@@ -15,34 +15,61 @@
                 <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <!-- here to use the direct code mentioned in app.js we have to replace the name="title" into name="listing[title]"; -->
-                        <input name="name"  type="text" class="form-control" maxlength="17" placeholder="Write a catchy name">
+                        <input name="name"  type="text" class="form-control" maxlength="26" placeholder="Write a catchy name">
                 </div>
 
                 <div class="mb-3">
                     <label for="textarea" class="form-label">Information</label>
-                    <textarea name="info"  class="form-control" placeholder="Write brief description"></textarea>
+                    <textarea name="info" maxlength="65" class="form-control" placeholder="Write brief description"></textarea>
                 </div>
                     
                 <div class="mb-3">
                     <label for="img" class="form-label">Image</label>
                     <input name="image"  type="file" class="form-control">
                 </div>
-                    
+
                 <div class="mb-3">
                     <label for="price" class="form-label">Price</label>
                     <input name="price"  type="number" class="form-control" placeholder="In &#8377;">
                 </div>
 
-                <select class="form-select mb-3" aria-label="Default select example" name="category">
+                <select class="form-select mb-3" aria-label="Default select example" name="category" id="category">
                     <option selected>Please Select Food Category</option>
                     <option value="Veg">Veg</option>
                     <option value="Non-Veg">Non-Veg</option>
                     <option value="Beverage">Beverage</option>
-                  </select>
+                </select>
 
+                <select class="form-select mb-3" aria-label="Default select example" name="subcategory" id="subcategory">
+                    <option selected>Please Select Sub Category</option>
+                    <option value="Pizza">Pizza</option>
+                    <option value="Sandwich">Sandwich</option>
+                    <option value="Fries">Fries</option>
+                    <option value="Burger">Burger</option>
+                    <option value="Maggi">Maggi</option>
+                    <option value="Pasta">Pasta</option>
+                    <option value="Twisto">Twisto</option>
+                    <option value="Manchurian">Manchurian</option>
+                    <option value="Appetizer">Appetizer</option>
+                    <option value="Noodles">Noodles</option>
+
+                    <option value="Shakes">Shakes</option>
+                    <option value="Mocktails">Mocktails</option>
+                    <option value="Chai">Chai</option>
+                    <option value="Coffee">Coffee</option>
+                    <option value="Brownie">Brownie</option>
+                    <option value="Icecream">Ice-Cream</option>
+                </select>
                 <button class="btn btn-dark add-btn">Add</button>
 
             </form>
          </div>
     </div>
 
+<!-- <script>
+    const category = document.getElementById("category").value;
+    console.log(category);
+    if(category==="Veg"){
+        document.getElementById("subcategory").style.display="none";
+    }
+</script> -->

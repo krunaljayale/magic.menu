@@ -44,6 +44,7 @@
     overflow: hidden;
     align-items: center;
     font-size: 4vw;
+    overflow: auto;
 }
 
 .item-name-div{
@@ -65,6 +66,7 @@
     padding-left: 3px;
     font-size: 3.5vw;
     font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    overflow: auto;
 }
 
 .buttons-div{

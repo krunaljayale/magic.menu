@@ -10,6 +10,7 @@ const listingSchema = new Schema({
     },
     price:Number,
     category:String,
+    subcategory:String,
     owner:{
         type:Schema.Types.ObjectId,
         ref:"User"

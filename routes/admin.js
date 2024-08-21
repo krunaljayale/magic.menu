@@ -11,7 +11,8 @@ const upload = multer({ storage });
 const Mixpanel = require('mixpanel');
 
 // Mixpanel Setup //
-const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+const mixpanel = "";
 
 
 // Admin Dashboard Route //
@@ -142,10 +143,10 @@ router.get("/new",isLoggedIn,
 router.post("/new",isLoggedIn,upload.single('image')
 ,wrapAsync(
 async (req,res,next)=>{
-    let { name,info,price,category } = req.body;
+    let { name,info,price,category,subcategory } = req.body;
     let url = req.file.path;
     let filename = req.file.filename;
-    const newListing = new Listing ({name,info,price,category});
+    const newListing = new Listing ({name,info,price,category,subcategory});
     newListing.owner = req.user._id;
     newListing.image = { url, filename};
     await newListing.save();
@@ -174,7 +175,8 @@ router.get("/:id/confirm",isLoggedIn,
         order.save();
 
         // // MIXPANEL SETUP //
-        mixpanel.track("Order Confirmed", {
+        if(mixpanel){
+           mixpanel.track("Order Confirmed", {
             distinct_id: req.user._id ,
             hotel_name:req.user.hotelname,
             address:req.user.location,
@@ -183,7 +185,9 @@ router.get("/:id/confirm",isLoggedIn,
             order_quantity:order.qty,
             customer_name:order.customername,
             order_id:id,
-            });
+            }); 
+        };
+        
         req.flash("flashSuccess", "Order confirmed successfully.");
         res.redirect("/admin/orders");
 }));
@@ -197,16 +201,19 @@ router.get("/:id/reject",isLoggedIn,
         order.save();
 
             // // MIXPANEL SETUP //
-        mixpanel.track("Order Rejected", {
-            distinct_id: req.user._id ,
-            hotel_name:req.user.hotelname,
-            address:req.user.location,
-            order_name:order.name,
-            order_price:order.price,
-            order_quantity:order.qty,
-            customer_name:order.customername,
-            order_id:id,
-            });
+            if(mixpanel){
+                mixpanel.track("Order Rejected", {
+                distinct_id: req.user._id ,
+                hotel_name:req.user.hotelname,
+                address:req.user.location,
+                order_name:order.name,
+                order_price:order.price,
+                order_quantity:order.qty,
+                customer_name:order.customername,
+                order_id:id,
+                });
+            };
+        
 
         req.flash("flashSuccess", "Order rejected successfully.");
         res.redirect("/admin/orders");

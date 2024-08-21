@@ -2,8 +2,21 @@ if(process.env.NODE_ENV != "production"){
     require('dotenv').config()
 }
 
+
 const express = require("express");
 const app = express();
+
+
+// Socket IO //
+
+const { createServer } = require("http"); // you can use https as well
+const socketIo = require("socket.io");
+const server = createServer(app);
+const io = socketIo(server); // you can change the cors to your own domain
+
+
+// Socket IO //
+
 const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
@@ -65,8 +78,8 @@ const sessionOptions = {
     resave: false,
     saveUninitialized: true,
     cookie: { 
-        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
-        maxAge: 7 * 24 * 60 * 60 * 1000,
+        expires: Date.now() +  24 * 60 * 60 * 1000,
+        maxAge: 24 * 60 * 60 * 1000,
         httpOnly: true
      }
   };
@@ -93,6 +106,7 @@ app.use((req,res,next)=>{
     res.locals.sessionId = req.sessionID;
     res.locals.hotelID = req.hotelID;
     res.locals.customerName = req.customerName;
+    res.locals.tableNO = req.tableNO;
     next();
 })
 
@@ -124,9 +138,30 @@ app.use((err,req,res,next)=> {
 });
 
 
+// Socket IO //
+
+io.on("connection", (socket)=>{
+
+    socket.on("Table-Onboarded",(data)=>{
+        // console.log(data);
+        // io.emit("orderNotification",data);
+    });
+
+    // socket.on("clientOrder",(data)=>{
+    //     console.log(data.message);
+    //     // io.emit("orderNotification",data);
+    // });
+    
+    socket.on('disconnect', ()=>{});
+      
+    });
+
+// Socket IO //
+
+
 
 // Server //
-const PORT = process.env.PORT || 3000; // Use the port provided by Render, or default to 3000 for local development
-app.listen(PORT,()=>{
+const PORT = process.env.PORT || 3000; // Use the port provided by Service Provider, or default to 3000 for local development
+server.listen(PORT,()=>{
     console.log(`SERVER is ON to PORT ${PORT}`);
 });
