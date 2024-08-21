@@ -9,7 +9,7 @@ const app = express();
 
 // Socket IO //
 
-const { createServer } = require("https"); // you can use https as well
+const { createServer } = require("http"); // you can use https as well
 const socketIo = require("socket.io");
 const server = createServer(app);
 const io = socketIo(server); // you can change the cors to your own domain
