@@ -90,6 +90,7 @@
     border-radius: 10px !important;
     color:#fff !important;
     font-size: 4vw;
+    display:none !important;
 }
 
 .non-veg-heading,.veg-heading,.beverage-heading{
