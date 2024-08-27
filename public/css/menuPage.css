@@ -1,202 +1,137 @@
-.menu-card{
-    padding: 0 0 0 0.25rem!important;
-    width: 100% !important;
-    height:100% !important;
-    margin-bottom: 1rem !important;
-    display: flex !important;
-    /* animation: bottom-animation 2s; */
+*{
+    margin:0;
+    padding: 0;
 }
 
-.master-div{
-    padding-bottom: 4rem;
-    padding-top: 1rem;
+
+.sub-cat-heading{
+    font-family: "Nerko One", cursive;
+    font-weight: 500;
+    font-style: normal;
+    font-size: 5vw;
+    margin: 2rem 2rem 0 ;
 }
-/* Image Css */
-.img-div{
-    float: left;
+
+.heading-2{
+    font-size: 7vw;
 }
-.menu-card-img{
-    border-radius: 1.25rem ;
-    width: 45vw;
-    min-width: 126px;
-    max-width: 450px;
+
+.bannerDiv{
+    width: 90vw;
+    margin: 2rem auto 0;
+}
+.bannerImage{
+    width: 90vw;
     height: 45vw;
-    min-height: 126px;
-    max-height: 450px;
+    border-radius: 1rem;
 }
-/* .menu-card-img:hover{
-    transform: scale(1.01) !important;
-} */
 
-/* Content Css */
-
-.content-div{
+.top-scroll-div{
     width: 100%;
-    height: 45vw;
-    display: block;
+    padding: 0.85rem 0.5rem ;
+    overflow: auto;
+    white-space: nowrap;
+}
+.top-scroll-div::-webkit-scrollbar { 
+    display: none;  /* Safari and Chrome */
+}
+.sub-cat-anchor{
+    display: inline-block;
+    padding: 0;
+    margin: 0;
+    margin-right: 7px;
+    width: 32vw;
+    height: 32vw;
+    text-decoration: none;
+    /* border: 2px solid red; */
+    /* margin-right: 1rem; */
 }
 
-.name-price-div{
+.sample{
+    border-radius: 20px;
+    border: 1px solid #00000020;
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.75);
+    box-shadow: 5px 5px 7px 0px rgba(0, 0, 0, 0.40);
+}
+
+
+.sub-cat-div{
+    width: 32vw;
+    height: 32vw;
+    background-color:transparent;
     display:flex;
-    width:100%;
-    min-height: 30%;
-    gap: 1rem;
-    overflow: hidden;
-    align-items: center;
-    font-size: 4vw;
-    overflow: auto;
-}
-
-.item-name-div{
-    width:68%;
-    text-align:left;
-    padding-left: 3px;
-    font-weight: 800;
-}
-.item-price-div{
-    width: 32%;
-    float: right;
-    text-align: center;
-    font-weight: 800;
-}
-
-.item-info-div{
-    width: 100%;
-    height: 50%;
-    padding-left: 3px;
-    font-size: 3.5vw;
-    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-    overflow: auto;
-}
-
-.buttons-div{
-    width: 100%;
-    display: flex;
-    height: 20%;
-    align-items: end;
+    flex-direction: column;
     justify-content: center;
-    gap:1rem;
+    align-items: center;
+    /* gap: 0.5rem; */
+    border-radius:15px;
 }
-
-.menu-order-btn{
-    color:#fff !important;
-    border-radius: 10px !important;
-    background-color: #fc8019 !important;
-    font-weight: 800 !important;
-    font-size: 4vw;
+.sub-cat-image-div{
+    width: 23vw;
+    height: 23vw;
+    display: inline-flex;
+    justify-content: center;
 }
-.menu-cart-btn{
-    background-color: #fc1919 !important;
-    border-radius: 10px !important;
-    color:#fff !important;
-    font-size: 4vw;
+.sub-cat-image{
+    width: 23vw;
+    height: 23vw;
+    border-radius:15px ;
+    mix-blend-mode: multiply;
 }
-
-.non-veg-heading,.veg-heading,.beverage-heading{
-    text-align: center;
-    margin:2.5rem 0 ;
-    background-color:#964B00;
-    padding: 1rem;
-    color: #fff;
+.sub-cat-text{
+    margin: 0;
+    font-size: 20px;
     font-weight: 900;
-    display: block;
-    margin-top: 1rem;
-}
-.veg-heading{
-    /* margin-top: 0; */
-    background-color: #22aa00;
-}
-.beverage-heading{
-    background-color: #1e90ff;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 
-@keyframes bottom-animation{
-    0% {margin-top: 120vh;}
-    100% {margin-top: initial;}
-}
-
-@keyframes top-animation{
-    0% {margin-top: -100%;}
-    100% {margin-top: initial;}
-}
-
-/* After 480 Px */
-
-@media screen and (min-width: 480px) {
-    .master-div{
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
+@media screen and (min-width:480px) {
+    .bannerDiv{
+        max-width: 30rem;
+        max-height:14rem ;
     }
-
-    .menu-card{
-        display:block !important;
-        width: 20.5rem !important;
-        align-items:normal !important;
-        margin-left: auto;
-        margin-right: auto;
+    .bannerImage{
+        max-width: 30rem;
+        max-height: 14rem;
     }
-    .menu-card-img{
-        width: 18rem;
-        height: 15rem;
+    .sub-cat-heading{
+        font-size: 30px;
     }
-    .img-div{
-        float: none;
+    .heading-2{
+        font-size: 35px;
     }
-    .content-div{
-        height: 160px !important;
+    .sub-cat-anchor,.sub-cat-div{
+        width: 23vw;
+        height: 23vw;
     }
-    .name-price-div{
-        width: fit-content !important;
-        font-size: 19px !important;
-        width: 100% !important;
-        justify-content: space-between !important;
-        height: 25% !important;
-    }
-    .item-name-div{
-        text-align: left;
-    }
-    .item-price-div{
-        margin-right: 1rem;
-    }
-    .item-info-div{
-        font-size: 16px !important;
-        text-align: left !important;
-        height: fit-content !important;
-        height: 50% !important;
-    }
-    .buttons-div{
-        justify-content: start;
-        vertical-align: bottom;
-    }
-    .menu-order-btn,
-    .menu-cart-btn{
-        font-size: 16px !important;
+    .sub-cat-image-div,.sub-cat-image{
+        width: 17vw;
+        height: 17vw;
     }
 }
 
-@media screen and (max-width:279px) {
-    .menu-card{
-        display:block !important;
-        width: 70vw !important;
-        align-items:normal !important;
-        margin-left: auto;
-        margin-right: auto;
+@media screen and (min-width:1024px) {
+    .sub-cat-anchor,.sub-cat-div{
+        width: 17rem;
+        height: 17rem;
     }
-    .menu-card-img{
-        width: 70vw;
-        height: 70vw;
-    }
-    .img-div{
-        float: none;
-    }
-    .menu-order-btn,
-    .menu-cart-btn{
-        font-size: 3.85vw;
-        width: auto !important;
-        height: auto !important;
+    .sub-cat-image-div,.sub-cat-image{
+        width: 14rem;
+        height: 14rem;
     }
 }
 
 
+.warning{
+    display: none;
+}
+@media screen and (max-width:280px) {
+    .warning{
+        display: block;
+    }
+    .bannerDiv,.top-scroll-div,.sub-cat-heading,.master-div{
+        display: none;
+    }
+}

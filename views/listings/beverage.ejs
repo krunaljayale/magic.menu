@@ -1,0 +1,158 @@
+<%- layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/navbar.ejs") %>
+<%- include("../includes/masterFooter.ejs") %>
+<%- include("../includes/flash.ejs") %>
+
+
+<head>
+    <link rel="stylesheet" href="/css/itemsPage.css">
+    <link rel="stylesheet" href="/css/menuPage.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nerko+One&display=swap" rel="stylesheet">
+</head>
+
+
+
+<div class="warning">
+    <p style="color: red;">Screen too small to load content</p>
+</div>
+
+<div class="bannerDiv">
+    <img src="/images/New Banner.PNG" class="bannerImage" alt="Banner Image">
+</div>
+
+
+<div class="top-scroll-div">
+
+
+    <% for(item of uniqueItems){ %>
+        <% if(item === "Water"){ %>
+            <a href="/items/<%= item %>" class="sub-cat-anchor sample">
+                <div class="sub-cat-div" >
+    
+                    <div class="sub-cat-image-div">
+                    <img src="https://res.cloudinary.com/dcgskimn8/image/upload/v1724780803/magic_Media/fr2n4ilzs2lgdpwptbof.jpg" alt="Category Image" class="sub-cat-image"> 
+                    </div>
+    
+                    <p class="sub-cat-text">Water</p>
+                </div>
+            </a>
+        <% } %>
+    <% } %>
+
+
+    <% for(item of uniqueItems){ %>
+        <% if(item === "Coffee"){ %>
+            <a href="/items/<%= item %>" class="sub-cat-anchor sample">
+                <div class="sub-cat-div" >
+    
+                    <div class="sub-cat-image-div">
+                    <img src="https://res.cloudinary.com/dcgskimn8/image/upload/v1724758685/magic_Media/tj57ihpeyomwgqbmzpr2.jpg" alt="Category Image" class="sub-cat-image"> 
+                    </div>
+    
+                    <p class="sub-cat-text">Coffee</p>
+                </div>
+            </a>
+        <% } %>
+    <% } %>
+
+    <% for(item of uniqueItems){ %>
+        <% if(item === "Chai"){ %>
+            <a href="/items/<%= item %>" class="sub-cat-anchor sample">
+                <div class="sub-cat-div" >
+    
+                    <div class="sub-cat-image-div">
+                    <img src="https://res.cloudinary.com/dcgskimn8/image/upload/v1724761235/magic_Media/nfisdztmwchhh2hvgmog.jpg" alt="Category Image" class="sub-cat-image"> 
+                    </div>
+    
+                    <p class="sub-cat-text">Chai</p>
+                </div>
+            </a>
+        <% } %>
+    <% } %>
+
+    <% for(item of uniqueItems){ %>
+        <% if(item === "Mocktails"){ %>
+            <a href="/items/<%= item %>" class="sub-cat-anchor sample">
+                <div class="sub-cat-div" >
+    
+                    <div class="sub-cat-image-div">
+                    <img src="https://res.cloudinary.com/dcgskimn8/image/upload/v1724780803/magic_Media/pxxkslotctivr1bhazyp.jpg" alt="Category Image" class="sub-cat-image"> 
+                    </div>
+    
+                    <p class="sub-cat-text">Mocktails</p>
+                </div>
+            </a>
+        <% } %>
+    <% } %>
+
+    <% for(item of uniqueItems){ %>
+        <% if(item === "Shakes"){ %>
+            <a href="/items/<%= item %>" class="sub-cat-anchor sample">
+                <div class="sub-cat-div" >
+    
+                    <div class="sub-cat-image-div">
+                    <img src="https://res.cloudinary.com/dcgskimn8/image/upload/v1724758685/magic_Media/ozkfr9bblqmv80emdqfw.jpg" alt="Category Image" class="sub-cat-image"> 
+                    </div>
+    
+                    <p class="sub-cat-text">Shakes</p>
+                </div>
+            </a>
+        <% } %>
+    <% } %>
+
+</div>
+
+
+
+<% if(beverageItems.length){ %>
+    <h2 class="sub-cat-heading heading-2" style="color:rgb(0, 0, 0);">The Liquid Lounge...</h2>
+    <div class="master-div">
+      <% for(item of beverageItems){ %>  
+          <div class="menu-card">
+  
+            <div class="img-div"><img src="<%= item.image.url %>" alt="" class="menu-card-img"></div>
+  
+            <div class="content-div">
+              
+              <div class="name-price-div">
+                <div class="item-name-div"><p class="card-text item-name"><%= item.name %></p></div> 
+                <div class="item-price-div"><p class="card-text item-price">&#8377; <%= item.price %></p></div>
+              </div>
+              
+              <div class="item-info-div">
+                <p class=" item-info"> <%= item.info %> </p> 
+              </div>
+                
+              <div class="buttons-div data-item" data-item-id="<%=item._id %>">
+                    <a class="btn menu-order-btn" href="/orders/<%= item._id %>">Order</a>
+                    <button class="btn menu-cart-btn"><i class="fa-solid fa-cart-shopping"></i></button>
+              </div>
+    
+            </div>
+          </div>
+        <% } %>
+      </div>
+  <% } %>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js" integrity="sha512-01Pe9P3mJM/4c80VuoYEGHlspKGbd9uWQe9HtdLsdTqV0CS1kz8ca44sinVEXEvlZNciMmsAjeEbm5ZxHC7yYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+    const cartButtons = document.querySelectorAll('.menu-cart-btn');
+
+    cartButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+        const itemId = event.target.closest('.data-item').dataset.itemId;
+        button.style.display="none";
+        setTimeout(()=>{
+            button.style.display = "inline";
+        },1000);
+        axios.post('/cart', { itemId })
+        .then(response => {
+            
+    })
+    .catch(error => {
+        console.error(error);
+    });
+    });
+    });
+</script>

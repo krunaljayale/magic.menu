@@ -13,6 +13,15 @@ const urlBase64ToUint8Array = base64String =>{
     return outputArray;
 }
 
+// const saveSubscription = async (subscription) =>{
+//     const response = await fetch('http://192.168.126.167:3000/subscribe', {
+//         method:'post',
+//         headers:{'Content-type':"application/json"},
+//         body: JSON.stringify(subscription)
+//     })
+//     return response.json();
+// }
+
 const saveSubscription = async (subscription) =>{
     const response = await fetch('https://magicmenu.in/subscribe', {
         method:'post',

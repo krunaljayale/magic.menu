@@ -37,7 +37,7 @@ router.put("/profile/edit",isLoggedIn,
     let id = res.locals.currUser._id;
     let user = await User.findByIdAndUpdate(id, {...req.body.user});
     await user.save();
-    res.redirect("/admin")
+    res.redirect("/admin/profile")
 });
 
 
@@ -95,7 +95,8 @@ router.get("/:id/promote", isLoggedIn,
     wrapAsync(
         async(req,res)=>{
             let {id} = req.params;
-            let items = await Listing.find({promote:"Yes"});
+            let owner = res.locals.currUser._id;
+            let items = await Listing.find({owner:owner,promote:"Yes"});
             if(items.length >=3){
                 req.flash("flashError", "Upto 3 items can be promoted.");
                 res.redirect(`/admin/${id}/show`);

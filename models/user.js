@@ -7,8 +7,8 @@ const userSchema = new Schema({
         type:String,
         required:true,
     },
-    number:{
-        type:Number,
+    name:{
+        type:String,
         required:true,
     },
     hotelname:{

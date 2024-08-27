@@ -12,12 +12,12 @@
 <div class="mainHomeDiv">
   
     <div class="bannerDiv">
-      <img src="/images/Banner.PNG" class="bannerImage" alt="Banner Image">
+      <img src="/images/New Banner.PNG" class="bannerImage" alt="Banner Image">
     </div>
   
 
   <div class="specialDiv">
-    <h4>Best Seller Items</h4>
+    <h4>Our Best Seller Items</h4>
     <div class="specialContentDiv">
       <% for(item of specialItems){ %>
         <a href="/orders/<%= item._id %>" class="specialItemCard">
@@ -32,13 +32,13 @@
   </div>
 
   <div class="categoryDiv">
-    <h4 class="mb-3">Categories</h4>
+    <h4 class="mb-3">Menu</h4>
     <div class="categoryCardDiv">
-      <a href="/beverage" class="categoryCard">
+      <a href="/menu/beverage" class="categoryCard specialCard">
         <h6>Beverage</h6>
         <img src="/images/Beverage Img.jpg" alt="" class="categoryCardImage">
       </a>
-      <a href="/menu" class="categoryCard">
+      <a href="/menu/food" class="categoryCard">
         <h6>Food</h6>
         <img src="/images/Food Img.jpg" alt="" class="categoryCardImage">
       </a>

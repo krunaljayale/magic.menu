@@ -11,27 +11,27 @@
 
             <div class="mb-3">
                 <label for="name" class="form-label">User Name</label>
-                <input name="user[username]" value="<%= user.username%>" type="text" class="form-control" id="name" required>
+                <input name="user[name]" value="<%= user.name%>" maxlength="17" type="text" class="form-control" id="name" required>
             </div>
             
             <div class="mb-3">
                 <label for="description" class="form-label">Hotel Name</label>
-                <input name="user[hotelname]" class="form-control" id="description" value="<%= user.hotelname %>" required>
+                <input name="user[hotelname]" class="form-control" id="description" maxlength="17" value="<%= user.hotelname %>" required>
             </div>
 
             <div class="mb-3">
-                <label for="number" class="form-label">Mobile Number</label>
-                <input name="user[number]" class="form-control" id="description" type="number" value="<%= user.number %>" required>
+                <label for="username" class="form-label">Mobile Number</label>
+                <input name="user[username]" class="form-control" id="username" type="number" value="<%= user.username %>" required>
             </div>
 
             <div class="mb-3">
                 <label for="address" class="form-label">Address</label>
-                <input name="user[location]" class="form-control" id="description" value="<%= user.location %>" required>
+                <input name="user[location]" class="form-control" id="address" maxlength="50" value="<%= user.location %>" required>
             </div>
 
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-                <input name="user[email]" class="form-control" id="description" value="<%= user.email %>" required>
+                <input name="user[email]" class="form-control" id="email" value="<%= user.email %>" required>
             </div>
             
             <button class="btn btn-dark edit-btn">Edit</button>

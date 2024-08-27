@@ -1,0 +1,14 @@
+{
+    "name": "Magic Menu",
+    "short_name": "Magic",
+    "start_url": "/admin",
+    "theme_color": "#FFFFFF",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "/images/Favicon.jpg",
+        "type": "image/jpg"
+      }
+    ],
+    "scope": "/admin"
+  }

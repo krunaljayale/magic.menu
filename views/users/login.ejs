@@ -1,6 +1,7 @@
 <%- layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/flash.ejs") %>
 
+
 <div class="login-page">
     <a class="navbar-brand " href="/"><h3 class="Logo" >magic menu</h3></a>
     <div class="signup-box">
@@ -9,8 +10,8 @@
 
             <form action="/login" class="needs-validation" method="post" novalidate>
                 <div class="mb-3">
-                    <label for="username" class="form-label">Username</label> <i class="fa-solid fa-phone"></i>
-                    <input name="username" id="username" type="text" class="form-control" maxlength="17" placeholder="Enter your name" required>
+                    <label for="username" class="form-label">Mobile Number</label> <i class="fa-solid fa-phone"></i>
+                    <input name="username" id="username" type="number" class="form-control" maxlength="17" placeholder="Enter your number" required>
                 </div>
 
                 <div class="mb-3">
@@ -22,15 +23,14 @@
             </form>
             <p style="text-align: center;" class="mt-3">Didn't have an account?</p>
             <a class="btn btn-light signup-btn " href="/signup">Create account</a>
+        </div>
     </div>
-</div>
-
-    <footer class="signup-footer">
+    <footer class="signup-footer" >
         <div class="f-info" style="background-color: transparent;">
-            <div class="f-info-socials signup-login-socials" style="font-size: 20px;">
-                <a href="" ><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-instagram"></i></a>
-                <a href="" ><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-twitter-square"></i></a>
-                <a href="" ><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-facebook-square"></i></a>
+            <div class="f-info-socials signup-login-socials" style="font-size: 20px;display: inline-flex;">
+                <a href="https://Instagram.com/magic_menu.in"><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-instagram"></i></a>
+                <a href="https://x.com/magicmenuin?t=Nf6pl5nPRoTAEtqgtU5eQA&s=08"><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-twitter-square"></i></a>
+                <a href="https://www.linkedin.com/company/magic-menu-in/"><i _ngcontent-kso-c106="" aria-hidden="true" class="fa fa-linkedin-square"></i></a>
             </div>
             <div class="f-info-brand signup-login-brand" style="word-spacing: 2px;">&copy; Inspire Private Limited</div>
             <div class="f-info-links signup-login-links">

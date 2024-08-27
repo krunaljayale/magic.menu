@@ -28,7 +28,7 @@
 
                 <div class="buttons-div">
                     <form  action="/orders/<%= item._id %>" method="post" id="order-form" class="order-form needs-validation" novalidate >
-                        <input type="text" name="customername" id="customerName" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required >
+                        <input type="text" name="customername" id="customerName" class="form-control order-input" placeholder="Please Enter Your Name" value="<%= customerName %>" required >
                         <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>"  name="created_at"  style="display: none;">
                         
                         <div class="qty-button-div">
@@ -37,7 +37,7 @@
                                 <input class="form-control order-input qty-order-input" type="input" id="orderQuantity" name="qty" value="1" min="1" readonly>
                                 <button id="addBtn" class="addition-btn" type="button" onclick="addition();"><i class="fa-solid fa-plus"></i></button>
                             </div>
-                            <button type="submit" class="btn order-btn" id="orderBtn">Order</button>  
+                            <button type="submit" class="btn order-btn" id="myorderBtn">Order</button>  
                         </div>
                     </form> 
                 </div>
@@ -46,18 +46,8 @@
         <p class="orderNote">Note : Orders can not be cancelled after confirmation</p>
     </div>
 
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 
 <script>
-    
-    const socket = io();
-    const item = <%- JSON.stringify(item) %>;
-    const tableNO = <%- JSON.stringify(tableNO) %>;
-
-    socket.emit("Table-Onboarded", {tableNO:tableNO, owner:item.owner});
-    
-
-
     // For order-quantity buttons
     function addition(){
         orderQuantity.value++;
@@ -68,4 +58,25 @@
             orderQuantity.value--;
         }
     }
+
+    document.getElementById("myorderBtn").addEventListener("click", function() {
+        this.style.display = "none";
+        setTimeout(()=>{
+            document.getElementById("myorderBtn").style.display = "block";
+        },5000);
+    });
+    
+    
+</script>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+<script>
+    
+    // const socket = io();
+    // const item = < JSON.stringify(item) %>;
+    // const tableNO = < JSON.stringify(tableNO) %>;
+
+    // socket.emit("Table-Onboarded", {tableNO:tableNO, owner:item.owner});
+    
 </script>

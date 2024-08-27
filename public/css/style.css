@@ -111,6 +111,7 @@ body{
     position: relative !important;
     top:auto !important;
     bottom: 0!important;
+    margin-top: 4.5rem;
 }
 .signup-box{
     height:95vh;

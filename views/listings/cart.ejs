@@ -17,7 +17,7 @@
             <div class="card-body">
             <h5 class="card-title text-info"> <b> Oops! Cart is Empty</b></h5>
             <p class="card-text text-info"><i>You didn't have any item in your Cart!</i> </p>
-            <a href="/menu" class="btn btn-outline-info">Explore Menu</a>
+            <a href="/menu/food" class="btn btn-outline-info">Explore Menu</a>
             </div>
         </div>
     </div>
@@ -52,7 +52,7 @@
                         <input class="form-control order-input qty-order-input" type="input" id="orderQuantity" name="qty" value="1" min="1" readonly>
                         <button id="addBtn" class="addition-btn" type="button" onclick="addition();"><i class="fa-solid fa-plus"></i></button>
                     </div> -->
-                    <a href="/cart/<%= item._id %>/remove" class="btn cart-remove-btn">Remove</a>
+                    <a href="/cart/<%= item._id %>/remove" class="btn cart-remove-btn myButton" >Remove</a>
                 </div>
             </div>
 
@@ -66,10 +66,10 @@
             <p class="totalItems"> Total items : <b><%= items.length %></b> </p>
             <p class="totalValue"> Total price: <b id="price">&#8377;</b></p>
         </div>
-        <form action="/cart" method="post"  class="needs-validation" novalidate>
+        <form action="/cart/order" method="post"  class="needs-validation" novalidate>
             <input type="text" name="customername" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required >
             <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>"  name="created_at"  style="display: none;">
-            <button class="orderBtn btn btn-info">Order All</button>  
+            <button class="orderBtn btn btn-info" id="orderBtn">Order All</button>  
         </form>
         
     </div>
@@ -78,6 +78,21 @@
 
 
 <script>
+
+
+    document.querySelectorAll('.myButton').forEach((button) => {
+      button.addEventListener('click', (e) => {
+        e.target.style.display = 'none';
+      });
+    });
+
+
+    document.getElementById("orderBtn").addEventListener("click", function() {
+        this.style.display = "none";
+        setTimeout(()=>{
+            document.getElementById("orderBtn").style.display = "block";
+        },3000);
+    });
         // For order-quantity buttons
         function addition(){
         orderQuantity.value++;

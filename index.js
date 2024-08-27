@@ -9,7 +9,7 @@ const app = express();
 
 // Socket IO //
 
-const { createServer } = require("https"); // you can use https as well
+const { createServer } = require("http"); // you can use https as well
 const socketIo = require("socket.io");
 const server = createServer(app);
 const io = socketIo(server); // you can change the cors to your own domain
@@ -33,6 +33,7 @@ const flash = require("connect-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
+const axios = require("axios");
 
 
 
@@ -77,15 +78,12 @@ const sessionOptions = {
     secret: process.env.SECRET,
     resave: false,
     saveUninitialized: true,
-    cookie: { 
-        expires: Date.now() +  24 * 60 * 60 * 1000,
-        maxAge: 24 * 60 * 60 * 1000,
-        httpOnly: true
-     }
+    // cookie: { 
+    //     expires: Date.now() + 10 * 24 * 60 * 60 * 1000,
+    //     maxAge:  10 * 1000,
+    //     httpOnly: true
+    //  }
   };
-
-
-
 app.use(session(sessionOptions));
 app.use(flash());
 app.use(passport.initialize());
@@ -104,9 +102,9 @@ app.use((req,res,next)=>{
     
     res.locals.currUser = req.user;
     res.locals.sessionId = req.sessionID;
-    res.locals.hotelID = req.hotelID;
+    res.locals.hotelID = req.cookies.hotelID;
     res.locals.customerName = req.customerName;
-    res.locals.tableNO = req.tableNO;
+    res.locals.tableNO = req.cookies.tableNO;
     next();
 })
 
@@ -138,7 +136,7 @@ app.use((err,req,res,next)=> {
 });
 
 
-// Socket IO //
+// Socket IO Start//
 
 io.on("connection", (socket)=>{
 
@@ -156,7 +154,7 @@ io.on("connection", (socket)=>{
       
     });
 
-// Socket IO //
+// Socket IO end//
 
 
 
