@@ -68,7 +68,6 @@
         </div>
         <form action="/cart/order" method="post"  class="needs-validation" novalidate>
             <input type="text" name="customername" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required >
-            <input type="text" value="<%= new Date().toString().split(" ").slice(1,5).join(" ") %>"  name="created_at"  style="display: none;">
             <button class="orderBtn btn btn-info" id="orderBtn">Order All</button>  
         </form>
         

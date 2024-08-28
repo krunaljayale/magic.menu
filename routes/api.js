@@ -93,8 +93,8 @@ router.get("/", (req,res)=>{
 // Menu Food Route //
     router.get("/menu/food",async (req,res)=>{
         let hotelID = res.locals.hotelID;
-        const vegItems = await Listing.find({owner:hotelID, category:"Veg", subcategory: { $in: ["Other", "Default"] } });
-        const nonvegItems = await Listing.find({owner:hotelID, category:"Non-Veg", subcategory: { $in: ["Other", "Default"] } });
+        const vegItems = await Listing.find({owner:hotelID, category:"Veg", subcategory: { $in: ["Other", "Default", null] } });
+        const nonvegItems = await Listing.find({owner:hotelID, category:"Non-Veg", subcategory: { $in: ["Other", "Default", null] } });
         const allItems = await Listing.find({owner:hotelID, category: { $in: ["Veg", "Non-Veg"] }, subcategory: { $nin: ["Default", "Other",null] } });
         const uniqueItems = [...new Set(allItems.map(item => item.subcategory))];
         const hotel = await User.findById(hotelID);
@@ -158,10 +158,11 @@ router.get("/", (req,res)=>{
     async (req,res)=>{
         let { id } = req.params;
         let {name, price,image,owner} = await Listing.findById(id);
-        let { customername,qty,created_at} = req.body;
+        let { customername,qty} = req.body;
+        const created_at = new Date().toString().split(" ").slice(1,5).join("-")
         res.cookie("customerName", customername);
-        let tableNO = await req.cookies.tableNO;
-        let newMyOrders = new MyOrders({customername,name,image,price,qty,owner,created_at,tableNO});
+        let tableno = await req.cookies.tableNO;
+        let newMyOrders = new MyOrders({customername,name,image,price,qty,owner,created_at,tableno});
         newMyOrders.customerId = res.locals.sessionId;
         newMyOrders.status ="Waiting";
         await newMyOrders.save();
@@ -182,19 +183,20 @@ router.get("/", (req,res)=>{
             item_quantity:qty,
             customer_name:customername,
             order_id:newMyOrders._id,
-            table_no:tableNO,
+            table_no:tableno,
             customer_id:res.locals.sessionId
           });   
         };
 
         let endPoint = await Subscription.find({userID:owner});
-        if(endPoint.length && tableNO){
-           webPush.sendNotification(endPoint[0], `${customername} from table number ${tableNO} ordered ${qty} ${name} just now` ) 
+        if(endPoint.length && tableno){
+           webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered ${qty} ${name} just now` ) 
         }else if(endPoint.length){
             webPush.sendNotification(endPoint[0], `${customername} ordered ${qty} ${name} just now` ) 
         }
         req.flash("flashSuccess", "Order Placed");
         res.redirect(`/orders/${id}`);
+        return
         // res.redirect(`/home?hotelID=${owner}`);
     }));
     
@@ -236,6 +238,7 @@ router.get("/", (req,res)=>{
                 item_quantity:qty,
                 customer_name:customername,
                 order_id:id,
+                table_no:tableno,
                 });
             };
             
@@ -334,8 +337,10 @@ router.get("/", (req,res)=>{
 
 
         const items = await Cart.find({customerId:res.locals.sessionId});
-        let { customername,created_at} = req.body;
-        
+        let { customername} = req.body;
+        const created_at = new Date().toString().split(" ").slice(1,5).join("-");
+        let tableno = await req.cookies.tableNO;
+
         for (let item of items){
             let name = item.name;
             let id = item._id;
@@ -343,7 +348,7 @@ router.get("/", (req,res)=>{
             price = item.price;
             owner = item.owner;
             qty = 1;
-            const newMyOrders = new MyOrders({customername,name,image,qty,owner,price,created_at});
+            const newMyOrders = new MyOrders({customername,name,image,qty,owner,price,created_at,tableno});
             newMyOrders.customerId = res.locals.sessionId;
             newMyOrders.status ="Waiting";
             await newMyOrders.save();
@@ -366,7 +371,7 @@ router.get("/", (req,res)=>{
             };
         }
         let endPoint = await Subscription.find({userID:owner});
-        let tableno = await req.cookies.tableNO;
+        
         
 
         if (items.length === 1){

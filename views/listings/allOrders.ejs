@@ -76,12 +76,21 @@
               <div class="item-price-div"><p class="card-text item-price"> &#8377; <%= order.price %>/</p></div>
             </div>
             <div class="customername-qty-div">
-                <div class="item-customername-div"><p class="card-text item-info">Order by :- <%= order.customername %></p></div>
-                <div class="item-qty-div"><p class="card-text item-qty">Qty:- <%=order.qty %></p></div>
-                <p>On : <%= order.created_at %></p>
+                <div class="item-customername-div"><p class="card-text item-info">Ordered by :- <%= order.customername %></p></div>
+                <div class="item-qty-div">
+                  <p class="card-text item-qty">Qty:- <%=order.qty %></p>
+                    <% if(order.tableno){ %>
+                      <p class="card-text">Table No:- <%=order.tableno%></p>
+                    <%}%>
+                </div>
             </div>
             <div class="buttons-div">
-              <p class="card-text" >Order is confirmed </p>
+              <%if(!order.confirmed_at){%>
+                <p class="card-text">Order is confirmed at <%=order.created_at %></p>
+              <%}%>
+              <%if(order.confirmed_at){%>
+                <p class="card-text" >Order is confirmed at <%=order.confirmed_at %></p>
+              <%}%>
             </div>
           </div>
         </div>

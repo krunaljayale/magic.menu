@@ -6,7 +6,7 @@
 <head>
     <title>Orders</title>
     <link rel="stylesheet" href="/css/myorderPage.css">
-    <!-- <meta http-equiv="refresh" content="15"> -->
+    <meta http-equiv="refresh" content="15">
 </head>
 
 
@@ -49,11 +49,18 @@
                 <div class="order-info-div">
                     <p class="order-customer">By:- <%= item.customername %></p>
                     <% if(item.status === "Confirmed"){ %>
-                        <p class="order-time">Confirmed at <%= item.created_at %></p>  
+                        <%if(item.confirmed_at){%>
+                            <p class="order-time">Confirmed at <%= item.confirmed_at %></p>  
+                        <% } %>
+
+                        <%if(!item.confirmed_at){%>
+                            <p class="order-time">Confirmed at <%= item.created_at %></p> 
+                        <% } %>
+
                     <% } %>
 
                     <% if(item.status != "Confirmed"){ %>
-                        <p class="order-time">On <%= item.created_at %></p>
+                        <p class="order-time">On : <%= item.created_at %></p>
                     <% } %>
                     
                 </div>
