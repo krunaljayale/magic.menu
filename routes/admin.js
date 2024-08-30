@@ -133,7 +133,7 @@ router.get("/:id/demote", isLoggedIn,
             res.redirect(`/admin/${id}/show`);
         }
     )
-)
+);
 
 // Admin New Route //
 router.get("/new",isLoggedIn,
@@ -162,11 +162,6 @@ router.get("/orders",isLoggedIn,
         let owner = res.locals.currUser._id;
         const allOrders = (await MyOrder.find({owner:owner, status:"Confirmed"})).reverse();
         const confirmOrders = await MyOrder.find({owner:owner, status:"Waiting"});
-        for(item of confirmOrders){
-          console.log(item.created_at);  
-        }
-        
-        
         res.render("listings/allOrders.ejs", {allOrders,confirmOrders});
 }));
 
@@ -176,7 +171,7 @@ router.get("/:id/confirm",isLoggedIn,
         async(req,res)=>{
         let {id}= req.params;
         const order = await MyOrder.findById(id);
-        order.confirmed_at = new Date().toString().split(" ").slice(4,5).join(" ");
+        order.confirmed_at = new Date(Date.now()).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         order.status ="Confirmed";
         order.save();
 

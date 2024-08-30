@@ -71,6 +71,7 @@ router.get("/", (req,res)=>{
             res.cookie("tableNO", tableNO);
         }
 
+        const tableno = res.locals.tableNO;
         // MIXPANEL SETUP //
         if(mixpanel){
         mixpanel.track("User Onboard", {
@@ -84,9 +85,9 @@ router.get("/", (req,res)=>{
         const specialItems = await Listing.find({owner:hotelID , promote:"Yes"}).limit(3);
         if(!specialItems.length){
             const specialItems = await Listing.find({owner:hotelID}).limit(3);
-            res.render("listings/home.ejs", {specialItems, hotel, hotelID, banner})
+            res.render("listings/home.ejs", {specialItems, hotel,tableno, hotelID, banner})
         }else{
-            res.render("listings/home.ejs", {specialItems, hotel, hotelID, banner});
+            res.render("listings/home.ejs", {specialItems, hotel,tableno, hotelID, banner});
         }
     }));
 
@@ -159,7 +160,11 @@ router.get("/", (req,res)=>{
         let { id } = req.params;
         let {name, price,image,owner} = await Listing.findById(id);
         let { customername,qty} = req.body;
-        const created_at = new Date().toString().split(" ").slice(1,5).join("-")
+        // + (5.5 * 60 * 60 * 1000)  To be plused after date.now() function//
+        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let time =  new Date(Date.now()).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        let current_Date = `${date} ${time}`;
+        const created_at = current_Date;
         res.cookie("customerName", customername);
         let tableno = await req.cookies.tableNO;
         let newMyOrders = new MyOrders({customername,name,image,price,qty,owner,created_at,tableno});
