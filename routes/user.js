@@ -42,8 +42,7 @@ router.get("/login", (req,res) => {
 router.post("/login",saveRedirectUrl,
 passport.authenticate("local", {failureRedirect: "/login", failureFlash:true}),
     wrapAsync(async(req,res) => {
-    let redirectUrl = res.locals.redirectUrl || "admin"; 
-    res.redirect(redirectUrl);
+    res.redirect("admin/orders");
 }));
 
 router.get("/logout",isLoggedIn,
