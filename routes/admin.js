@@ -171,7 +171,7 @@ router.get("/:id/confirm",isLoggedIn,
         async(req,res)=>{
         let {id}= req.params;
         const order = await MyOrder.findById(id);
-        order.confirmed_at = new Date(Date.now()).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        order.confirmed_at = new Date(Date.now()+ (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         order.status ="Confirmed";
         order.save();
 

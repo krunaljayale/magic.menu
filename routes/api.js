@@ -162,7 +162,7 @@ router.get("/", (req,res)=>{
         let { customername,qty} = req.body;
         // + (5.5 * 60 * 60 * 1000)  To be plused after date.now() function//
         let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
-        let time =  new Date(Date.now()).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;
         res.cookie("customerName", customername);
