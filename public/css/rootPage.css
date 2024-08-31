@@ -78,6 +78,11 @@
     width: 15vw;
     margin-bottom: 2rem;
 }
+
+.imageDiv{
+    display: block;
+    text-align: center;
+}
 @media screen and (min-width: 1000px){
     .pText{
         font-size: 14px;
