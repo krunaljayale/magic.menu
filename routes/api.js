@@ -71,7 +71,7 @@ router.get("/", (req,res)=>{
             res.cookie("tableNO", tableNO);
         }
 
-        const tableno = res.locals.tableNO;
+        const tableno = tableNO;
         // MIXPANEL SETUP //
         if(mixpanel){
         mixpanel.track("User Onboard", {
