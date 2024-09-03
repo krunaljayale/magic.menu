@@ -6,8 +6,8 @@
     "display": "fullscreen",
     "icons": [
       {
-        "src": "/images/Favicon.jpg",
-        "type": "image/jpg"
+        "src": "/images/Designer.png",
+        "type": "image/png"
       }
     ],
     "scope": "/admin"
