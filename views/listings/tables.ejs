@@ -1,0 +1,56 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/adminNav.ejs") %>
+<%- include("../includes/flash.ejs") %>
+
+
+<head>
+    <link rel="stylesheet" href="/css/adminTablesPage.css">
+</head>
+
+<h1 class="tables-page-heading">All Active Tables</h1>
+
+<div class="master-div">
+  <% if(waitingTables && waitingTables.length){ %>
+    <% for(table of waitingTables){ %>
+        <a href="/admin/tables/orders/<%= table.number %>" class="sub-cat-anchor sample special-div">
+            <div class="sub-cat-div" >
+                <p class="sub-cat-text special-sub-cat-text"><%= table.number %></p>
+            </div>
+        </a>
+    <% } %>
+  <% } %>
+
+  <% if(activeTables && activeTables.length){ %>
+    <% for(table of activeTables){ %>
+        <a href="/admin/tables/orders/<%= table.number %>" class="sub-cat-anchor sample">
+            <div class="sub-cat-div" >
+                <p class="sub-cat-text"><%= table.number %></p>
+            </div>
+        </a>
+    <% } %>
+  <% } %>
+</div>
+
+        
+<!-- JavaScript -->
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+<script>
+  const owner = <%- JSON.stringify(owner) %>;
+  const socket = io();
+  socket.on("Table_Onboarded",(data)=>{
+    if(data.owner = owner){
+      setTimeout(()=>{
+        window.location.reload(true)
+      },1500) 
+    }
+  });
+
+  socket.on("Cancel_Order",(data)=>{
+    if(data.owner = owner){
+      setTimeout(()=>{
+        window.location.reload(true);
+      },1500) 
+    }
+  });
+</script>

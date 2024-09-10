@@ -17,3 +17,8 @@
       }, false)
     })
   })()
+
+
+  setTimeout(()=>{
+    document.getElementById('fade').style.display="none";
+  }, 3000) 

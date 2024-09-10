@@ -142,13 +142,18 @@ io.on("connection", (socket)=>{
 
     socket.on("Table-Onboarded",(data)=>{
         // console.log(data);
-        // io.emit("orderNotification",data);
+        
+        io.emit("Table_Onboarded",data);
     });
 
-    // socket.on("clientOrder",(data)=>{
-    //     console.log(data.message);
-    //     // io.emit("orderNotification",data);
-    // });
+    socket.on("Confirm-Reject",(data)=>{
+        io.emit("Confirm_Reject",data);
+    });
+
+    socket.on("Cancel-Order",(data)=>{
+        // console.log("Order Cancelled");
+        io.emit("Cancel_Order",data);
+    });
     
     socket.on('disconnect', ()=>{});
       

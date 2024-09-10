@@ -1,0 +1,83 @@
+*{
+    font-family: "Ubuntu", sans-serif;
+}
+
+.tables-page-heading{
+    text-align: center;
+    margin:1rem;
+}
+
+
+.master-div{
+    padding: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.sub-cat-anchor{
+    display: block;
+    padding: 0;
+    margin: 0;
+    /* margin-right: 7px; */
+    width: 22.5vw;
+    height: 22.5vw;
+    text-decoration: none;
+    /* border: 2px solid red; */
+    /* margin-right: 1rem; */
+}
+
+.sample{
+    border-radius: 20px;
+    border: 1px solid #00000020;
+    /* background-color: #92ff2c; */
+    background-color: #fff;
+    color: rgba(0, 0, 0, 0.75);
+    /* box-shadow: 5px 5px 10px 0px rgba(0, 110, 255, 0.71); */
+    box-shadow: 5px 5px 10px 0px #f78664;
+}
+
+
+.sub-cat-div{
+    width: 22.5vw;
+    height: 22.5vw;
+    background-color:transparent;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius:15px;
+}
+.special-div{
+    background-color: #3bc5f7;
+    /* background-color: #92ff2c; */
+}
+.sub-cat-text{
+    margin: 0;
+    font-size: 8vw;
+    font-weight: 900;
+    color: #000;
+}
+.special-sub-cat-text{
+    color: #ffffff;
+}
+@media screen and (min-width:480px) {
+    .sub-cat-text{
+        font-size:5vw;
+    }
+    .sub-cat-anchor,.sub-cat-div{
+        width: 14vw;
+        height: 14vw;
+    }
+}
+
+
+@media screen and (min-width:1024px) {
+    .sub-cat-text{
+        font-size:50px ;
+    }
+    .sub-cat-anchor,.sub-cat-div{
+        width: 9rem;
+        height: 9rem;
+    }
+}

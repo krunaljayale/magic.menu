@@ -10,6 +10,8 @@
     position: fixed;
 }
 
+
+
 .masterDiv button{
     background:none;
     border: none;
@@ -31,4 +33,8 @@
 .icon p{
     margin: 0;
     font-size: 15px;
+}
+
+.admin-masterDiv{
+    justify-content: center;
 }

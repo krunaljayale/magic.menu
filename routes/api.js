@@ -3,18 +3,21 @@ const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const Cart = require("../models/cart.js");
 const MyOrders = require("../models/myorder.js");
+const CurrentOrders = require("../models/currentorders.js");
 const Listing = require("../models/listing.js");
 const User = require("../models/user.js");
+const Table = require("../models/table.js");
 const Subscription = require("../models/subscription.js");
 const webPush = require("web-push");
 const Mixpanel = require('mixpanel');
+const { HttpStatusCode } = require("axios");
 
 
 // Mixpanel Setup //   
 
-// const mixpanel = "";
+const mixpanel = "";
 
-const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
 
 
 
@@ -70,8 +73,6 @@ router.get("/", (req,res)=>{
         if(tableNO){
             res.cookie("tableNO", tableNO);
         }
-
-        const tableno = tableNO;
         // MIXPANEL SETUP //
         if(mixpanel){
         mixpanel.track("User Onboard", {
@@ -80,15 +81,14 @@ router.get("/", (req,res)=>{
             address:hotel.location,
           });  
         }
-        
-
         const specialItems = await Listing.find({owner:hotelID , promote:"Yes"}).limit(3);
         if(!specialItems.length){
             const specialItems = await Listing.find({owner:hotelID}).limit(3);
-            res.render("listings/home.ejs", {specialItems, hotel,tableno, hotelID, banner})
+            res.render("listings/home.ejs", {specialItems, hotel,tableNO, hotelID, banner})
         }else{
-            res.render("listings/home.ejs", {specialItems, hotel,tableno, hotelID, banner});
+            res.render("listings/home.ejs", {specialItems, hotel,tableNO, hotelID, banner});
         }
+        return
     }));
 
 // Menu Food Route //
@@ -113,7 +113,7 @@ router.get("/", (req,res)=>{
         return res.render("listings/beverage.ejs", {beverageItems,uniqueItems, hotelID, hotel});
     });
 
-// Items Route //
+// Category Items Route //
     router.get("/items/:name",async (req,res)=>{
         let hotelID = res.locals.hotelID;
         let {name} = req.params;
@@ -121,6 +121,7 @@ router.get("/", (req,res)=>{
         const hotel = await User.findById(hotelID);
         
         res.render("listings/items.ejs", {allItems, hotel,hotelID});
+        return
     });
     
 
@@ -152,6 +153,7 @@ router.get("/", (req,res)=>{
         }else{
            res.render("listings/order.ejs",{item,tableNO, hotelID});
         }
+        return
     }));
     
     router.post("/orders/:id",
@@ -159,15 +161,42 @@ router.get("/", (req,res)=>{
     async (req,res)=>{
         let { id } = req.params;
         let {name, price,image,owner} = await Listing.findById(id);
-        let { customername,qty} = req.body;
-        // + (5.5 * 60 * 60 * 1000)  To be plused after date.now() function//
+        let { customername,qty,mob_number} = req.body;
+        // + (5.5 * 60 * 60 * 1000)  To be plused after date.now() function to get indian time//
         let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
         let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;
         res.cookie("customerName", customername);
+        res.cookie("mob_number", mob_number);
         let tableno = await req.cookies.tableNO;
-        let newMyOrders = new MyOrders({customername,name,image,price,qty,owner,created_at,tableno});
+        if(!tableno || tableno === "0"){
+            res.json({status: "Error", message:"Please rescan the QR"});
+            return
+        }
+        
+        
+        const newTable = await Table.findOne({owner : owner, status : "Active", number : tableno });
+        if(newTable){
+            if(newTable.user === res.locals.sessionId){
+                newTable.substatus = "Active";
+                newTable.save();  
+            }else{
+                res.json({status: "Error", message:"Table is already booked"});
+                return
+            }
+            
+        }else if(!newTable){
+            let table = new Table();
+            table.number = tableno;
+            table.owner = owner;
+            table.user = res.locals.sessionId;
+            table.status = "Active";
+            table.substatus = "Active";
+            await table.save(); 
+        }
+        
+        let newMyOrders = new CurrentOrders({customername,name,image,price,qty,owner,created_at,tableno,mob_number});
         newMyOrders.customerId = res.locals.sessionId;
         newMyOrders.status ="Waiting";
         await newMyOrders.save();
@@ -199,10 +228,10 @@ router.get("/", (req,res)=>{
         }else if(endPoint.length){
             webPush.sendNotification(endPoint[0], `${customername} ordered ${qty} ${name} just now` ) 
         }
-        req.flash("flashSuccess", "Order Placed");
-        res.redirect(`/orders/${id}`);
+        // req.flash("flashSuccess", "Order Placed");
+        // res.redirect(`/orders/${id}`);
+        res.json({status: "Success", message:"Order Placed"});
         return
-        // res.redirect(`/home?hotelID=${owner}`);
     }));
     
     // My Orders //
@@ -210,21 +239,31 @@ router.get("/", (req,res)=>{
     wrapAsync(
     async(req,res)=>{
         const hotelID = res.locals.hotelID;
-        const items  = (await MyOrders.find({customerId:res.locals.sessionId})).reverse();
-        res.render("listings/myorders.ejs",{items,hotelID}) ;
+        let tableNO = await req.cookies.tableNO;
+        const items  = (await CurrentOrders.find({customerId:res.locals.sessionId})).reverse();
+        if(!items.length ){
+            const newTable = await Table.findOneAndDelete({owner : hotelID, status : "Active", number : tableNO, user:res.locals.sessionId});
+        }
+        res.render("listings/myorders.ejs",{items,hotelID,tableNO}) ;
+        return
     }));
     
     // Order Cancel //
     router.delete("/myorders/:id/cancel",wrapAsync(
     async(req,res)=>{
         let { id } = req.params;
-        let order =  await MyOrders.findById(id);
+        let order =  await CurrentOrders.findById(id);
         let owner = order.owner;
         let customername = order.customername;
         let name = order.name;
         let qty = order.qty;
         let price= order.price;
         let tableno = await req.cookies.tableNO;
+        if(!tableno || tableno === "0"){
+            req.flash("flashError" ,"Please rescan the QR");
+            res.redirect("/myorders");
+            return
+        }
         const hotel = await User.findById(owner);
        
         if(order.status === "Confirmed"){
@@ -246,9 +285,8 @@ router.get("/", (req,res)=>{
                 table_no:tableno,
                 });
             };
-            
-
-            await MyOrders.findByIdAndDelete(id);
+        
+            await CurrentOrders.findByIdAndDelete(id);
             let endPoint = await Subscription.find({userID:owner});
             if(endPoint.length && tableno){
                 await webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} has cancelled order of ${qty} ${name} just now` );
@@ -258,6 +296,7 @@ router.get("/", (req,res)=>{
             
             req.flash("flashSuccess", "Order Cancelled");
             res.redirect("/myorders");
+            return
         };
     }));
 
@@ -285,6 +324,7 @@ router.get("/", (req,res)=>{
             };
 
             res.json({status: "Success", message:"Item added to Cart"});
+            return
         }
 
     ));
@@ -293,17 +333,19 @@ router.get("/", (req,res)=>{
     router.get("/cart", wrapAsync(
     async(req,res)=>{
         const hotelID = res.locals.hotelID;
+        let tableNO = await req.cookies.tableNO;
         const items = await Cart.find({customerId:res.locals.sessionId});
-        if(req.cookies.customerName){
-            let customerName = req.cookies.customerName;
-            res.render("listings/cart.ejs" ,{items,hotelID,customerName});
+        let customerName = req.cookies.customerName;
+        if(customerName){    
+            res.render("listings/cart.ejs" ,{items,hotelID,customerName, tableNO});
         }else{
-        res.render("listings/cart.ejs" ,{items,hotelID});
+        res.render("listings/cart.ejs" ,{items,hotelID,tableNO});
         }
+        return
     }));
     
     // Cart Item Remove 
-    router.get("/cart/:id/remove", wrapAsync(
+    router.post("/cart/:id/remove", wrapAsync(
     async(req,res)=>{
         let { id } = req.params;
         let {name,price,owner} = await Cart.findById(id);
@@ -326,10 +368,12 @@ router.get("/", (req,res)=>{
 
         req.flash("flashSuccess", "Item Removed");
         res.redirect("/cart");
+        return
     }));
 
     // Cart Order Route
     router.post("/cart/order", async (req,res)=> {
+
         // For testing purpose //
         let listings = await Cart.find();
         if (listings){
@@ -340,26 +384,56 @@ router.get("/", (req,res)=>{
         } }
         // For testing purpose //
 
-
+        const hotelID = res.locals.hotelID;
         const items = await Cart.find({customerId:res.locals.sessionId});
-        let { customername} = req.body;
-        const created_at = new Date().toString().split(" ").slice(1,5).join("-");
+        const specialItem = await Cart.findOne({customerId:res.locals.sessionId});
+        let { customername , mob_number} = req.body;
+        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        let current_Date = `${date} ${time}`;
+        const created_at = current_Date;
+        res.cookie("customerName", customername);
+        res.cookie("mob_number", mob_number);
         let tableno = await req.cookies.tableNO;
+        if(!tableno || tableno === "0"){
+            req.flash("flashError" ,"Please rescan the QR");
+            res.redirect("/cart");
+            return
+        }
+
+        const newTable = await Table.findOne({owner :hotelID, status : "Active", number : tableno});
+        if(newTable){
+            if(newTable.user === res.locals.sessionId){
+                newTable.substatus = "Active";
+                newTable.save();  
+            }else{
+                req.flash("flashError" ,"Table is already booked");
+                res.redirect("/cart");
+                return
+            }
+        }else if(!newTable){
+            let table = new Table();
+            table.number = tableno;
+            table.owner = specialItem.owner;
+            table.user = res.locals.sessionId;
+            table.status = "Active";
+            table.substatus = "Active";
+            await table.save(); 
+        }
 
         for (let item of items){
             let name = item.name;
             let id = item._id;
-            image = item.image;
-            price = item.price;
-            owner = item.owner;
-            qty = 1;
-            const newMyOrders = new MyOrders({customername,name,image,qty,owner,price,created_at,tableno});
+            let image = item.image;
+            let price = item.price;
+            let owner = item.owner;
+            let qty = 1;
+            const newMyOrders = new CurrentOrders({customername,name,image,qty,owner,price,created_at,tableno,mob_number});
             newMyOrders.customerId = res.locals.sessionId;
             newMyOrders.status ="Waiting";
             await newMyOrders.save();
 
-            const hotel = await User.findById(owner);
-
+            
             // MIXPANEL SETUP //
             if(mixpanel){
                 mixpanel.track("Order Placed", {
@@ -375,10 +449,15 @@ router.get("/", (req,res)=>{
             });
             };
         }
-        let endPoint = await Subscription.find({userID:owner});
+
+        const hotel = await User.findById(specialItem.owner);
+        
         
         
 
+
+        let endPoint = await Subscription.find({userID:{ $in: [specialItem.owner , hotelID] }});
+        
         if (items.length === 1){
             for(let item of items){
                 if(endPoint.length && tableno){
@@ -394,9 +473,11 @@ router.get("/", (req,res)=>{
                 webPush.sendNotification(endPoint[0], `${customername} created a bulk order on ${created_at}` );
             }
         }
-        res.cookie("customerName", customername);
+        
         await Cart.deleteMany({customerId:res.locals.sessionId});
+        req.flash("flashSuccess" ,"Orders Placed");
         res.redirect("/myorders");
+        return
     });
         
 

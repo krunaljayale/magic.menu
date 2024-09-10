@@ -6,7 +6,7 @@
 <head>
     <title>Orders</title>
     <link rel="stylesheet" href="/css/myorderPage.css">
-    <meta http-equiv="refresh" content="15">
+    <!-- <meta http-equiv="refresh" content="15"> -->
 </head>
 
 
@@ -67,6 +67,7 @@
                 <div class="buttons-div">
                     <form method="post" id="cancelForm" action="/myorders/<%= item._id %>/cancel?_method=DELETE">
                         <button class="btn myorder-cancel-btn myButton" id="<%= item._id %>">Cancel</button>
+                        <audio id="remove-sound" src="/sounds/small_not_tone.wav" type="audio/mp3" controls="false" style="display: none;"></audio> 
                     </form>
                 </div>
                 <% } %>
@@ -88,11 +89,33 @@
 </div>
 <% } %>
 
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 
 <script>
+    
     document.querySelectorAll('.myButton').forEach((button) => {
       button.addEventListener('click', (e) => {
+        document.getElementById("remove-sound").play();
         e.target.style.display = 'none';
       });
     });
+
+    const socket = io();
+
+    const cancelForm = document.getElementById('cancelForm');
+    cancelForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        setTimeout(()=>{
+            socket.emit("Cancel-Order", {owner:hotelID});
+            cancelForm.submit();
+        },1000);
+    });    
+
+    socket.on("Confirm_Reject",(data)=>{
+    if(data.owner = hotelID){
+      setTimeout(()=>{
+        window.location.reload(true)
+      },1500) 
+    }
+  });
   </script>

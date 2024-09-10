@@ -7,6 +7,9 @@
     <link rel="stylesheet" href="/css/cartPage.css">
 </head>
 
+<div class="alert col-8 offset-2 alert-success alert-dismissible fade show flash flashSuccess success" id="success" role="alert">
+    <p><i class="fa-regular fa-circle-check"></i> &nbsp;&nbsp;&nbsp;&nbsp;<span id="successSpan"></span></p>
+</div>
 
 <h5 class="cart-title"> Items in Cart <i class="fa-solid fa-cart-shopping"></i></h5>
 
@@ -52,7 +55,11 @@
                         <input class="form-control order-input qty-order-input" type="input" id="orderQuantity" name="qty" value="1" min="1" readonly>
                         <button id="addBtn" class="addition-btn" type="button" onclick="addition();"><i class="fa-solid fa-plus"></i></button>
                     </div> -->
-                    <a href="/cart/<%= item._id %>/remove" class="btn cart-remove-btn myButton" >Remove</a>
+                    <form action="/cart/<%= item._id %>/remove" method="post" id="remove-form" >
+                        <button class="btn cart-remove-btn removeButton">Remove</button>
+                        <audio id="remove-sound" src="/sounds/small_not_tone.wav" type="audio/mp3" controls="false" style="display: none;"></audio> 
+                    </form>
+                    
                 </div>
             </div>
 
@@ -66,9 +73,13 @@
             <p class="totalItems"> Total items : <b><%= items.length %></b> </p>
             <p class="totalValue"> Total price: <b id="price">&#8377;</b></p>
         </div>
-        <form action="/cart/order" method="post"  class="needs-validation" novalidate>
-            <input type="text" name="customername" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required >
-            <button class="orderBtn btn btn-info" id="orderBtn">Order All</button>  
+
+
+        <form action="/cart/order" method="post" id="order-form" class="needs-validation" >
+            <input type="text" name="customername" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required />
+            <input type="text" name="mob_number" class="form-control order-input"  placeholder="Enter Your Mobile Number (Optional)" maxlength="10">
+            <button class="orderBtn btn btn-info" id="orderButton">Order All</button>
+            <audio id="notification-sound" src="/sounds/small_sms_tone.mp3" type="audio/mp3" controls="false" style="display: none;"></audio> 
         </form>
         
     </div>
@@ -78,23 +89,26 @@
 
 <script>
 
-
-    document.querySelectorAll('.myButton').forEach((button) => {
+    document.querySelectorAll('.removeButton').forEach((button) => {
       button.addEventListener('click', (e) => {
-        e.target.style.display = 'none';
+        e.target.style.display = 'none'; 
       });
     });
 
-
-    document.getElementById("orderBtn").addEventListener("click", function() {
-        this.style.display = "none";
+    const removeForm = document.getElementById('remove-form');
+    removeForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        document.getElementById("remove-sound").play();
         setTimeout(()=>{
-            document.getElementById("orderBtn").style.display = "block";
-        },3000);
+            removeForm.submit();
+        },1000);
     });
-        // For order-quantity buttons
-        function addition(){
-        orderQuantity.value++;
+
+    
+
+    // For order-quantity buttons
+    function addition(){
+    orderQuantity.value++;
     }
 
     function substraction(){
@@ -114,6 +128,28 @@
     value.innerText = price;
     }
     
+</script>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
+<script>
+    const socket = io();
+    document.getElementById("orderButton").addEventListener("click", function(){
+        this.style.display = "none";
+        setTimeout(()=>{
+            document.getElementById("orderButton").style.display = "initial";
+        },2000);
+    });
     
+    const form = document.getElementById('order-form');
+
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        document.getElementById("notification-sound").play();
+        setTimeout(()=>{
+            form.submit();
+            socket.emit("Table-Onboarded", {tableNO:tableNO, owner:hotelID});
+        },1400);
+    });
     
 </script>

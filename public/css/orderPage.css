@@ -13,9 +13,14 @@
     display: block;
     text-align: center;
 }
+.orderNote-div{
+    width: 100%;
+    bottom: 5rem;
+    position: fixed;
+    text-align: center;
+}
 .orderNote{
     color: rgb(98, 0, 255);
-    margin-top: 2rem;
 }
 .order-card{
     border-radius: 25px;
@@ -34,7 +39,7 @@
     max-width: 300px;
     height: 70vw;
     min-height: 126px;
-    max-height: 230px;
+    max-height: 250px;
     margin-bottom: 5px;
     animation: left-animation 1.25s ;
     border-top-left-radius: 2px;
@@ -54,7 +59,7 @@
     max-width: 300px;
     height: 70vw;
     min-height: 126px;
-    max-height: 200px;
+    max-height: 280px;
     display: block;
     padding:8px 18px 0 18px;
     align-items: center;

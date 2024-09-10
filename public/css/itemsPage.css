@@ -4,7 +4,7 @@
     height:100% !important;
     margin-bottom: 1rem !important;
     display: flex !important;
-    /* animation: bottom-animation 2s; */
+    animation: bottom-animation 1.5s;
 }
 
 .master-div{

@@ -42,7 +42,7 @@ margin: 0;
     justify-content: center;
     display: flex;
     flex-wrap: wrap;
-    padding-bottom: 2rem;
+    padding-bottom: 5rem;
 }
 .admin-home-card{
     border-radius: 25px;

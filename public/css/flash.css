@@ -1,23 +1,36 @@
 /* Flash */
 .flash{
-    background-color: #fff !important;
+    /* background-color: #fff !important; */
+    color: #fff !important;
+    background-color: green;
     position: absolute !important;
     z-index: 10 !important;
-}
-
-.alert{
-    text-align: center;
-    font-size: 18px;
-    font-weight: 900;
     border-radius: 50px;
+    text-align: center;
+    animation: bottom-animation 0.15s; 
+    animation-timing-function:linear;
 }
 
-.btn-close{
-    color: rgba(0, 0, 0, 0.082) !important;
+.alert p{
+    font-size: 20px;
+    font-weight: 900;
+    margin: 0;
+    padding: 0; 
 }
+
+
 
 @media screen and (max-width: 480px) {
-    .alert{
-        font-size: 14px;
+    .alert p{
+        font-size: 16px;
     }
+}
+
+@keyframes bottom-animation{
+    0% {margin-top: 10vh;}
+    100% {margin-top: initial;}
+}
+
+.success{
+    display: none;
 }

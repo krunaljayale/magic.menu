@@ -6,12 +6,22 @@
 <head>
     <title>Home</title>
     <link rel="stylesheet" href="/css/orderPage.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js" integrity="sha512-01Pe9P3mJM/4c80VuoYEGHlspKGbd9uWQe9HtdLsdTqV0CS1kz8ca44sinVEXEvlZNciMmsAjeEbm5ZxHC7yYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
 </head>
 
     <div class="regretMessage">
         <p>Sorry Minimum width required is 280 pixels <br>
            Will be available soon !
         </p>
+    </div>
+
+    <div class="alert col-8 offset-2 alert-success alert-dismissible fade show flash flashSuccess success" id="success" role="alert">
+        <p><i class="fa-regular fa-circle-check"></i> &nbsp;&nbsp;&nbsp;&nbsp;<span id="successSpan"></span></p>
+    </div>
+    <div class="alert col-8 offset-2 alert-danger alert-dismissible fade show flash flashError success" id="error" role="alert" style="background-color: red;">
+        <p><i class="fa-regular fa-circle-xmark"></i> &nbsp;&nbsp;&nbsp;&nbsp;<span id="errorSpan"></span></p>
     </div>
 
     <h3 class="card-title order-page-title">Great Choice !</h3>
@@ -27,22 +37,25 @@
                 <div class="item-price-div"><p class="item-price">  &#8377; <%= item.price.toLocaleString("en-IN") %></p></div>
 
                 <div class="buttons-div">
-                    <form  action="/orders/<%= item._id %>" method="post" id="order-form" class="order-form needs-validation" novalidate >
+                    <form id="order-form" class="order-form " data-id = "<%= item._id %>">
                         <input type="text" name="customername" id="customerName" class="form-control order-input" placeholder="Please Enter Your Name" value="<%= customerName %>" required >
+                        <input type="text" name="mob_number" id="mob_number" class="form-control order-input" maxlength="10" placeholder="Enter Your Mobile Number" style="margin-top: 0.5rem;">
                         <div class="qty-button-div">
                             <div class="quantity-div">
                                 <button id="subtractBtn" class="subtract-btn" type="button" onclick="substraction();"><i class="fa-solid fa-minus"></i></button>
                                 <input class="form-control order-input qty-order-input" type="input" id="orderQuantity" name="qty" value="1" min="1" readonly>
-                                <button id="addBtn" class="addition-btn" type="button" onclick="addition();"><i class="fa-solid fa-plus"></i></button>
+                                <button id="addBtn" class="addition-btn" type="button" onclick="addition()"><i class="fa-solid fa-plus"></i></button>
                             </div>
-                            <button type="submit" class="btn order-btn" id="myorderBtn">Order</button>  
+                            <button type="submit" class="btn order-btn" id="myorderBtn">Order</button>
+                            <audio id="notification-sound" src="/sounds/small_sms_tone.mp3" type="audio/mp3" controls="false" style="display: none;"></audio>
+                            <audio id="fail-sound" src="/sounds/small_fail_tone.mp3" type="audio/mp3" controls="false" style="display: none;"></audio>
                         </div>
                     </form> 
                 </div>
             </div>
         </div>
-        <p class="orderNote">Note : Orders can not be cancelled after confirmation</p>
     </div>
+    <div class="orderNote-div"><p class="orderNote">Note : Orders can not be cancelled after confirmation</p></div>
 
 
 <script>
@@ -59,22 +72,49 @@
 
     document.getElementById("myorderBtn").addEventListener("click", function() {
         this.style.display = "none";
+        
         setTimeout(()=>{
-            document.getElementById("myorderBtn").style.display = "block";
-        },5000);
+            document.getElementById("myorderBtn").style.display = "inline";
+        },2000);
     });
     
     
 </script>
 
-<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
-
 <script>
-    
-    // const socket = io();
-    // const item = < JSON.stringify(item) %>;
-    // const tableNO = < JSON.stringify(tableNO) %>;
+    const form = document.getElementById('order-form');
+    const socket = io();
 
-    // socket.emit("Table-Onboarded", {tableNO:tableNO, owner:item.owner});
-    
+    form.addEventListener('submit', (event) => {
+        event.preventDefault();
+        const formData = new FormData(form);
+        const id = form.dataset.id;
+        
+        axios.post(`/orders/${id}`, formData,{
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((response) => {
+            
+            if(response.data.status === "Success"){
+                socket.emit("Table-Onboarded", {tableNO:tableNO, owner:hotelID});
+                document.getElementById("notification-sound").play();
+                document.getElementById('success').style.display="block";
+                document.getElementById('successSpan').innerText = response.data.message;
+            }else if(response.data.status === "Error"){
+                document.getElementById('error').style.display="block";
+                document.getElementById("fail-sound").play();
+                document.getElementById('errorSpan').innerText = response.data.message;
+            }
+            setTimeout(()=>{
+                document.getElementById('success').style.display="none";
+                document.getElementById('error').style.display="none";
+            },3000) 
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    });
+
 </script>

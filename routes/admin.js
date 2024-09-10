@@ -2,6 +2,10 @@ const express = require("express");
 const Listing = require("../models/listing.js");
 const MyOrder = require("../models/myorder.js");
 const User = require("../models/user.js");
+const Table = require("../models/table.js");
+const History = require("../models/history.js");
+const CurrentOrders = require("../models/currentorders.js");
+const Subscription = require("../models/subscription.js");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
 const {isLoggedIn} = require("../middleware.js");
@@ -9,10 +13,11 @@ const multer  = require('multer');
 const {storage} = require("../cloudConfig.js");
 const upload = multer({ storage });
 const Mixpanel = require('mixpanel');
+const { exist } = require("joi");
 
 // Mixpanel Setup //
-const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
-// const mixpanel = "";
+// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+const mixpanel = "";
 
 
 // Admin Dashboard Route //
@@ -29,7 +34,8 @@ router.get("/profile",isLoggedIn,
  async(req,res)=>{
     let id = res.locals.currUser._id;
     let user = await User.findById(id);
-    res.render("listings/profile.ejs",{user})
+    const subscription = await Subscription.findOne({userID:req.user._id});
+    res.render("listings/profile.ejs",{user, subscription})
 })
 // Profile Edit //
 router.put("/profile/edit",isLoggedIn,
@@ -155,14 +161,56 @@ async (req,res,next)=>{
     res.redirect("/admin");
 }));
 
-// All orders dashboard for Admin //
-router.get("/orders",isLoggedIn,
+
+// Active Tables dashboard for Admin //
+router.get("/tables",isLoggedIn,
     wrapAsync(
         async(req,res)=> {
         let owner = res.locals.currUser._id;
-        const allOrders = (await MyOrder.find({owner:owner, status:"Confirmed"})).reverse();
-        const confirmOrders = await MyOrder.find({owner:owner, status:"Waiting"});
-        res.render("listings/allOrders.ejs", {allOrders,confirmOrders});
+        const activeTables = (await Table.find({owner : owner, status : "Active", substatus : "Inactive" , number: { $nin: [ 0 , null] }})).sort((a, b) => a.number - b.number);
+        const waitingTables = await Table.find({owner : owner,status : "Active", substatus : "Active" , number: { $nin: [ 0 , null] }});
+        
+        res.render("listings/tables.ejs", {owner,activeTables, waitingTables});
+}));
+       
+
+// All orders dashboard for Admin // :)
+router.get("/tables/orders/:number",isLoggedIn,
+    wrapAsync(
+        async(req,res)=> {
+        let {number} = req.params;
+        let owner = res.locals.currUser._id;
+        const waitingOrders = await CurrentOrders.find({owner:owner, status:"Waiting",tableno:number});
+        
+        if(!waitingOrders.length){
+            const activeTable = await Table.findOne({owner : owner, number:number, status:"Active", substatus:"Active"});
+            if(activeTable){
+                activeTable.substatus = "Inactive";
+                activeTable.save();
+            }  
+        }
+        const confirmedOrders = (await CurrentOrders.find({owner:owner, status:"Confirmed",tableno:number })).reverse();
+        
+        if(waitingOrders.length === 0 && confirmedOrders.length === 0 ){
+            await Table.findOneAndDelete({owner : owner, number:number});
+            res.redirect("/admin/tables");
+            return
+        }
+        // const item = await CurrentOrders.findOne({owner:owner,tableno:number,mob_number:{ $exists:true } });
+        const item = await CurrentOrders.findOne({owner:owner,tableno:number,mob_number: { $ne: null, $ne: "" }
+          }).then(result => {
+            if (!result) {
+              return CurrentOrders.findOne({owner:owner,tableno:number, mob_number: { $exists: true } });
+            }
+            return result;
+          });
+        const mobNumber = item.mob_number;
+        const customername = item.customername;
+        
+
+        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        res.render("listings/adminBill.ejs", {waitingOrders,confirmedOrders,owner, number,customername, mobNumber,date,time});
 }));
 
 // Order Confirm Route
@@ -170,7 +218,7 @@ router.get("/:id/confirm",isLoggedIn,
     wrapAsync( 
         async(req,res)=>{
         let {id}= req.params;
-        const order = await MyOrder.findById(id);
+        const order = await CurrentOrders.findById(id);
         order.confirmed_at = new Date(Date.now()+ (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         order.status ="Confirmed";
         order.save();
@@ -181,23 +229,27 @@ router.get("/:id/confirm",isLoggedIn,
             distinct_id: req.user._id ,
             hotel_name:req.user.hotelname,
             address:req.user.location,
-            order_name:order.name,
-            order_price:order.price,
-            order_quantity:order.qty,
+            item_name:order.name,
+            item_price:order.price,
+            item_quantity:order.qty,
+            table_no:order.tableno,
             customer_name:order.customername,
             order_id:id,
             }); 
         };
-        
-        req.flash("flashSuccess", "Order confirmed successfully.");
-        res.redirect("/admin/orders");
+
+        req.flash("flashSuccess", "Order confirmed");
+        setTimeout(()=>{
+         res.redirect(`/admin/tables/orders/${order.tableno}`);   
+        }, 1500)
+        return
 }));
 
 router.get("/:id/reject",isLoggedIn,
     wrapAsync( 
         async(req,res)=>{
         let {id}= req.params;
-        const order = await MyOrder.findById(id);
+        const order = await CurrentOrders.findById(id);
         order.status ="Rejected";
         order.save();
 
@@ -207,17 +259,120 @@ router.get("/:id/reject",isLoggedIn,
                 distinct_id: req.user._id ,
                 hotel_name:req.user.hotelname,
                 address:req.user.location,
-                order_name:order.name,
-                order_price:order.price,
-                order_quantity:order.qty,
+                item_name:order.name,
+                item_price:order.price,
+                item_quantity:order.qty,
+                table_no:order.tableno,
                 customer_name:order.customername,
                 order_id:id,
                 });
             };
         
 
-        req.flash("flashSuccess", "Order rejected successfully.");
-        res.redirect("/admin/orders");
+        req.flash("flashSuccess", "Order rejected");
+        setTimeout(()=>{
+            res.redirect(`/admin/tables/orders/${order.tableno}`);   
+           }, 1500)
+        return
 }));
+
+// Confirm All Route
+router.get("/:number/confirmAll",isLoggedIn,
+    wrapAsync( 
+        async(req,res)=>{
+        let {number}= req.params;
+        let owner = res.locals.currUser._id;
+        const orders = await CurrentOrders.find({owner:owner,tableno:number,status:"Waiting"});
+        for(let order of orders){
+            order.confirmed_at = new Date(Date.now()+ (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            order.status ="Confirmed";
+            order.save();
+
+           // // MIXPANEL SETUP //
+        if(mixpanel){
+           mixpanel.track("Order Confirmed", {
+            distinct_id: req.user._id ,
+            hotel_name:req.user.hotelname,
+            address:req.user.location,
+            item_name:order.name,
+            item_price:order.price,
+            item_quantity:order.qty,
+            table_no:order.tableno,
+            customer_name:order.customername,
+            order_id:id,
+            }); 
+        }; 
+        }
+
+        req.flash("flashSuccess", "Order confirmed");
+        setTimeout(()=>{
+         res.redirect(`/admin/tables/orders/${number}`);   
+        }, 1500)
+        return
+}));
+
+// Bill generation page for Admin // :)
+router.get("/tables/bill/:number",isLoggedIn,
+    wrapAsync(
+        async(req,res)=> {
+        let {number} = req.params;
+        let owner = res.locals.currUser._id;
+        let hotel = await User.findById(owner);
+        const confirmedOrders = (await CurrentOrders.find({owner:owner, status:"Confirmed",tableno:number })).reverse();
+        const item = await CurrentOrders.findOne({owner:owner,tableno:number,mob_number: { $ne: null, $ne: "" }
+        }).then(result => {
+          if (!result) {
+            return CurrentOrders.findOne({owner:owner,tableno:number, mob_number: { $exists: true } });
+          }
+          return result;
+        });
+        const customername = item.customername;
+        const mobNumber = item.mob_number;
+        function generateInvoiceNumber() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        };
+        const invoice = generateInvoiceNumber();
+        
+        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        res.render("listings/billPage.ejs", {confirmedOrders,invoice,mobNumber,hotel,owner, number,customername,mobNumber, date,time});
+}));
+
+
+router.post("/tables/bill/:number",isLoggedIn,
+    wrapAsync(
+        async(req,res)=> {
+            let {number} = req.params;
+            let owner = res.locals.currUser._id;
+            let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+            let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            const paid_at = `${date} ${time}`;
+            let orders = await CurrentOrders.find({owner:owner,tableno:number,status:"Confirmed"});
+            
+            for (let order of orders){
+                let customername = order.customername;
+                let mob_number = order.mob_number;
+                let name = order.name;
+                let price = order.price;
+                let qty = order.qty;
+                let owner = order.owner;
+                let tableno = order.tableno;
+                let created_at = order.created_at;
+                let confirmed_at = order.confirmed_at;
+                let customerId = order.customerId;
+                let status = "Delivered";
+
+                const newHistory = new History({customername,mob_number,name,price,qty,owner,tableno,created_at,confirmed_at,customerId,status,paid_at});
+                await newHistory.save();
+                // console.log(newHistory._id);
+                
+            }
+
+            await CurrentOrders.deleteMany({owner:owner,tableno:number });
+            
+            await Table.findOneAndDelete({owner:owner, number:number});
+            res.redirect("/admin/tables");
+            return
+    }));
 
 module.exports = router;

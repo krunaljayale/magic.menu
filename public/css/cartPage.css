@@ -110,7 +110,7 @@
 
 .orderBtnDiv{
     width: 100vw;
-    height: 8rem;
+    /* height: 8rem; */
     position: fixed;
     bottom: 4rem;
     background-color: transparent;

@@ -1,0 +1,105 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/adminNav.ejs") %>
+<!-- <- include("../includes/adminFooter.ejs") %> -->
+
+<head>
+    <link rel="stylesheet" href="/css/adminBillPage.css">
+    <link rel="stylesheet" href="/css/modal.css">
+</head>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="closeAccountModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Close Account?</h5>
+        </div>
+        <div class="modal-body">
+          This reflects the payment is received.
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+          <form action="/admin/tables/bill/<%=number%>" method="post">
+            <button type="submit" class="btn btn-success">Continue</button> 
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="master-div">
+    <%if(number){%>
+        <div class="pageTitleDiv"><h1><b> <%= hotel.hotelname%></b></h1></div> 
+      <%}%>
+    
+    <div class="top-div">
+      <div class="name-number-div">
+        <% if(customername){ %>
+          <p class="top-div-content">Name: <%=customername%></p>
+        <% } %>
+        <% if(mobNumber){ %>
+          <p class="top-div-content">Contact: <%=mobNumber%></p>
+        <% } %>
+        <p class="top-div-content">Invoice: #<%=invoice%></p>
+      </div>
+      
+        <div class="time-date-div">
+            <p class="top-div-content">Date: <%=date%></p>
+            <p class="top-div-content">Time: <%=time%> </p>
+            <p class="top-div-content">Table no: <%= number %> </p>
+            
+        </div>
+    </div>
+    
+    <div class="middle-div">
+      <div class="fixed-div">
+          <div class="item-srNo fixed-div-div"><p class="fixed-div-content">Sr.</p></div>
+          <div class="item-name fixed-div-div"><p class="fixed-div-content">Item Name</p></div>
+          <div class="item-price fixed-div-div"><p class="fixed-div-content">Price</p></div>
+          <div class="item-qty fixed-div-div"><p class="fixed-div-content">Qty</p></div>
+          <div class="item-total fixed-div-div"><p class="fixed-div-content">Bill</p></div>
+      </div>
+    </div>
+    
+    <div class="bottom-div">
+      <% confirmedOrders.forEach((order, index) => { %>
+          <div class="dynamic-div">
+            <div class="item-srNo dynamic-div-div"><p class=" dynamic-div-content"><%= index + 1 %></p></div>
+            <div class="item-name dynamic-div-div"><p class="dynamic-div-content"><%= order.name %></p></div>
+            <div class="item-price dynamic-div-div"><p class=" dynamic-div-content"><%= order.price %></p></div>
+            <div class="item-qty dynamic-div-div"><p class=" dynamic-div-content">x <%= order.qty %></p></div>
+            <div class="item-total dynamic-div-div"><p class=" dynamic-div-content"><%= order.qty*order.price %></p></div>
+          </div>  
+      <% }) %>
+    </div>
+    
+    <div class="bill-price-div">
+      <p class="totalItems"> Total items : <b><%=confirmedOrders.length%></b> </p>
+      <p class="totalValue"> Total : <b id="price">&#8377;</b></p>
+    </div>
+</div>
+
+<div class="bill-bottom-div">
+  <div class="close-bill-button-div bill-button-div">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary close-bill-button" data-bs-toggle="modal" data-bs-target="#closeAccountModal">
+      Close Account
+    </button>
+  </div>
+</div>
+
+<p class = "brand-name">Powerd By : Magic Menu</p>
+
+<script>
+  let items = <%- JSON.stringify(confirmedOrders) %>;
+    if(items.length){
+        const billValue = []; 
+        for(item of items){
+        billValue.push(item.price*item.qty)
+    }
+    let price = billValue.reduce((accumulator, current) => accumulator + current);
+    let value = document.getElementById("price");
+    value.innerText = price;
+    }
+</script>

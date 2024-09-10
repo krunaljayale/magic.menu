@@ -91,7 +91,7 @@
     margin: 0 !important;
 }
 .order-time{
-    font-size: 15px !important;
+    font-size: 3.5vw !important;
 }
 .buttons-div{
     width: 100%;
@@ -170,7 +170,9 @@
         font-size: 18px;
         margin-top: 0.75rem;
     }
-   
+    .order-time{
+        font-size: 17px !important;
+    }
     .myorder-cancel-btn{
         font-size: 16px !important;
     }

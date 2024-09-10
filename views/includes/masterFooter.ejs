@@ -26,10 +26,11 @@
 
 <script>
     const hotelID = <%- JSON.stringify(hotelID) %>;
+    const tableNO = <%- JSON.stringify(tableNO) %>;
 
     let masterHomeBtn = document.getElementById('homeBtn');
     function homeFunction(){
-        masterHomeBtn.href = `/home?hotelID=${hotelID}`;
+        masterHomeBtn.href = `/home?hotelID=${hotelID}&tableNO=${tableNO}`;
     }
 
     masterHomeBtn.addEventListener('click',homeFunction);

@@ -8,7 +8,11 @@
 </head>
 
 <div class="homeTitleDiv"><h1><b> Welcome to <%= hotel.hotelname %></b></h1></div>
-<div class="homeTitleDiv"><h1><b> Table no: <%= tableno %></b></h1></div>
+
+<% if(tableNO){%>
+  <div class="homeTitleDiv"><h1><b> Table no: <%= tableNO %></b></h1></div> 
+<% } %>
+
 
 <div class="mainHomeDiv">
   

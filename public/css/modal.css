@@ -1,0 +1,32 @@
+.modal-content{
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    border-radius: 1rem !important;
+    box-shadow: 5px 5px 10px 0px #00000070;
+}
+
+.modal-header{
+    font-family: "Ubuntu", sans-serif !important; 
+    text-align: center !important;
+    justify-content: center !important;
+    border: none !important;
+    padding:2.5rem 0 0.5rem 0 !important;
+}
+
+.modal-body{
+    color: #000000c2 !important;
+    text-align: center !important;
+    padding:0 !important;
+}
+
+.modal-footer{
+    border: none !important;
+    justify-content: center !important;
+    gap: 0.7rem !important;
+    padding: 1.5rem 0 2rem 0 !important;
+}
+
+@media screen and (min-width:480px) {
+    .modal-footer{
+        gap: 1rem !important;
+    }
+}

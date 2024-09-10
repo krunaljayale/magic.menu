@@ -7,6 +7,9 @@ const { isLoggedIn} = require("../middleware.js");
 const {saveRedirectUrl } = require("../middleware.js");
 
 
+const masterKey = process.env.MASTER_KEY;
+
+
 router.get("/signup", ( req ,res) => {
     res.render("./users/signup.ejs");
 })
@@ -14,7 +17,7 @@ router.get("/signup", ( req ,res) => {
 router.post("/signup",wrapAsync(async (req, res) => {
     try{
         let { username,hotelname,location, email, password, masterkey, name } = req.body;
-        if(masterkey != "MAGIC"){
+        if(masterkey != masterKey){
             req.flash("flashError", "Sorry Please Enter Valid Master Key");
             res.redirect("/signup");
         }else{
@@ -42,7 +45,7 @@ router.get("/login", (req,res) => {
 router.post("/login",saveRedirectUrl,
 passport.authenticate("local", {failureRedirect: "/login", failureFlash:true}),
     wrapAsync(async(req,res) => {
-    res.redirect("admin/orders");
+    res.redirect("admin/tables");
 }));
 
 router.get("/logout",isLoggedIn,
@@ -52,7 +55,7 @@ router.get("/logout",isLoggedIn,
            return next(err);
         }
         req.flash("flashSuccess", "Logged Out Successfully");
-        res.redirect("/admin");
+        res.redirect("/");
     })
 })
 

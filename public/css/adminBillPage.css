@@ -1,0 +1,282 @@
+
+.master-div{
+    margin: 0 auto;
+	width:100%;
+	display:block;
+    padding: 1rem;
+    padding-bottom: 4rem;
+    font-family: "Ubuntu", sans-serif;
+	/* border: 1px solid black; */
+}
+.adminBillPage-master-div{
+    padding-bottom: 8rem;
+}
+
+.pageTitleDiv{
+    margin:1rem 0 ;
+    color:#12296c;
+    text-align: center;
+    font-family: "Ubuntu", sans-serif;
+    letter-spacing: 1.35px;
+    word-spacing: 2.5px ;
+}
+
+.top-div{
+    padding: 0;
+	display:flex;
+	justify-content:space-between;
+	align-items:center;
+	border-top: 1px solid black;
+    border-bottom:1px solid black ;
+    /* border-right: 1px solid black;
+    border-left: 1px solid black;  */
+    width: 100%;
+    font-size: 4vw;
+    padding: 0.5rem 0;
+}
+.top-div-content{
+    font-weight: 600;
+    margin: 0;
+}
+.time-date-div{
+	width: 37%;
+    font-size: 3.25vw;
+    text-align: right;
+}
+.bottom-div{
+    color:#12296c !important;
+    margin-bottom: 2rem;
+    /* min-height: 50vh; */
+    /* border-right: 1px solid black;
+    border-left: 1px solid black; */
+    /* border-bottom: 1px solid black; */
+}
+.fixed-div,.dynamic-div{
+    width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    /* border-left: 1px solid black; */
+    
+}
+.fixed-div-div, .dynamic-div-div{
+    text-align: center;
+    overflow-x: auto;
+    white-space:nowrap;
+    /* border-right: 1px solid black; */
+    /* border-left: 1px solid black; */
+}
+.fixed-div{
+    /* border-top: 1px solid black; */
+    border-bottom: 1px solid black;
+}
+.fixed-div-content{
+    font-size: 5vw;
+    font-weight: 900;
+}
+.dynamic-div{
+    margin-top: 0.5rem;
+}
+.dynamic-div-content{
+    font-size: 4vw;
+
+    /* border-bottom: 1px solid black; */
+}
+.fixed-div-content,.dynamic-div-content {
+    margin: 0;
+    margin-top: 0.5rem;
+}
+.item-srNo{
+    width: 10%;
+}
+.item-name{
+    width: 40%;
+    text-align: justify;
+}
+.item-qty{
+    width: 10%;
+}
+.item-price{
+    width: 25%;
+}
+.item-total{
+    width:15% ;
+}
+.item-status{
+    width: 45%;
+    font-weight: 900;
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+.confirmButton, .rejectButton{
+    color: #fff !important;
+    font-size: 3vw !important;
+    /* font-size: 22px !important;
+    padding: 3px 12px !important; */
+}
+
+.bill-button-div{
+    width: 100%;
+    text-align: center;
+    padding: 1rem;
+}
+.genarate-bill-button,.close-bill-button,.confirm-order-button{
+    color: #fff !important;
+    font-weight: 700 !important;
+}
+
+
+.bill-bottom-div{
+    width: 100%;
+    padding:0 1rem;
+    margin: 0;
+    height: 4rem;
+    position: fixed;
+    bottom: 0;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    align-items: center;
+}
+.special-bill-bottom-div{
+    bottom: 4rem;
+    justify-content: center;
+    background-color: #ffffff;
+}
+.bill-price-div{
+    font-family: "Ubuntu", sans-serif;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: center;
+    background-color: #fff;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+}
+.bill-price-div p{
+    margin: 0;
+    font-size: 5vw;
+    font-weight: 900;
+}
+.close-bill-button-div{
+    width: 100%;
+    text-align: center;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.close-bill-button{
+    margin: 0;
+}
+
+.brand-name{
+    margin:1rem 0 ;
+    color:#12296c;
+    text-align: center;
+    font-family: "Ubuntu", sans-serif;
+    letter-spacing: 1.35px;
+    word-spacing: 2.5px ;
+}
+
+@media screen and (min-width:480px) {
+    .top-div{
+        font-size: 3.5vw; 
+    }
+    .time-date-div{
+        width: 37%;
+        font-size: 3vw;
+    }
+    .fixed-div-content{
+        font-size: 3.5vw;
+    }
+    .dynamic-div-content{
+        font-size: 3vw;
+    }
+    .confirmButton, .rejectButton{
+        font-size: 2.25vw !important;
+    }
+    .bill-price-div p{
+        font-size: 3.5vw; 
+    }
+}
+@media screen and (min-width:575px) {
+    .top-div{
+        font-size: 2.75vw; 
+    }
+    .time-date-div{
+        width: 37%;
+        font-size: 2vw;
+    }
+    .fixed-div-content{
+        font-size: 2.75vw;
+    }
+    .dynamic-div-content{
+        font-size: 2.5vw;
+    }
+    .confirmButton, .rejectButton{
+        font-size: 1.5vw !important;
+    }
+    .bill-price-div p{
+        font-size: 2.75vw;
+    }
+}
+@media screen and (min-width:600px) {
+    .master-div{
+        padding: 1rem 3rem 9rem;
+    }
+    .top-div{
+        font-size: 3vw; 
+    }
+    .time-date-div{
+        width: 37%;
+        font-size: 2.25vw;
+    }
+    .fixed-div-content{
+        font-size: 3vw;
+    }
+    .dynamic-div-content{
+        font-size: 2.75vw;
+    }
+    .confirmButton, .rejectButton{
+        font-size: 1.75vw !important;
+    }
+    .bill-price-div p{
+        font-size: 3vw;
+    }
+    .bill-bottom-div{
+        width: 100%;
+        padding:0 3rem;
+    }
+}
+@media screen and (min-width:1024px) {
+    .top-div{
+        font-size: 24px; 
+    }
+    .time-date-div{
+        width: 37%;
+        font-size: 22px;
+    }
+    .fixed-div-content{
+        font-size: 24px;
+    }
+    .dynamic-div-content{
+        font-size: 22px;
+    }
+    .confirmButton, .rejectButton{
+        font-size: 14px !important;
+    }
+    .bill-price-div p{
+        font-size: 24px;
+    }
+}
+
+@media screen and (max-width:280px) {
+    body{
+        display: none;
+    }
+}
