@@ -15,9 +15,9 @@ const { HttpStatusCode } = require("axios");
 
 // Mixpanel Setup //   
 
-const mixpanel = "";
+// const mixpanel = "";
 
-// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
 
 
 

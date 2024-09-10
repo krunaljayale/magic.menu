@@ -28,11 +28,11 @@
     </div>
   </div>
 
+
+  <%if(number){%>
+    <div class="pageTitleDiv"><h1><b> <%= hotel.hotelname%></b></h1></div> 
+  <%}%>
 <div class="master-div">
-    <%if(number){%>
-        <div class="pageTitleDiv"><h1><b> <%= hotel.hotelname%></b></h1></div> 
-      <%}%>
-    
     <div class="top-div">
       <div class="name-number-div">
         <% if(customername){ %>
@@ -78,6 +78,7 @@
       <p class="totalItems"> Total items : <b><%=confirmedOrders.length%></b> </p>
       <p class="totalValue"> Total : <b id="price">&#8377;</b></p>
     </div>
+    <p class = "brand-name">Powerd By : Magic Menu.in</p>
 </div>
 
 <div class="bill-bottom-div">
@@ -89,7 +90,7 @@
   </div>
 </div>
 
-<p class = "brand-name">Powerd By : Magic Menu</p>
+
 
 <script>
   let items = <%- JSON.stringify(confirmedOrders) %>;

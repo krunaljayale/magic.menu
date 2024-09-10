@@ -13,11 +13,10 @@
     display: block;
     text-align: center;
 }
-.orderNote-div{
+.order-note-div{
     width: 100%;
-    bottom: 5rem;
-    position: fixed;
     text-align: center;
+    padding-bottom: 4rem;
 }
 .orderNote{
     color: rgb(98, 0, 255);

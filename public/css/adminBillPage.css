@@ -46,7 +46,7 @@
 .bottom-div{
     color:#12296c !important;
     margin-bottom: 2rem;
-    /* min-height: 50vh; */
+    min-height: 45vh;
     /* border-right: 1px solid black;
     border-left: 1px solid black; */
     /* border-bottom: 1px solid black; */
@@ -90,11 +90,11 @@
     width: 10%;
 }
 .item-name{
-    width: 40%;
+    width: 45%;
     text-align: justify;
 }
 .item-qty{
-    width: 10%;
+    width: 15%;
 }
 .item-price{
     width: 25%;
@@ -103,7 +103,7 @@
     width:15% ;
 }
 .item-status{
-    width: 45%;
+    width: 40%;
     font-weight: 900;
     /* border: 1px solid red; */
     display: flex;
@@ -175,13 +175,14 @@
 }
 
 .brand-name{
-    margin:1rem 0 ;
+    margin:1rem 0 4rem;
     color:#12296c;
     text-align: center;
     font-family: "Ubuntu", sans-serif;
     letter-spacing: 1.35px;
     word-spacing: 2.5px ;
 }
+
 
 @media screen and (min-width:480px) {
     .top-div{
@@ -254,6 +255,9 @@
     }
 }
 @media screen and (min-width:1024px) {
+    .master-div{
+        width: 70%;
+    }
     .top-div{
         font-size: 24px; 
     }
@@ -267,6 +271,12 @@
     .dynamic-div-content{
         font-size: 22px;
     }
+    .item-name{
+        width: 40%;
+    }
+    .item-qty{
+        width: 20%;
+    }
     .confirmButton, .rejectButton{
         font-size: 14px !important;
     }
@@ -275,6 +285,11 @@
     }
 }
 
+@media screen and (min-width:1500px) {
+    .master-div{
+        width: 50%;
+    }
+}
 @media screen and (max-width:280px) {
     body{
         display: none;

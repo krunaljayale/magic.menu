@@ -56,7 +56,26 @@
     </div>
     
     <div class="bottom-div">
-      <% for(order of waitingOrders){ %>
+      <% for(let order of waitingOrders){ %>
+        
+         <!-- Reject Modal -->
+         <div class="modal fade" id="rejectOrder<%=order._id%>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Reject Order</h5>
+              </div>
+              <div class="modal-body">
+                This action cannot be undone.
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
+                <a href="/admin/<%- order._id %>/reject" class="btn btn-success final-rejectButton" >Reject</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
           <div class="dynamic-div">
               <div class="item-name dynamic-div-div"><p class="dynamic-div-content"><%= order.name %></p></div>
               <div class="item-qty dynamic-div-div"><p class=" dynamic-div-content">x<%= order.qty %></p></div>
@@ -67,32 +86,11 @@
                         <button type="submit" class="btn btn-info admin-confirm-btn confirmButton">Confirm</button>
                       </form> 
                       <audio id="notification-sound" src="/sounds/small_message_tone.mp3" type="audio/mp3" controls="false" style="display: none;"></audio>
-                      <button class="btn btn-danger admin-confirm-btn rejectButton" data-bs-toggle="modal" data-bs-target="#rejectOrder">Reject</button>
+                      <button class="btn btn-danger admin-confirm-btn rejectButton" data-bs-toggle="modal" data-bs-target="#rejectOrder<%=order._id%>">Reject</button>
                       <audio id="remove-sound" src="/sounds/small_not_tone.wav" type="audio/mp3" controls="false" style="display: none;"></audio>
                   </div>
-                  <!-- <i class="fa-regular fa-circle-check"></i> -->
-                  <!-- <i class="fa-regular fa-circle-xmark"></i> -->
               <% } %>
-          </div>  
-          
-          <!--Reject Modal -->
-          <div class="modal fade" id="rejectOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel">Reject Order</h5>
-                </div>
-                <div class="modal-body">
-                  This action cannot be undone.
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
-                  <a href="/admin/<%= order._id %>/reject" class="btn btn-success final-rejectButton">Reject</a>
-                </div>
-              </div>
-            </div>
           </div>
-
       <% } %>
 
 
@@ -168,4 +166,5 @@
     });
   });
   
+
 </script>

@@ -16,8 +16,8 @@ const Mixpanel = require('mixpanel');
 const { exist } = require("joi");
 
 // Mixpanel Setup //
-// const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
-const mixpanel = "";
+const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
+// const mixpanel = "";
 
 
 // Admin Dashboard Route //
@@ -252,7 +252,8 @@ router.get("/:id/reject",isLoggedIn,
         const order = await CurrentOrders.findById(id);
         order.status ="Rejected";
         order.save();
-
+        
+        
             // // MIXPANEL SETUP //
             if(mixpanel){
                 mixpanel.track("Order Rejected", {
