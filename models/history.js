@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 const HistorySchema = new Schema({
     customername:String,
     mob_number:Number,
+    invoice:Number,
     name : String,
     price:Number,
     qty:Number,

@@ -1,0 +1,69 @@
+<%- include("../includes/adminFooter.ejs") %>
+<head>
+    <link rel="stylesheet" href="/css/adminBillPage.css">
+</head>
+
+<% orders.forEach((order) => { %>
+<div class="master-div"></div>
+    <div class="top-div">
+      <div class="name-number-div">
+        <p class="top-div-content">Name: <%=order.customername%></p> 
+        <p class="top-div-content">Contact: <%=order.mob_number%></p>
+        <p class="top-div-content">Paid at: <%=order.paid_at%></p>
+        
+      </div>
+      
+        <div class="time-date-div">
+            <p class="top-div-content">Invoice: #<%=order.invoice%></p>
+            <p class="top-div-content">Table no: <%= order.tableno %> </p>
+        </div>
+    </div>
+    
+    <div class="middle-div">
+      <div class="fixed-div">
+          <div class="item-srNo fixed-div-div"><p class="fixed-div-content">Sr.</p></div>
+          <div class="item-name fixed-div-div"><p class="fixed-div-content">Item Name</p></div>
+          <div class="item-price fixed-div-div"><p class="fixed-div-content">Price</p></div>
+          <div class="item-qty fixed-div-div"><p class="fixed-div-content">Qty</p></div>
+          <div class="item-total fixed-div-div"><p class="fixed-div-content">Bill</p></div>
+      </div>
+    </div>
+    
+    <div class="bottom-div">
+      <% orders.forEach((order, index) => { %>
+          <div class="dynamic-div">
+            <div class="item-srNo dynamic-div-div"><p class=" dynamic-div-content"><%= index + 1 %></p></div>
+            <div class="item-name dynamic-div-div"><p class="dynamic-div-content"><%= order.name %></p></div>
+            <div class="item-price dynamic-div-div"><p class=" dynamic-div-content"><%= order.price %></p></div>
+            <div class="item-qty dynamic-div-div"><p class=" dynamic-div-content">x <%= order.qty %></p></div>
+            <div class="item-total dynamic-div-div"><p class=" dynamic-div-content"><%= order.qty*order.price %></p></div>
+          </div>  
+      <% }) %>
+    </div>
+    
+    <div class="bill-price-div">
+      <p class="totalItems"> Total items : <b><%=orders.length%></b> </p>
+      <p class="totalValue"> Total : <b id="price">&#8377;</b></p>
+    </div>
+    <p class = "brand-name">Powerd By : Magic Menu.in</p>
+</div>
+<% }) %>
+
+
+
+
+
+
+
+<script>
+    let items = <%- JSON.stringify(orders) %>;
+      if(items.length){
+          const billValue = []; 
+          for(item of items){
+          billValue.push(item.price*item.qty)
+      }
+      let price = billValue.reduce((accumulator, current) => accumulator + current);
+      let value = document.getElementById("price");
+      value.innerText = price;
+      }
+  </script>

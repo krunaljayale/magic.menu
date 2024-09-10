@@ -344,6 +344,7 @@ router.post("/tables/bill/:number",isLoggedIn,
     wrapAsync(
         async(req,res)=> {
             let {number} = req.params;
+            let {invoice} = req.body;
             let owner = res.locals.currUser._id;
             let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
             let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
@@ -363,7 +364,7 @@ router.post("/tables/bill/:number",isLoggedIn,
                 let customerId = order.customerId;
                 let status = "Delivered";
 
-                const newHistory = new History({customername,mob_number,name,price,qty,owner,tableno,created_at,confirmed_at,customerId,status,paid_at});
+                const newHistory = new History({customername,mob_number,invoice,name,price,qty,owner,tableno,created_at,confirmed_at,customerId,status,paid_at});
                 await newHistory.save();
                 // console.log(newHistory._id);
                 
@@ -375,5 +376,15 @@ router.post("/tables/bill/:number",isLoggedIn,
             res.redirect("/admin/tables");
             return
     }));
+
+
+    // router.get("/history",isLoggedIn,
+    //     wrapAsync(
+    //         async(req,res)=> {
+    //             let owner = res.locals.currUser._id;
+    //             const orders =  await History.find({owner:owner});
+    //             res.render("listings/historyPage.ejs",{orders});
+    //             return
+    //     }))
 
 module.exports = router;
