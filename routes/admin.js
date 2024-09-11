@@ -300,7 +300,7 @@ router.get("/:number/confirmAll",isLoggedIn,
             item_quantity:order.qty,
             table_no:order.tableno,
             customer_name:order.customername,
-            order_id:id,
+            order_id:order._id,
             }); 
         }; 
         }
