@@ -433,6 +433,7 @@ router.get("/", (req,res)=>{
             newMyOrders.status ="Waiting";
             await newMyOrders.save();
 
+            const hotel = await User.findById(specialItem.owner);
             
             // MIXPANEL SETUP //
             if(mixpanel){
@@ -449,12 +450,6 @@ router.get("/", (req,res)=>{
             });
             };
         }
-
-        const hotel = await User.findById(specialItem.owner);
-        
-        
-        
-
 
         let endPoint = await Subscription.find({userID:{ $in: [specialItem.owner , hotelID] }});
         
