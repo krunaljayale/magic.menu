@@ -97,13 +97,13 @@
     width: 15%;
 }
 .item-price{
-    width: 25%;
+    width: 20%;
 }
 .item-total{
     width:15% ;
 }
 .item-status{
-    width: 40%;
+    width: 45%;
     font-weight: 900;
     /* border: 1px solid red; */
     display: flex;
@@ -112,7 +112,7 @@
 }
 .confirmButton, .rejectButton{
     color: #fff !important;
-    font-size: 3vw !important;
+    font-size: 2.75vw !important;
     /* font-size: 22px !important;
     padding: 3px 12px !important; */
 }
