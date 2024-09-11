@@ -1,12 +1,28 @@
 <% layout("/layouts/boilerplate.ejs") %>
+
 <%- include("../includes/adminNav.ejs") %>
 <%- include("../includes/flash.ejs") %>
 <%- include("../includes/adminFooter.ejs") %>
 
+
+<%- include("../includes/loading.ejs") %>
+<script>
+  // Show the loading screen
+  document.getElementById('loading-screen').style.display = 'block';
+
+// Hide the loading screen when the content is loaded
+  window.onload = function() {
+    setTimeout(()=>{
+      document.getElementById('loading-screen').style.display = 'none';
+    },1000)
+  }
+</script>
+
 <head>
-    <link rel="stylesheet" href="/css/adminBillPage.css">
-    <link rel="stylesheet" href="/css/modal.css">
+  <link rel="stylesheet" href="/css/adminBillPage.css">
+  <link rel="stylesheet" href="/css/modal.css">
 </head>
+
 
 <!-- Confirm Modal -->
 <div class="modal fade" id="confirmOrder" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -120,6 +136,8 @@
     </div>
   </div>
 <% } %>
+
+
 
 <!-- JavaScript -->
 <script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
