@@ -1,3 +1,18 @@
+<%- include("../includes/loading.ejs") %>
+<script>
+  // Show the loading screen
+  document.getElementById('loading-screen').style.display = 'block';
+
+// Hide the loading screen when the content is loaded
+  window.onload = function() {
+    setTimeout(()=>{
+      document.getElementById('loading-screen').style.display = 'none';
+    },1000)
+  }
+</script>
+
+
+
 <% layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/navbar.ejs") %>
 <%- include("../includes/adminFooter.ejs") %>
