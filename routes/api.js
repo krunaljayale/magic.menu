@@ -7,6 +7,7 @@ const CurrentOrders = require("../models/currentorders.js");
 const Listing = require("../models/listing.js");
 const User = require("../models/user.js");
 const Table = require("../models/table.js");
+const History = require("../models/history.js");
 const Subscription = require("../models/subscription.js");
 const webPush = require("web-push");
 const Mixpanel = require('mixpanel');
@@ -35,13 +36,11 @@ router.post("/subscribe",wrapAsync(async (req,res)=>{
     const user = await Subscription.findOne({userID:req.user._id});
     if(user){
         await Subscription.deleteOne({userID:req.user._id});
-
         let newSubscription = new Subscription(subscription);
         newSubscription.userID = req.user._id;
         await newSubscription.save();  
         // console.log("User resaved");
         res.json({status: "Success", message:"User Saved"});
-
     }else{
     let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
@@ -163,7 +162,7 @@ router.get("/", (req,res)=>{
         let {name, price,image,owner} = await Listing.findById(id);
         let { customername,qty,mob_number} = req.body;
         // + (5.5 * 60 * 60 * 1000)  To be plused after date.now() function to get indian time//
-        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let date = new Date(Date.now() + (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
         let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;
@@ -248,6 +247,34 @@ router.get("/", (req,res)=>{
         return
     }));
     
+
+    // Get History //
+    router.get("/history",
+        wrapAsync(
+        async(req,res)=>{
+            const hotelID = res.locals.hotelID;
+            let tableNO = await req.cookies.tableNO;
+            let date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
+            const orders =  await History.find({owner:hotelID, tableno:tableNO, customerId:res.locals.sessionId, paid_date:date});
+            const item =  await History.findOne({owner:hotelID, tableno:tableNO, customerId:res.locals.sessionId, paid_date:date,mob_number: { $ne: null, $ne: "" }
+            }).populate("owner").then(result => {
+              if (!result) {
+                return History.findOne({owner:hotelID,tableno:tableNO,customerId:res.locals.sessionId, paid_date:date, mob_number: { $exists: true } }).populate("owner");
+              }
+              return result });
+              
+            if(!item){
+                req.flash("flashError", "Bill is not generated yet");
+                res.redirect("/myorders");
+                return
+            }else{
+                res.render("listings/historyPage.ejs",{orders,hotelID,tableNO,item}) ;
+                return
+            }
+            
+        }));
+
+
     // Order Cancel //
     router.delete("/myorders/:id/cancel",wrapAsync(
     async(req,res)=>{
@@ -388,7 +415,7 @@ router.get("/", (req,res)=>{
         const items = await Cart.find({customerId:res.locals.sessionId});
         const specialItem = await Cart.findOne({customerId:res.locals.sessionId});
         let { customername , mob_number} = req.body;
-        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
         let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;

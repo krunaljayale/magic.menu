@@ -2,16 +2,32 @@
 <%- include("../includes/adminNav.ejs") %>
 <%- include("../includes/flash.ejs") %>
 
-
-
-
 <head>
     <link rel="stylesheet" href="/css/adminTablesPage.css">
+    <link href="/css/masterFooter.css" rel="stylesheet">
 </head>
 
-<h1 class="tables-page-heading">All Active Tables</h1>
+
+
+<% if(!waitingTables.length && !activeTables.length){ %>
+  <div class="row  row-col-sm-1 row-col-1 mt-3 " style= "width:99vw; justify-content:center;margin: 0;">
+      <div class="card mt-3 " style="width: 19rem; border: none;">
+          <img src="/images/orders.jpg" class="card-img-top" alt="No order image">
+          <div class="card-body">
+          <h5 class="card-title text-primary"> <b> No active tables at this moment.</b></h5>
+          <p class="card-text text-secondary"><i>Let's use this time to perfect our service!</i></p>
+          <!-- <a href="/menu/food" class="btn btn-outline-info">Explore Menu</a> -->
+          </div>
+      </div>
+  </div>
+<% } %>
+
+<% if(waitingTables.length || activeTables.length){ %>
+  <h1 class="tables-page-heading">All Active Tables</h1>
+<% } %>
 
 <div class="master-div">
+
   <% if(waitingTables && waitingTables.length){ %>
     <% for(table of waitingTables){ %>
         <a href="/admin/tables/orders/<%= table.number %>" class="sub-cat-anchor sample special-div">
@@ -31,6 +47,15 @@
         </a>
     <% } %>
   <% } %>
+</div>
+
+
+
+<div class="masterDiv admin-masterDiv">
+    <a class="icon" href="/admin/history">
+      <i class="fa-solid fa-file"></i>
+      <p>Orders History</p>
+    </a>
 </div>
 
         
@@ -56,3 +81,9 @@
     }
   });
 </script>
+
+<!-- <script>
+ window.addEventListener('load', () => {
+  window.history.replaceState(null, null, window.location.href);
+});
+</script> -->

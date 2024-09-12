@@ -1,10 +1,3 @@
-<% layout("/layouts/boilerplate.ejs") %>
-
-<%- include("../includes/adminNav.ejs") %>
-<%- include("../includes/flash.ejs") %>
-<%- include("../includes/adminFooter.ejs") %>
-
-
 <%- include("../includes/loading.ejs") %>
 <script>
   // Show the loading screen
@@ -17,6 +10,12 @@
     },1000)
   }
 </script>
+
+
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/adminNav.ejs") %>
+<%- include("../includes/flash.ejs") %>
+<%- include("../includes/adminFooter.ejs") %>
 
 <head>
   <link rel="stylesheet" href="/css/adminBillPage.css">
@@ -132,7 +131,7 @@
 <%if(!waitingOrders.length){%>
   <div class="bill-bottom-div special-bill-bottom-div">
     <div class=" bill-button-div ">
-      <a href="/admin/tables/bill/<%= number %>" class="btn btn-info genarate-bill-button" >Generate Bill</a>
+      <a href="/admin/tables/bill/<%= number %>" class="btn btn-info genarate-bill-button" id="billButton" >Generate Bill</a>
     </div>
   </div>
 <% } %>
@@ -185,4 +184,10 @@
   });
   
 
+</script>
+<script>
+  document.getElementById('billButton').addEventListener('click', () => {
+    history.replaceState(null, null, '/admin/tables');
+    history.pushState(null, null, '/admin/tables');
+  });
 </script>

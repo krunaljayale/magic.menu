@@ -34,6 +34,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user.js");
 const axios = require("axios");
+const { log } = require('console');
 
 
 
@@ -141,14 +142,21 @@ app.use((err,req,res,next)=> {
 io.on("connection", (socket)=>{
 
     socket.on("Table-Onboarded",(data)=>{
-        // console.log(data);
+        
         
         io.emit("Table_Onboarded",data);
     });
 
     socket.on("Confirm-Reject",(data)=>{
         io.emit("Confirm_Reject",data);
+        
     });
+
+    // socket.on("Bill-Generated",(data)=>{
+    //     io.emit("Bill_Generated",data);
+    //     console.log(data);
+        
+    // });
 
     socket.on("Cancel-Order",(data)=>{
         // console.log("Order Cancelled");

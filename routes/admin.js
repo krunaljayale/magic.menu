@@ -169,7 +169,7 @@ router.get("/tables",isLoggedIn,
         let owner = res.locals.currUser._id;
         const activeTables = (await Table.find({owner : owner, status : "Active", substatus : "Inactive" , number: { $nin: [ 0 , null] }})).sort((a, b) => a.number - b.number);
         const waitingTables = await Table.find({owner : owner,status : "Active", substatus : "Active" , number: { $nin: [ 0 , null] }});
-        
+        // history.replaceState(null, null, '/tables');
         res.render("listings/tables.ejs", {owner,activeTables, waitingTables});
 }));
        
@@ -208,7 +208,7 @@ router.get("/tables/orders/:number",isLoggedIn,
         const customername = item.customername;
         
 
-        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
         let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         res.render("listings/adminBill.ejs", {waitingOrders,confirmedOrders,owner, number,customername, mobNumber,date,time});
 }));
@@ -241,7 +241,7 @@ router.get("/:id/confirm",isLoggedIn,
         req.flash("flashSuccess", "Order confirmed");
         setTimeout(()=>{
          res.redirect(`/admin/tables/orders/${order.tableno}`);   
-        }, 1500)
+        }, 1000)
         return
 }));
 
@@ -327,6 +327,11 @@ router.get("/tables/bill/:number",isLoggedIn,
           }
           return result;
         });
+        if(confirmedOrders.length === 0 ){
+            await Table.findOneAndDelete({owner : owner, number:number});
+            res.redirect("/admin/tables");
+            return
+        }
         const customername = item.customername;
         const mobNumber = item.mob_number;
         function generateInvoiceNumber() {
@@ -334,7 +339,7 @@ router.get("/tables/bill/:number",isLoggedIn,
         };
         const invoice = generateInvoiceNumber();
         
-        let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
+        let date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
         let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         res.render("listings/billPage.ejs", {confirmedOrders,invoice,mobNumber,hotel,owner, number,customername,mobNumber, date,time});
 }));
@@ -346,9 +351,8 @@ router.post("/tables/bill/:number",isLoggedIn,
             let {number} = req.params;
             let {invoice} = req.body;
             let owner = res.locals.currUser._id;
-            let date = new Date(Date.now() ).toString().split(" ").slice(1,4).join("-");
-            let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-            const paid_at = `${date} ${time}`;
+            let paid_date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
+            let paid_time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             let orders = await CurrentOrders.find({owner:owner,tableno:number,status:"Confirmed"});
             
             for (let order of orders){
@@ -364,27 +368,68 @@ router.post("/tables/bill/:number",isLoggedIn,
                 let customerId = order.customerId;
                 let status = "Delivered";
 
-                const newHistory = new History({customername,mob_number,invoice,name,price,qty,owner,tableno,created_at,confirmed_at,customerId,status,paid_at});
+                const newHistory = new History({customername,mob_number,invoice,name,price,qty,owner,tableno,created_at,confirmed_at,customerId,status,paid_date,paid_time});
                 await newHistory.save();
                 // console.log(newHistory._id);
                 
             }
 
-            await CurrentOrders.deleteMany({owner:owner,tableno:number });
-            
+            await CurrentOrders.deleteMany({owner:owner,tableno:number });            
             await Table.findOneAndDelete({owner:owner, number:number});
-            res.redirect("/admin/tables");
+            res.redirect(302,"/admin/tables");
             return
     }));
 
 
-    // router.get("/history",isLoggedIn,
-    //     wrapAsync(
-    //         async(req,res)=> {
-    //             let owner = res.locals.currUser._id;
-    //             const orders =  await History.find({owner:owner});
-    //             res.render("listings/historyPage.ejs",{orders});
-    //             return
-    //     }))
+router.get("/history",isLoggedIn,
+    wrapAsync(
+        async(req,res)=> {
+            let owner = res.locals.currUser._id;
+            const orders =  await History.find({owner:owner});
 
+            if(orders.length === 0 ){
+                req.flash("flashError", "No history")
+                res.redirect("/admin/tables");
+                return
+            }
+            const uniqueDates = [...new Set(orders.map(order => order.paid_date))].reverse();
+            
+            const tables =  await History.find({owner:owner});
+            const uniqueTables = [...new Set(tables.map(table => JSON.stringify({ paid_date: table.paid_date, tableno: table.tableno })))];
+            
+            // uniqueTables.forEach((table) => { 
+            //     const parsedTable = JSON.parse(table);
+            //     console.log(parsedTable.tableno);
+            // })
+            // console.log(uniqueDates, uniqueTables);
+            const parsedTables = uniqueTables.map((table) => JSON.parse(table));
+            
+            res.render("listings/adminHistory.ejs",{uniqueDates,parsedTables}); 
+    }));
+
+
+    router.get("/:date/history/:number",isLoggedIn,
+        wrapAsync(
+            async(req,res)=> {
+                const {date , number} = req.params;
+                let owner = res.locals.currUser._id;
+
+                const bills =  await History.find({owner:owner, tableno:number, paid_date:date});
+                if(bills.length === 0 ){
+                    req.flash("flashError", "No history")
+                    res.redirect("/admin/tables");
+                    return
+                }
+
+                const uniqueBills = [...new Set(bills.map(bill => JSON.stringify({ customerId:bill.customerId, customername:bill.customername,invoice:bill.invoice, paid_date:bill.paid_date, paid_time:bill.paid_time, tableno:bill.tableno})))];
+
+                
+                const parsedBills = uniqueBills.map((bill) => JSON.parse(bill));
+                const orders =  await History.find({owner:owner, tableno:number, paid_date:date});
+                
+                res.render("listings/adminInvoice.ejs",{parsedBills,orders}); 
+                // res.send("DOne")
+                return
+            }
+        ));
 module.exports = router;

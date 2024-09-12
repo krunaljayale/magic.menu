@@ -1,35 +1,34 @@
 <% layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/navbar.ejs") %>
-<%- include("../includes/masterFooter.ejs") %>
+<%- include("../includes/adminFooter.ejs") %>
 
 
 <head>
     <link rel="stylesheet" href="/css/adminBillPage.css">
 </head>
 
-<div class="pageTitleDiv"><h1><b> <%= item.owner.hotelname%></b></h1></div> 
 
-<!-- < orders.forEach((order) => { %> -->
+<% parsedBills.forEach((bill) => { %>
 <div class="master-div">
     <div class="top-div">
       <div class="name-number-div">
-        <p class="top-div-content">Name: <%=item.customername%></p>
-        <%if(item.mob_number){%>
-          <p class="top-div-content">Contact: <%=item.mob_number%></p>
+        <p class="top-div-content">Name: <%=bill.customername%></p>
+        <%if(bill.mob_number){%>
+          <p class="top-div-content">Contact: <%=bill.mob_number%></p>
         <% } %>
-        <p class="top-div-content">Invoice: #<%=item.invoice%></p>
+        <p class="top-div-content">Invoice: #<%=bill.invoice%></p>
       </div>
       
         <div class="time-date-div">
-          <p class="top-div-content">Paid on: <%=item.paid_date%></p>
-          <p class="top-div-content">Paid at: <%=item.paid_time%></p>
-          <p class="top-div-content">Table no: <%= item.tableno %> </p>
+          <p class="top-div-content">Paid on: <%=bill.paid_date%></p>
+          <p class="top-div-content">Paid at: <%=bill.paid_time%></p>
+          <p class="top-div-content">Table no: <%= bill.tableno %> </p>
         </div>
     </div>
     
     <div class="middle-div">
       <div class="fixed-div">
-          <div class="item-srNo fixed-div-div"><p class="fixed-div-content">Sr.</p></div>
+          <!-- <div class="item-srNo fixed-div-div"><p class="fixed-div-content">Sr.</p></div> -->
           <div class="item-name fixed-div-div"><p class="fixed-div-content">Item Name</p></div>
           <div class="item-price fixed-div-div"><p class="fixed-div-content">Price</p></div>
           <div class="item-qty fixed-div-div"><p class="fixed-div-content">Qty</p></div>
@@ -39,36 +38,22 @@
     
     <div class="bottom-div">
       <% orders.forEach((order, index) => { %>
+        <%if(order.customerId === bill.customerId){%>
           <div class="dynamic-div">
-            <div class="item-srNo dynamic-div-div"><p class=" dynamic-div-content"><%= index + 1 %></p></div>
+            <!-- <div class="item-srNo dynamic-div-div"><p class=" dynamic-div-content"><= index + 1 %></p></div> -->
             <div class="item-name dynamic-div-div"><p class="dynamic-div-content"><%= order.name %></p></div>
             <div class="item-price dynamic-div-div"><p class=" dynamic-div-content"><%= order.price %></p></div>
             <div class="item-qty dynamic-div-div"><p class=" dynamic-div-content">x <%= order.qty %></p></div>
             <div class="item-total dynamic-div-div"><p class=" dynamic-div-content"><%= order.qty*order.price %></p></div>
           </div>  
+        <% } %>
       <% }) %>
     </div>
-    
-    <div class="bill-price-div">
-      <p class="totalItems"> Total items : <b><%=orders.length%></b> </p>
-      <p class="totalValue"> Total : <b id="price">&#8377;</b></p>
-    </div>
+            <div class="bill-price-div">
+            <p class="totalItems"> Total items : <b><%= orders.filter(o => o.customerId === bill.customerId).length %></b> </p>
+            <p class="totalValue"> Total : <b id="price">&#8377; <%= orders.filter(o => o.customerId === bill.customerId).reduce((acc, curr) => acc + curr.price, 0) %></b></p>
+            </div>
     <p class = "brand-name">Powerd By : Magic Menu.in</p>
 </div>
-<!-- < }) %> -->
+ <% }) %> 
 
-
-
-<script defer>
-    let items = <%- JSON.stringify(orders) %>;
-      if(items.length){
-          const billValue = []; 
-          for(item of items){
-          billValue.push(item.price*item.qty)
-      }
-      let price = billValue.reduce((accumulator, current) => accumulator + current);
-      let value = document.getElementById("price");
-      value.innerText = price;
-      }
-
-</script>

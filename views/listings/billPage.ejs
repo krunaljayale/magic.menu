@@ -1,3 +1,4 @@
+
 <% layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/adminNav.ejs") %>
 <!-- <- include("../includes/adminFooter.ejs") %> -->
@@ -14,6 +15,8 @@
     },1000)
   }
 </script>
+
+
 
 <head>
     <link rel="stylesheet" href="/css/adminBillPage.css">
@@ -35,7 +38,7 @@
           <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Cancel</button>
           <form action="/admin/tables/bill/<%=number%>" method="post">
             <input type="text" name="invoice" value="<%=invoice%>" style="display: none;">
-            <button type="submit" class="btn btn-success">Continue</button> 
+            <button type="submit" class="btn btn-success" id="billButton">Continue</button> 
           </form>
         </div>
       </div>
@@ -105,6 +108,8 @@
 </div>
 
 
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js" integrity="sha384-2huaZvOR9iDzHqslqwpR87isEmrfxqyWOF7hr7BY6KG0+hVKLoEXMPUJw3ynWuhO" crossorigin="anonymous"></script>
+
 
 <script>
   let items = <%- JSON.stringify(confirmedOrders) %>;
@@ -117,4 +122,16 @@
     let value = document.getElementById("price");
     value.innerText = price;
     }
+</script>
+<script>
+  const owner = <%- JSON.stringify(owner) %>;
+  const socket = io();
+</script>
+
+<script>
+  document.getElementById('billButton').addEventListener('click', () => {
+    socket.emit("Confirm-Reject" , {owner:owner});
+    history.replaceState(null, null, '/admin/tables');
+    history.pushState(null, null, '/admin/tables');
+  });
 </script>

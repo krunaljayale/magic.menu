@@ -1,0 +1,26 @@
+<% layout("/layouts/boilerplate.ejs") %>
+<%- include("../includes/adminNav.ejs") %>
+<%- include("../includes/adminFooter.ejs") %>
+
+
+<head>
+    <link rel="stylesheet" href="/css/adminHistoryPage.css">
+</head>
+
+
+<% uniqueDates.forEach((date) => { %>
+    <div class="master-div">
+        <div class="pageTitleDiv"><h1><b> <%= date%></b></h1></div>
+        <div class="sub-master-div">
+            <% parsedTables.forEach((table) => { %>
+                <%if(table.paid_date === date){%>
+                    <a href="/admin/<%=date%>/history/<%= table.tableno %>" class="sub-cat-anchor sample">
+                        <div class="sub-cat-div" >
+                            <p class="sub-cat-text"><%= table.tableno %></p>
+                        </div>
+                    </a>
+                <% } %>    
+            <% }) %>
+        </div>
+    </div> 
+<% }) %>
