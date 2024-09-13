@@ -32,8 +32,8 @@ const initDB = async ()=>{
     // // newUser.hotelname = "Inspire Foods"
     // console.log("Data was initialised");
 
-    const order = await History.findById('66e176eeeaffd2b0b179a650');
-    console.log(order.paid_date);
+    const orders = await History.find({owner:'66b63aa4dc2ac357eb4a32c0'});
+    console.log(orders);
     
 };
 

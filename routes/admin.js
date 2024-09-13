@@ -414,17 +414,17 @@ router.get("/history",isLoggedIn,
                 const {date , number} = req.params;
                 let owner = res.locals.currUser._id;
 
-                const bills =  await History.find({owner:owner, tableno:number, paid_date:date});
+                const bills =  await History.find({owner:owner, tableno:number, paid_date:date,});
+
                 if(bills.length === 0 ){
                     req.flash("flashError", "No history")
                     res.redirect("/admin/tables");
                     return
                 }
 
-                const uniqueBills = [...new Set(bills.map(bill => JSON.stringify({ customerId:bill.customerId, customername:bill.customername,invoice:bill.invoice, paid_date:bill.paid_date, paid_time:bill.paid_time, tableno:bill.tableno})))];
+                const uniqueBills = [...new Set(bills.map(bill => JSON.stringify({ customerId:bill.customerId, customername:bill.customername,invoice:bill.invoice, paid_date:bill.paid_date, paid_time:bill.paid_time, tableno:bill.tableno,...(bill.mob_number && { mob_number: bill.mob_number }),})))];
+                const parsedBills = (uniqueBills.map((bill) => JSON.parse(bill))).reverse();
 
-                
-                const parsedBills = uniqueBills.map((bill) => JSON.parse(bill));
                 const orders =  await History.find({owner:owner, tableno:number, paid_date:date});
                 
                 res.render("listings/adminInvoice.ejs",{parsedBills,orders}); 

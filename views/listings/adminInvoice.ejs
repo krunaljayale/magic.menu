@@ -15,11 +15,11 @@
 
 <% layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/navbar.ejs") %>
-<%- include("../includes/adminFooter.ejs") %>
 
 
 <head>
     <link rel="stylesheet" href="/css/adminBillPage.css">
+    <link href="/css/masterFooter.css" rel="stylesheet">
 </head>
 
 
@@ -53,7 +53,7 @@
     
     <div class="bottom-div">
       <% orders.forEach((order, index) => { %>
-        <%if(order.customerId === bill.customerId){%>
+        <%if(order.customerId === bill.customerId && order.paid_time === bill.paid_time){%>
           <div class="dynamic-div">
             <!-- <div class="item-srNo dynamic-div-div"><p class=" dynamic-div-content"><= index + 1 %></p></div> -->
             <div class="item-name dynamic-div-div"><p class="dynamic-div-content"><%= order.name %></p></div>
@@ -65,10 +65,17 @@
       <% }) %>
     </div>
             <div class="bill-price-div">
-            <p class="totalItems"> Total items : <b><%= orders.filter(o => o.customerId === bill.customerId).length %></b> </p>
-            <p class="totalValue"> Total : <b id="price">&#8377; <%= orders.filter(o => o.customerId === bill.customerId).reduce((acc, curr) => acc + curr.price, 0) %></b></p>
+            <p class="totalItems"> Total items : <b><%= orders.filter(o => o.customerId === bill.customerId && o.paid_time === bill.paid_time).length %></b> </p>
+            <p class="totalValue"> Total : <b id="price">&#8377; <%= orders.filter(o => o.customerId === bill.customerId && o.paid_time === bill.paid_time).reduce((acc, curr) => acc + (curr.price*curr.qty), 0) %></b></p>
             </div>
     <p class = "brand-name">Powerd By : Magic Menu.in</p>
+</div>
+
+<div class="masterDiv admin-masterDiv">
+  <a class="icon" href="/admin/history">
+    <i class="fa-solid fa-file"></i>
+    <p>Orders History</p>
+  </a>
 </div>
  <% }) %> 
 
