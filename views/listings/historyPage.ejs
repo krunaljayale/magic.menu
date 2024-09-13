@@ -5,6 +5,7 @@
 
 <head>
     <link rel="stylesheet" href="/css/adminBillPage.css">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
 </head>
 
 <div class="pageTitleDiv"><h1><b> <%= item.owner.hotelname%></b></h1></div> 
@@ -53,7 +54,9 @@
       <p class="totalItems"> Total items : <b><%=orders.length%></b> </p>
       <p class="totalValue"> Total : <b id="price">&#8377;</b></p>
     </div>
-    <p class = "brand-name">Powerd By : Magic Menu.in</p>
+    
+    <p class = "brand-name">Powered By : Magic Menu.in</p>
+    <!-- <button id="download-pdf">Download PDF</button> -->
 </div>
 <!-- < }) %> -->
 
@@ -72,3 +75,24 @@
       }
 
 </script>
+
+
+
+<!-- <script>
+  document.getElementById('download-pdf').addEventListener('click', () => {
+    fetch('/generate-pdf', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(response => response.arrayBuffer())
+    .then(pdfBuffer => {
+      const link = document.createElement('a');
+      link.href = window.URL.createObjectURL(new Blob([pdfBuffer], { type: 'application/pdf' }));
+      link.download = 'example.pdf';
+      link.click();
+    })
+    .catch(error => console.error(error));
+  });
+</script> -->

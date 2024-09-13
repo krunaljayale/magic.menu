@@ -12,7 +12,7 @@ const Subscription = require("../models/subscription.js");
 const webPush = require("web-push");
 const Mixpanel = require('mixpanel');
 const { HttpStatusCode } = require("axios");
-
+const jsPDF = require('jspdf'); // For Node.js backend
 
 // Mixpanel Setup //   
 
@@ -172,7 +172,7 @@ router.get("/", (req,res)=>{
             const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
             for(let order of orders){
                 order.mob_number = mob_number;
-                order.save();
+                await order.save();
             }
         }
         
@@ -491,7 +491,7 @@ router.get("/", (req,res)=>{
             const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
             for(let order of orders){
                 order.mob_number = mob_number;
-                order.save();
+                await order.save();
             }
         }
 
@@ -621,5 +621,17 @@ router.get("/", (req,res)=>{
         return
     });
         
+
+    // Sample route for bill downloading //
+
+    // router.post('/generate-pdf', (req, res) => {
+    //     const doc = new jsPDF();
+    //     doc.text('Hello, world!', 10, 10);
+    //     const pdfBuffer = doc.output('arraybuffer');
+    //     res.set("Content-Disposition", "attachment;filename=example.pdf");
+    //     res.set("Content-Type", "application/pdf");
+    //     res.send(pdfBuffer);
+    //   });
+
 
 module.exports = router;

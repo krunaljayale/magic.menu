@@ -112,7 +112,7 @@
       <%for(order of confirmedOrders){%>
           <div class="dynamic-div">
             <div class="item-name dynamic-div-div"><p class="dynamic-div-content"><%= order.name %></p></div>
-            <div class="item-qty dynamic-div-div"><p class=" dynamic-div-content"><%= order.qty %></p></div>
+            <div class="item-qty dynamic-div-div"><p class=" dynamic-div-content">x<%= order.qty %></p></div>
             <div class="item-status dynamic-div-div"><p class=" dynamic-div-content"><%= order.status %></p></div>
           </div>  
       <% } %>

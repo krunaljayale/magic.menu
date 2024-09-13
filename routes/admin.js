@@ -14,6 +14,7 @@ const {storage} = require("../cloudConfig.js");
 const upload = multer({ storage });
 const Mixpanel = require('mixpanel');
 const { exist } = require("joi");
+const jsPDF = require('jspdf'); // For Node.js backend
 
 // Mixpanel Setup //
 const mixpanel = Mixpanel.init(process.env.MIXPANEL_TOKEN);
@@ -422,12 +423,14 @@ router.get("/history",isLoggedIn,
                     return
                 }
 
-                const uniqueBills = [...new Set(bills.map(bill => JSON.stringify({ customerId:bill.customerId, customername:bill.customername,invoice:bill.invoice, paid_date:bill.paid_date, paid_time:bill.paid_time, tableno:bill.tableno,...(bill.mob_number && { mob_number: bill.mob_number }),})))];
+                const uniqueBills = [...new Set(bills.map(bill => JSON.stringify({ customerId:bill.customerId, customername:bill.customername,invoice:bill.invoice, paid_date:bill.paid_date, paid_time:bill.paid_time, tableno:bill.tableno,mob_number:bill.mob_number})))];
+                
+                
                 const parsedBills = (uniqueBills.map((bill) => JSON.parse(bill))).reverse();
 
                 const orders =  await History.find({owner:owner, tableno:number, paid_date:date});
                 
-                res.render("listings/adminInvoice.ejs",{parsedBills,orders}); 
+                res.render("listings/adminInvoice.ejs",{parsedBills,orders});
                 // res.send("DOne")
                 return
             }
