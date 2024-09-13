@@ -8,11 +8,22 @@ if(!("Notification" in window)){
     throw new Error("No support for notification API")
 }
 
-const registerSW = async ()=>{
+// const registerSW = async ()=>{
+//     const registration = await navigator.serviceWorker.register("/js/ServiceWorker.js");
+//     // console.log(registration)
+//     return registration;
+// }
+
+const registerSW = async () => {
+    // Unregister any existing Service Worker
+    await navigator.serviceWorker.getRegistrations().then(registrations => {
+      registrations.forEach(registration => registration.unregister());
+    });
+  
+    // Register the new Service Worker
     const registration = await navigator.serviceWorker.register("/js/ServiceWorker.js");
-    // console.log(registration)
     return registration;
-}
+  };
 
 const requestNotificationPermission = async() =>{
     const permission = await Notification.requestPermission();

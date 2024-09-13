@@ -39,13 +39,13 @@ router.post("/subscribe",wrapAsync(async (req,res)=>{
         let newSubscription = new Subscription(subscription);
         newSubscription.userID = req.user._id;
         await newSubscription.save();  
-        // console.log("User resaved");
+        console.log("User resaved");
         res.json({status: "Success", message:"User Saved"});
     }else{
     let newSubscription = new Subscription(subscription);
     newSubscription.userID = req.user._id;
     await newSubscription.save();  
-    // console.log("User saved");
+    console.log("User saved");
     res.json({status: "Success", message:"User Resaved"});
     }
 }));

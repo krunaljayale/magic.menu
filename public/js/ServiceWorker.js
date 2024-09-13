@@ -14,7 +14,7 @@ const urlBase64ToUint8Array = base64String =>{
 }
 
 // const saveSubscription = async (subscription) =>{
-//     const response = await fetch('http://192.168.126.167:3000/subscribe', {
+//     const response = await fetch('http://192.168.100.167:3000/subscribe', {
 //         method:'post',
 //         headers:{'Content-type':"application/json"},
 //         body: JSON.stringify(subscription)
@@ -23,7 +23,7 @@ const urlBase64ToUint8Array = base64String =>{
 // }
 
 const saveSubscription = async (subscription) =>{
-    const response = await fetch('https://magicmenu.in/subscribe', {
+    const response = await fetch('https://www.magicmenu.in/subscribe', {
         method:'post',
         headers:{'Content-type':"application/json"},
         body: JSON.stringify(subscription)
