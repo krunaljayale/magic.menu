@@ -167,7 +167,15 @@ router.get("/", (req,res)=>{
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;
         res.cookie("customerName", customername);
-        res.cookie("mob_number", mob_number);
+        if(mob_number){
+            res.cookie("mob_number", mob_number);
+            const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
+            for(let order of orders){
+                order.mob_number = mob_number;
+                order.save();
+            }
+        }
+        
         let tableno = await req.cookies.tableNO;
         if(!tableno || tableno === "0"){
             res.json({status: "Error", message:"Please rescan the QR"});
@@ -420,12 +428,20 @@ router.get("/", (req,res)=>{
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;
         res.cookie("customerName", customername);
-        res.cookie("mob_number", mob_number);
+        
         let tableno = await req.cookies.tableNO;
         if(!tableno || tableno === "0"){
             req.flash("flashError" ,"Please rescan the QR");
             res.redirect("/cart");
             return
+        }
+        if(mob_number){
+            res.cookie("mob_number", mob_number);
+            const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
+            for(let order of orders){
+                order.mob_number = mob_number;
+                order.save();
+            }
         }
 
         const newTable = await Table.findOne({owner :hotelID, status : "Active", number : tableno});
