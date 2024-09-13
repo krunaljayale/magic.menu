@@ -231,9 +231,34 @@ router.get("/", (req,res)=>{
 
         let endPoint = await Subscription.find({userID:owner});
         if(endPoint.length && tableno){
-           webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered ${qty} ${name} just now` ) 
+            try{
+                webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered ${qty} ${name} just now` )
+                .then(() => {
+                    // console.log('Notification sent successfully!');
+                  })
+                  .catch(async(error) => {
+                    // Remove the endpoint from your database
+                    await Subscription.findOneAndDelete({userID:owner});
+                    console.log("Some Error in order webpush notification", error)
+                  }); 
+                }catch (error) {
+                    console.log("Some Error in order webpush notification", error)
+                }
+              
         }else if(endPoint.length){
-            webPush.sendNotification(endPoint[0], `${customername} ordered ${qty} ${name} just now` ) 
+            try{
+                webPush.sendNotification(endPoint[0], `${customername} ordered ${qty} ${name} just now` )
+                .then(() => {
+                    // console.log('Notification sent successfully!');
+                  })
+                  .catch(async(error) => {
+                    // Remove the endpoint from your database
+                    await Subscription.findOneAndDelete({userID:owner});
+                    console.log("Some Error in order webpush notification", error)
+                  }); 
+            }catch (error) {
+                console.log("Some Error in order webpush notification", error)
+            }
         }
         // req.flash("flashSuccess", "Order Placed");
         // res.redirect(`/orders/${id}`);
@@ -323,10 +348,36 @@ router.get("/", (req,res)=>{
         
             await CurrentOrders.findByIdAndDelete(id);
             let endPoint = await Subscription.find({userID:owner});
+
+
             if(endPoint.length && tableno){
-                await webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} has cancelled order of ${qty} ${name} just now` );
+                try{
+                   await webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} has cancelled order of ${qty} ${name} just now` )
+                   .then(() => {
+                    // console.log('Notification sent successfully!');
+                  })
+                  .catch(async(error) => {
+                    // Remove the endpoint from your database
+                    await Subscription.findOneAndDelete({userID:owner});
+                    console.log("Some Error in order cancel webpush notification", error)
+                  }); 
+                }catch(error){
+                    console.log("Some Error in order cancel webpush notification", error)
+                } 
             }else if(endPoint.length){
-                await webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` );
+                try{
+                    await webPush.sendNotification(endPoint[0], `${customername} has cancelled order of ${qty} ${name} just now` )
+                    .then(() => {
+                     // console.log('Notification sent successfully!');
+                   })
+                   .catch(async(error) => {
+                     // Remove the endpoint from your database
+                     await Subscription.findOneAndDelete({userID:owner});
+                     console.log("Some Error in order cancel webpush notification", error)
+                   }); 
+                 }catch(error){
+                     console.log("Some Error in order cancel webpush notification", error)
+                 }
             }
             
             req.flash("flashSuccess", "Order Cancelled");
@@ -499,16 +550,68 @@ router.get("/", (req,res)=>{
         if (items.length === 1){
             for(let item of items){
                 if(endPoint.length && tableno){
-                    webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered 1 ${item.name} on ${created_at}` );
+                    try{
+                        webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} ordered 1 ${item.name} on ${created_at}` )
+                        .then(() => {
+                         // console.log('Notification sent successfully!');
+                       })
+                       .catch(async(error) => {
+                         // Remove the endpoint from your database
+                         await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner , hotelID] }});
+                         console.log("Some Error in single cart order webpush notification", error)
+                       }); 
+                     }catch(error){
+                         console.log("Some Error in single cart order webpush notification", error)
+                     
+                     }
                 }else if(endPoint.length){
-                    webPush.sendNotification(endPoint[0], `${customername} ordered 1 ${item.name} on ${created_at}`);
+                    try{
+                        webPush.sendNotification(endPoint[0], `${customername} ordered 1 ${item.name} on ${created_at}`)
+                        .then(() => {
+                         // console.log('Notification sent successfully!');
+                       })
+                       .catch(async(error) => {
+                         // Remove the endpoint from your database
+                         await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner , hotelID] }});
+                         console.log("Some Error in single cart order webpush notification", error)
+                       }); 
+                     }catch(error){
+                         console.log("Some Error in single cart order webpush notification", error)
+                     
+                     }
                 }
             }
         }else{
             if(endPoint.length && tableno){
-                webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} created a bulk order on ${created_at}` );
+                try{
+                    webPush.sendNotification(endPoint[0], `${customername} from table number ${tableno} created a bulk order on ${created_at}` )
+                    .then(() => {
+                     // console.log('Notification sent successfully!');
+                   })
+                   .catch(async(error) => {
+                     // Remove the endpoint from your database
+                     await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner , hotelID] }});
+                     console.log("Some Error in bulk cart order webpush notification", error)
+                   }); 
+                 }catch(error){
+                     console.log("Some Error in bulk cart order webpush notification", error)
+                 
+                 }
             }else if(endPoint.length){
-                webPush.sendNotification(endPoint[0], `${customername} created a bulk order on ${created_at}` );
+                try{
+                    webPush.sendNotification(endPoint[0], `${customername} created a bulk order on ${created_at}` )
+                    .then(() => {
+                     // console.log('Notification sent successfully!');
+                   })
+                   .catch(async(error) => {
+                     // Remove the endpoint from your database
+                     await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner , hotelID] }});
+                     console.log("Some Error in bulk cart order webpush notification", error)
+                   }); 
+                 }catch(error){
+                     console.log("Some Error in bulk cart order webpush notification", error)
+                 
+                 }
             }
         }
         
