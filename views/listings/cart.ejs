@@ -77,7 +77,7 @@
 
         <form action="/cart/order" method="post" id="order-form" class="needs-validation" >
             <input type="text" name="customername" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required />
-            <input type="text" name="mob_number" class="form-control order-input"  placeholder="Enter Your Mobile Number (Optional)" maxlength="10">
+            <input type="text" name="mob_number" class="form-control order-input"  placeholder="Enter Your Mobile Number" minlength="10" maxlength="10">
             <button class="orderBtn btn btn-info" id="orderButton">Order All</button>
             <audio id="notification-sound" src="/sounds/small_sms_tone.mp3" type="audio/mp3" controls="false" style="display: none;"></audio> 
         </form>

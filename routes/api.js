@@ -167,11 +167,18 @@ router.get("/", (req,res)=>{
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;
         await res.cookie("customerName", customername);
-        if(mob_number){
-            await res.cookie("mob_number", mob_number);
-            const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
-            for(let order of orders){
+        
+        const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
+
+        for(let order of orders){
+            if(mob_number.length ){
+                await res.cookie("mob_number", mob_number);
                 order.mob_number = mob_number;
+                await order.save();
+                
+            }
+            if(order.customername != customername){
+                order.customername = customername;
                 await order.save();
             }
         }
@@ -486,14 +493,30 @@ router.get("/", (req,res)=>{
             res.redirect("/cart");
             return
         }
-        if(mob_number){
-            res.cookie("mob_number", mob_number);
-            const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
-            for(let order of orders){
+
+        const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
+
+        for(let order of orders){
+            if(mob_number.length ){
+                res.cookie("mob_number", mob_number);
                 order.mob_number = mob_number;
+                await order.save();
+                
+            }
+            if(order.customername != customername){
+                order.customername = customername;
                 await order.save();
             }
         }
+
+        // if(mob_number){
+        //     res.cookie("mob_number", mob_number);
+        //     const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
+        //     for(let order of orders){
+        //         order.mob_number = mob_number;
+        //         await order.save();
+        //     }
+        // }
 
         const newTable = await Table.findOne({owner :hotelID, status : "Active", number : tableno});
         if(newTable){
@@ -624,14 +647,14 @@ router.get("/", (req,res)=>{
 
     // Sample route for bill downloading //
 
-    router.post('/generate-pdf', (req, res) => {
-        const doc = new jsPDF();
-        doc.text('Hello, world!', 10, 10);
-        const pdfBuffer = doc.output('arraybuffer');
-        res.set("Content-Disposition", "attachment;filename=example.pdf");
-        res.set("Content-Type", "application/pdf");
-        res.send(pdfBuffer);
-      });
+    // router.post('/generate-pdf', (req, res) => {
+    //     const doc = new jsPDF();
+    //     doc.text('Hello, world!', 10, 10);
+    //     const pdfBuffer = doc.output('arraybuffer');
+    //     res.set("Content-Disposition", "attachment;filename=example.pdf");
+    //     res.set("Content-Type", "application/pdf");
+    //     res.send(pdfBuffer);
+    //   });
 
 
 module.exports = router;
