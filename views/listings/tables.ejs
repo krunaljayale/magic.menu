@@ -80,6 +80,14 @@
       },1500) 
     }
   });
+
+  socket.on("Confirm_Reject",(data)=>{
+    if(data.owner = owner){
+      setTimeout(()=>{
+        window.location.reload(true)
+      },2000) 
+    }
+  });
 </script>
 
 <!-- <script>
