@@ -9,18 +9,25 @@
     vertical-align: middle !important;
     border: none !important;
 }
-
-
+.title-button-div{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+}
+.myorder-title{
+    color:#12296c;
+    font-size: 20px !important;
+    margin: 0 !important;
+}
+.get-bill-button{
+    font-size: medium !important;
+    color:#ffffff !important;
+    background-color: #12296c !important;
+}
 .master-div{
     padding-bottom: 12rem;
 }
-.myorder-title{
-    margin:1rem 2rem;
-    color:#12296c;
-    text-align: left;
-    font-size: 20px !important;
-}
-
 .note{
     display: block;
     text-align: center;

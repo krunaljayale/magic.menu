@@ -4,6 +4,7 @@ const Listing = require ("../models/listing.js");
 const User = require("../models/user.js");
 const History = require("../models/history.js");
 const Cart = require("../models/cart.js");
+const CurrentOrders = require("../models/currentorders.js");
 
 const MONGO_URL = "mongodb+srv://magicmenuin:a2axeqa7px@magicmenu.lc8zcpg.mongodb.net/?retryWrites=true&w=majority&appName=MagicMenu";
 // const dbUrl = "mongodb+srv://buisnessteamtop5:a2axeqa7px@magicmenu.iatnpxk.mongodb.net/?retryWrites=true&w=majority&appName=Magicmenu";
@@ -32,7 +33,7 @@ const initDB = async ()=>{
     // // newUser.hotelname = "Inspire Foods"
     // console.log("Data was initialised");
 
-    const orders = await History.find({owner:'66b63aa4dc2ac357eb4a32c0'});
+    const orders = await CurrentOrders.find({owner:'66b63aa4dc2ac357eb4a32c0', status:"Rejected"});
     console.log(orders);
     
 };

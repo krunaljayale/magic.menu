@@ -5,7 +5,7 @@
 
 <head>
     <link rel="stylesheet" href="/css/adminBillPage.css">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
 
 <div class="pageTitleDiv"><h1><b> <%= item.owner.hotelname%></b></h1></div> 
@@ -56,7 +56,7 @@
     </div>
     
     <p class = "brand-name">Powered By : Magic Menu.in</p>
-    <!-- <button id="download-pdf">Download PDF</button> -->
+    <button id="download-pdf">Download PDF</button>
 </div>
 <!-- < }) %> -->
 
@@ -78,7 +78,7 @@
 
 
 
-<!-- <script>
+<script>
   document.getElementById('download-pdf').addEventListener('click', () => {
     fetch('/generate-pdf', {
       method: 'POST',
@@ -95,4 +95,4 @@
     })
     .catch(error => console.error(error));
   });
-</script> -->
+</script>

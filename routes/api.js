@@ -70,7 +70,7 @@ router.get("/", (req,res)=>{
         const hotel = await User.findById(hotelID);
         res.cookie("hotelID", hotelID);
         if(tableNO){
-            res.cookie("tableNO", tableNO);
+           await res.cookie("tableNO", tableNO);
         }
         // MIXPANEL SETUP //
         if(mixpanel){
@@ -166,9 +166,9 @@ router.get("/", (req,res)=>{
         let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         let current_Date = `${date} ${time}`;
         const created_at = current_Date;
-        res.cookie("customerName", customername);
+        await res.cookie("customerName", customername);
         if(mob_number){
-            res.cookie("mob_number", mob_number);
+            await res.cookie("mob_number", mob_number);
             const orders = await CurrentOrders.find({customerId:res.locals.sessionId});
             for(let order of orders){
                 order.mob_number = mob_number;
@@ -187,7 +187,7 @@ router.get("/", (req,res)=>{
         if(newTable){
             if(newTable.user === res.locals.sessionId){
                 newTable.substatus = "Active";
-                newTable.save();  
+                await newTable.save();  
             }else{
                 res.json({status: "Error", message:"Table is already booked"});
                 return
@@ -499,7 +499,7 @@ router.get("/", (req,res)=>{
         if(newTable){
             if(newTable.user === res.locals.sessionId){
                 newTable.substatus = "Active";
-                newTable.save();  
+                await newTable.save();  
             }else{
                 req.flash("flashError" ,"Table is already booked");
                 res.redirect("/cart");
@@ -624,14 +624,14 @@ router.get("/", (req,res)=>{
 
     // Sample route for bill downloading //
 
-    // router.post('/generate-pdf', (req, res) => {
-    //     const doc = new jsPDF();
-    //     doc.text('Hello, world!', 10, 10);
-    //     const pdfBuffer = doc.output('arraybuffer');
-    //     res.set("Content-Disposition", "attachment;filename=example.pdf");
-    //     res.set("Content-Type", "application/pdf");
-    //     res.send(pdfBuffer);
-    //   });
+    router.post('/generate-pdf', (req, res) => {
+        const doc = new jsPDF();
+        doc.text('Hello, world!', 10, 10);
+        const pdfBuffer = doc.output('arraybuffer');
+        res.set("Content-Disposition", "attachment;filename=example.pdf");
+        res.set("Content-Type", "application/pdf");
+        res.send(pdfBuffer);
+      });
 
 
 module.exports = router;

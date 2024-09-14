@@ -180,14 +180,14 @@ router.get("/tables/orders/:number",isLoggedIn,
     wrapAsync(
         async(req,res)=> {
         let {number} = req.params;
-        let owner = res.locals.currUser._id;
+        let owner = await res.locals.currUser._id;
         const waitingOrders = await CurrentOrders.find({owner:owner, status:"Waiting",tableno:number});
         
         if(!waitingOrders.length){
             const activeTable = await Table.findOne({owner : owner, number:number, status:"Active", substatus:"Active"});
             if(activeTable){
                 activeTable.substatus = "Inactive";
-                activeTable.save();
+                await activeTable.save();
             }  
         }
         const confirmedOrders = (await CurrentOrders.find({owner:owner, status:"Confirmed",tableno:number })).reverse();
@@ -198,10 +198,10 @@ router.get("/tables/orders/:number",isLoggedIn,
             return
         }
         // const item = await CurrentOrders.findOne({owner:owner,tableno:number,mob_number:{ $exists:true } });
-        const item = await CurrentOrders.findOne({owner:owner,tableno:number,mob_number: { $ne: null, $ne: "" }
+        const item = await CurrentOrders.findOne({owner:owner,tableno:number, status: { $in: ["Confirmed", "Waiting"] },mob_number: { $ne: null, $ne: "" }
           }).then(result => {
             if (!result) {
-              return CurrentOrders.findOne({owner:owner,tableno:number, mob_number: { $exists: true } });
+              return CurrentOrders.findOne({owner:owner,tableno:number, status: { $in: ["Confirmed", "Waiting"] }, mob_number: { $exists: true } });
             }
             return result;
           });
@@ -222,7 +222,7 @@ router.get("/:id/confirm",isLoggedIn,
         const order = await CurrentOrders.findById(id);
         order.confirmed_at = new Date(Date.now()+ (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
         order.status ="Confirmed";
-        order.save();
+        await order.save();
 
         // // MIXPANEL SETUP //
         if(mixpanel){
@@ -252,7 +252,7 @@ router.get("/:id/reject",isLoggedIn,
         let {id}= req.params;
         const order = await CurrentOrders.findById(id);
         order.status ="Rejected";
-        order.save();
+        await order.save();
         
         
             // // MIXPANEL SETUP //
@@ -288,7 +288,7 @@ router.get("/:number/confirmAll",isLoggedIn,
         for(let order of orders){
             order.confirmed_at = new Date(Date.now()+ (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
             order.status ="Confirmed";
-            order.save();
+            await order.save();
 
            // // MIXPANEL SETUP //
         if(mixpanel){
@@ -321,15 +321,20 @@ router.get("/tables/bill/:number",isLoggedIn,
         let owner = res.locals.currUser._id;
         let hotel = await User.findById(owner);
         const confirmedOrders = (await CurrentOrders.find({owner:owner, status:"Confirmed",tableno:number })).reverse();
-        const item = await CurrentOrders.findOne({owner:owner,tableno:number,mob_number: { $ne: null, $ne: "" }
+        const item = await CurrentOrders.findOne({owner:owner,tableno:number,status:"Confirmed",mob_number: { $ne: null, $ne: "" }
         }).then(result => {
           if (!result) {
-            return CurrentOrders.findOne({owner:owner,tableno:number, mob_number: { $exists: true } });
+            return CurrentOrders.findOne({owner:owner,tableno:number,status:"Confirmed" ,mob_number: { $exists: true } });
           }
           return result;
         });
         if(confirmedOrders.length === 0 ){
             await Table.findOneAndDelete({owner : owner, number:number});
+            const orders = await CurrentOrders.find({owner:owner, status:"Waiting",tableno:number });
+            for(let order of orders){
+                order.status = "Rejected";
+                await order.save();
+            }
             res.redirect("/admin/tables");
             return
         }
