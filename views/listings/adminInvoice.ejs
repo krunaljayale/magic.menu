@@ -68,7 +68,7 @@
             <p class="totalItems"> Total items : <b><%= orders.filter(o => o.customerId === bill.customerId && o.paid_time === bill.paid_time).length %></b> </p>
             <p class="totalValue"> Total : <b id="price">&#8377; <%= orders.filter(o => o.customerId === bill.customerId && o.paid_time === bill.paid_time).reduce((acc, curr) => acc + (curr.price*curr.qty), 0) %></b></p>
             </div>
-    <p class = "brand-name">Powered By : Magic Menu.in</p>
+    <p class = "brand-name">Powered By : Magic Menu</p>
 </div>
 
 <div class="masterDiv admin-masterDiv">
