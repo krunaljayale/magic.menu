@@ -156,6 +156,7 @@ async (req,res,next)=>{
     let filename = req.file.filename;
     const newListing = new Listing ({name,info,price,category,subcategory});
     newListing.owner = req.user._id;
+    newListing.promote = "No";
     newListing.image = { url, filename};
     await newListing.save();
     req.flash("flashSuccess", "Item Added Successfully.");
