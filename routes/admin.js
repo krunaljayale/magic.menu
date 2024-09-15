@@ -70,7 +70,7 @@ router.get("/:id/edit",isLoggedIn,
 
 
 // Update Route //
-router.put("/:id/edit" ,isLoggedIn, upload.single('image')
+router.put("/:id/edit" ,isLoggedIn, upload.single('listing[image]')
 , wrapAsync(
 async (req,res)=>{
     const { id } = req.params;
