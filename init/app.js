@@ -6,11 +6,11 @@ const History = require("../models/history.js");
 const Cart = require("../models/cart.js");
 const CurrentOrders = require("../models/currentorders.js");
 
-const MONGO_URL = "mongodb+srv://magicmenuin:a2axeqa7px@magicmenu.lc8zcpg.mongodb.net/?retryWrites=true&w=majority&appName=MagicMenu";
-// const dbUrl = "mongodb+srv://buisnessteamtop5:a2axeqa7px@magicmenu.iatnpxk.mongodb.net/?retryWrites=true&w=majority&appName=Magicmenu";
+// const MONGO_URL = "mongodb+srv://magicmenuin:a2axeqa7px@magicmenu.lc8zcpg.mongodb.net/?retryWrites=true&w=majority&appName=MagicMenu";
+const testingServer = "mongodb+srv://buisnessteamtop5:a2axeqa7px@magicmenu.iatnpxk.mongodb.net/?retryWrites=true&w=majority&appName=Magicmenu";
 
 async function main(){
-    await mongoose.connect(MONGO_URL);
+    await mongoose.connect(testingServer);
 };
 
 main().then(()=>{
@@ -21,20 +21,19 @@ main().then(()=>{
 });
 
 const initDB = async ()=>{
-    // await Listing.deleteMany({});
-    // initData.data = initData.data.map((obj) =>(
-    //     {...obj, owner:"66aa63b4742a4c5aedded9b3",promote:"No",category:"Veg"}
+    const orders = await Listing.find();
+    // initData.data = orders.data.map((obj) =>(
+    //     {...obj, promote:"No"}
     // ));
-    // await Listing.insertMany(initData.data);
+    for(let order of orders){
+        order.promote = 'No';
+        await order.save();
+    }
+    // await Listing.updateMany(initData.data);
 
-
-    
-    // // let newUser = await User.find({username:"Krunal Jayale"});
-    // // newUser.hotelname = "Inspire Foods"
-    // console.log("Data was initialised");
-
-    const orders = await CurrentOrders.find({owner:'66b63aa4dc2ac357eb4a32c0', status:"Rejected"});
-    console.log(orders);
+    // const orders = await CurrentOrders.deleteMany({owner:'66aa63b4742a4c5aedded9b3'});
+    // const orders = await CurrentOrders.deleteMany({ owner: new ObjectId('66aa63b4742a4c5aedded9b3') });
+    console.log("Done");
     
 };
 

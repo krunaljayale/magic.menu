@@ -70,13 +70,12 @@ router.get("/:id/edit",isLoggedIn,
 
 
 // Update Route //
-router.put("/:id/edit" ,isLoggedIn, upload.single('image')
+router.put("/:id/edit" ,isLoggedIn, upload.single('listing[image]')
 , wrapAsync(
 async (req,res)=>{
     const { id } = req.params;
     let listing = await Listing.findByIdAndUpdate(id, {...req.body.listing});
-
-
+    
     if(typeof req.file != "undefined"){
         let url = req.file.path;
         let filename = req.file.filename;
@@ -156,6 +155,7 @@ async (req,res,next)=>{
     let filename = req.file.filename;
     const newListing = new Listing ({name,info,price,category,subcategory});
     newListing.owner = req.user._id;
+    newListing.promote = "No";
     newListing.image = { url, filename};
     await newListing.save();
     req.flash("flashSuccess", "Item Added Successfully.");

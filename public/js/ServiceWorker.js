@@ -22,6 +22,15 @@ const urlBase64ToUint8Array = base64String =>{
 //     return response.json();
 // }
 
+// const saveSubscription = async (subscription) =>{
+//     const response = await fetch('https://test-magic-menu.onrender.com/subscribe', {
+//         method:'post',
+//         headers:{'Content-type':"application/json"},
+//         body: JSON.stringify(subscription)
+//     })
+//     return response.json();
+// }
+
 const saveSubscription = async (subscription) =>{
     const response = await fetch('https://www.magicmenu.in/subscribe', {
         method:'post',
