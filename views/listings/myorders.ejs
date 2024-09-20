@@ -6,13 +6,18 @@
 <head>
     <title>Orders</title>
     <link rel="stylesheet" href="/css/myorderPage.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.7.5/axios.min.js" integrity="sha512-01Pe9P3mJM/4c80VuoYEGHlspKGbd9uWQe9HtdLsdTqV0CS1kz8ca44sinVEXEvlZNciMmsAjeEbm5ZxHC7yYg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <!-- <meta http-equiv="refresh" content="15"> -->
 </head>
 
 
 <div class="title-button-div">
     <h3 class="myorder-title"> Your Orders  <i class="fa-solid fa-box-open"></i></h3>
-    <a href="/history" class="btn btn-secondary get-bill-button">Get Bill</a>
+    <% if( items.length ){ %>
+        <a href="/history" class="btn btn-outline-secondary get-bill-button" id="get-bill-button">Get Bill</a>
+    <% } %>
+
+    <!-- <a class="btn btn-secondary get-bill-button" id="get-bill-button">Get Bill</a> -->
 </div>
 
 
@@ -65,7 +70,7 @@
                     <% } %>
                     
                 </div>
-                <% if(item.status != "Confirmed" && item.status != "Rejected"){ %>
+                <% if(item.status ==="Waiting"){ %>
                 <div class="buttons-div">
                     <form method="post" id="cancelForm" action="/myorders/<%= item._id %>/cancel?_method=DELETE">
                         <button class="btn myorder-cancel-btn myButton" id="<%= item._id %>">Cancel</button>
@@ -74,6 +79,11 @@
                 </div>
                 <% } %>
 
+                <% if(item.status ==="Admin"){ %>
+                    <div class="buttons-div">
+                        <b><p class="card-text" style="color: rgb(1, 81, 180);">Added by Owner <i class="fa-solid fa-circle-check"></i></p></b>
+                     </div>
+                <% } %>
                 <% if(item.status === "Confirmed"){ %> 
                     <div class="buttons-div">
                        <b><p class="card-text" style="color: green;">Order is Confirmed <i class="fa-solid fa-circle-check"></i></p></b>
@@ -129,7 +139,4 @@
       },1500) 
     }
   });
-
-
-  
-  </script>
+</script>

@@ -37,7 +37,8 @@ router.get("/profile",isLoggedIn,
     let user = await User.findById(id);
     const subscription = await Subscription.findOne({userID:req.user._id});
     res.render("listings/profile.ejs",{user, subscription})
-})
+});
+
 // Profile Edit //
 router.put("/profile/edit",isLoggedIn,
  async(req,res)=>{
@@ -48,7 +49,6 @@ router.put("/profile/edit",isLoggedIn,
 });
 
 
-
 // Admin Show Route //
 router.get("/:id/show",isLoggedIn,wrapAsync(
     async (req,res)=>{
@@ -56,7 +56,6 @@ router.get("/:id/show",isLoggedIn,wrapAsync(
         const item = await Listing.findById(id).populate("owner");
         res.render("listings/show.ejs",{item});
 }));
-
 
 
 // Admin Edit Route //
@@ -117,7 +116,6 @@ router.get("/:id/promote", isLoggedIn,
                 }
                 res.redirect(`/admin/${id}/show`);  
             };
-            
         }
     )
 )
@@ -191,6 +189,8 @@ router.get("/tables/orders/:number",isLoggedIn,
             }  
         }
         const confirmedOrders = (await CurrentOrders.find({owner:owner, status:"Confirmed",tableno:number })).reverse();
+
+        const addedOrders = (await CurrentOrders.find({owner:owner, status:"Admin",tableno:number })).reverse();
         
         if(waitingOrders.length === 0 && confirmedOrders.length === 0 ){
             await Table.findOneAndDelete({owner : owner, number:number});
@@ -211,7 +211,7 @@ router.get("/tables/orders/:number",isLoggedIn,
 
         let date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
         let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-        res.render("listings/adminBill.ejs", {waitingOrders,confirmedOrders,owner, number,customername, mobNumber,date,time});
+        res.render("listings/adminBill.ejs", {waitingOrders,confirmedOrders,owner, number,customername, mobNumber,date,time,addedOrders});
 }));
 
 // Order Confirm Route
@@ -320,7 +320,20 @@ router.get("/tables/bill/:number",isLoggedIn,
         let {number} = req.params;
         let owner = res.locals.currUser._id;
         let hotel = await User.findById(owner);
-        const confirmedOrders = (await CurrentOrders.find({owner:owner, status:"Confirmed",tableno:number })).reverse();
+        function generateInvoiceNumber() {
+            return Math.floor(100000 + Math.random() * 900000).toString();
+        };
+        const invoice = generateInvoiceNumber();
+        let paid_date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
+        let paid_time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+        const confirmedOrders = (await CurrentOrders.find({owner:owner, status:{ $in: ["Confirmed" , "Admin"] },tableno:number })).reverse();
+        for(let order of confirmedOrders){
+            order.bill_status = "Generated";
+            order.invoice = invoice,
+            order.paid_date = paid_date,
+            order.paid_time = paid_time,
+            await order.save();
+        }
         const item = await CurrentOrders.findOne({owner:owner,tableno:number,status:"Confirmed",mob_number: { $ne: null, $ne: "" }
         }).then(result => {
           if (!result) {
@@ -340,14 +353,8 @@ router.get("/tables/bill/:number",isLoggedIn,
         }
         const customername = item.customername;
         const mobNumber = item.mob_number;
-        function generateInvoiceNumber() {
-            return Math.floor(100000 + Math.random() * 900000).toString();
-        };
-        const invoice = generateInvoiceNumber();
         
-        let date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
-        let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-        res.render("listings/billPage.ejs", {confirmedOrders,invoice,mobNumber,hotel,owner, number,customername,mobNumber, date,time});
+        res.render("listings/billPage.ejs", {confirmedOrders,invoice,mobNumber,hotel,owner, number,customername,mobNumber, paid_date,paid_time});
 }));
 
 
@@ -359,7 +366,7 @@ router.post("/tables/bill/:number",isLoggedIn,
             let owner = res.locals.currUser._id;
             let paid_date = new Date(Date.now()+ (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
             let paid_time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
-            let orders = await CurrentOrders.find({owner:owner,tableno:number,status:"Confirmed"});
+            let orders = await CurrentOrders.find({owner:owner,tableno:number,status:{ $in: ["Confirmed" , "Admin"] }});
             
             for (let order of orders){
                 let customername = order.customername;
@@ -440,4 +447,58 @@ router.get("/history",isLoggedIn,
                 return
             }
         ));
+
+        // Admin Search Route //
+        router.get('/search-suggestions',isLoggedIn,
+            wrapAsync( async (req, res) => {
+            const query = req.query.q;
+            const suggestions = await Listing.find({
+                owner: res.locals.currUser._id,  // Ensure items belong to the logged-in owner
+                name: { $regex: query, $options: 'i' }  // Perform case-insensitive search on the name field
+              }).limit(5);
+            res.json(suggestions);
+          }));
+
+
+          // Admin Search And Add Route //
+          router.post('/search-add/:number',isLoggedIn,
+            wrapAsync( async (req, res) => {
+            const owner = res.locals.currUser._id;
+            let {itemName,qty} = req.body;
+            let {number} = req.params;
+            let date = new Date(Date.now() + (5.5 * 60 * 60 * 1000) ).toString().split(" ").slice(1,4).join("-");
+            let time =  new Date(Date.now() + (5.5 * 60 * 60 * 1000)).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            let current_Date = `${date} ${time}`;
+            const created_at = current_Date;
+            const item = await Listing.findOne({owner:owner, name:itemName});
+            if(!item){
+                req.flash("flashError", "Please select any item");
+                res.redirect(`/admin/tables/orders/${number}`); 
+                return  
+            }
+            const table = await Table.findOne({owner:owner, number:number, status:"Active"});
+            
+            
+            let newMyOrder = new CurrentOrders({customername:table.customername,name:item.name,image:item.image,price:item.price,qty:qty,owner:item.owner._id,created_at:created_at,tableno:number,mob_number:table.mob_number});
+            newMyOrder.status ="Admin";
+            newMyOrder.customerId = table.user;
+            newMyOrder.bill_status = "Pending";
+            await newMyOrder.save();
+            
+            req.flash("flashSuccess", "Item Added");
+            res.redirect(`/admin/tables/orders/${number}`);   
+            return
+          }));
+
+
+        // Admin Remove Route //
+        router.get('/:id/remove/:number',isLoggedIn,
+            wrapAsync( async (req, res) => {
+            let {id,number} = req.params;
+            await CurrentOrders.findByIdAndDelete(id)
+            
+            req.flash("flashSuccess", "Item Removed");
+            res.redirect(`/admin/tables/orders/${number}`);   
+            return
+          }));
 module.exports = router;

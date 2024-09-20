@@ -18,5 +18,12 @@ const listingSchema = new Schema({
     promote:String,
 });
 
+
+
+listingSchema.index({ name: 'text' });
+listingSchema.index({ category: 1, subcategory: 1 });
+listingSchema.index({ owner: 1 });
+
+
 const Listing = mongoose.model("Listing", listingSchema);
 module.exports = Listing;

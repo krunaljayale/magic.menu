@@ -5,12 +5,12 @@
 
 <head>
     <link rel="stylesheet" href="/css/adminBillPage.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <div class="pageTitleDiv"><h1><b> <%= item.owner.hotelname%></b></h1></div> 
 
-<!-- < orders.forEach((order) => { %> -->
+
 <div class="master-div">
     <div class="top-div">
       <div class="name-number-div">
@@ -22,8 +22,8 @@
       </div>
       
         <div class="time-date-div">
-          <p class="top-div-content">Paid on: <%=item.paid_date%></p>
-          <p class="top-div-content">Paid at: <%=item.paid_time%></p>
+          <p class="top-div-content">Date: <%=item.paid_date%></p>
+          <p class="top-div-content">Time: <%=item.paid_time%></p>
           <p class="top-div-content">Table no: <%= item.tableno %> </p>
         </div>
     </div>
@@ -40,13 +40,15 @@
     
     <div class="bottom-div">
       <% orders.forEach((order, index) => { %>
+        
           <div class="dynamic-div">
             <div class="item-srNo dynamic-div-div"><p class=" dynamic-div-content"><%= index + 1 %></p></div>
             <div class="item-name dynamic-div-div"><p class="dynamic-div-content"><%= order.name %></p></div>
             <div class="item-price dynamic-div-div"><p class=" dynamic-div-content"><%= order.price %></p></div>
             <div class="item-qty dynamic-div-div"><p class=" dynamic-div-content">x <%= order.qty %></p></div>
             <div class="item-total dynamic-div-div"><p class=" dynamic-div-content"><%= order.qty*order.price %></p></div>
-          </div>  
+          </div>
+
       <% }) %>
     </div>
     
@@ -56,9 +58,8 @@
     </div>
     
     <p class = "brand-name">Powered By : Magic Menu</p>
-    <!-- <button id="download-pdf">Download PDF</button> -->
 </div>
-<!-- < }) %> -->
+
 
 
 
@@ -78,21 +79,34 @@
 
 
 
-<!-- <script>
-  document.getElementById('download-pdf').addEventListener('click', () => {
-    fetch('/generate-pdf', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(response => response.arrayBuffer())
-    .then(pdfBuffer => {
-      const link = document.createElement('a');
-      link.href = window.URL.createObjectURL(new Blob([pdfBuffer], { type: 'application/pdf' }));
-      link.download = 'example.pdf';
-      link.click();
-    })
-    .catch(error => console.error(error));
-  });
-</script> -->
+    <script defer>
+          window.onload = function() {
+                axios({
+                    url: '/generate-pdf',
+                    method: 'GET',
+                    responseType: 'arraybuffer' // Important for handling binary data
+                })
+                .then(response => {
+                    
+                    if(response.data.status ===  400){
+                        console.log("Bill is not generated yet!"); 
+                    }else{
+                       // Extract filename from Content-Disposition header
+                        const contentDisposition = response.headers['content-disposition'];
+                        const filename = contentDisposition
+                        ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+                        : 'invoice.pdf';
+                        // Create a Blob from the PDF response
+                        const blob = new Blob([response.data], { type: 'application/pdf' });
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        link.click();
+                    }
+                    
+                })
+                .catch(error => {
+                    console.error('Error fetching PDF:', error);
+                });
+            };
+    </script>

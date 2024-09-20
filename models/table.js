@@ -6,7 +6,9 @@ const tableSchema = new Schema({
     substatus:String,
     number:Number,
     owner:String,
-    user:String,
+    user:String, 
+    customername:String, 
+    mob_number:Number
 });
 
 const Table = mongoose.model("Table", tableSchema);

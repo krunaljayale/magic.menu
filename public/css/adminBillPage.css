@@ -103,19 +103,24 @@
     width:15% ;
 }
 .item-status{
-    width: 45%;
+    width: 40%;
     font-weight: 900;
     /* border: 1px solid red; */
     display: flex;
     justify-content: center;
     gap: 0.5rem;
 }
-.confirmButton, .rejectButton{
+.special-item-status-div{
+    width: 30%;
+}
+
+.confirmButton, .rejectButton,.remove-button{
     color: #fff !important;
     font-size: 2.75vw !important;
     /* font-size: 22px !important;
     padding: 3px 12px !important; */
 }
+
 
 .bill-button-div{
     width: 100%;
@@ -125,7 +130,6 @@
     
 }
 .genarate-bill-button,.close-bill-button,.confirm-order-button{
-    color: #fff !important;
     font-weight: 700 !important;
 }
 
@@ -185,6 +189,63 @@
     word-spacing: 2.5px ;
 }
 
+.search-form{
+    color:#12296c;
+    min-height: 12rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    /* border: 1px solid red; */
+}
+.search-input{
+    margin: 0.5rem;
+    width: 95%;
+    border-radius: 10px;
+}
+.qty-input{
+    margin: 0.5rem;
+    width: 30%;
+    border-radius: 10px;
+}
+.search-suggestions-div{
+    /* border: 1px solid rgb(0, 255, 30); */
+    width: 95%;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.search-form-button-div{
+    display: flex;
+    gap:0.75rem;
+    /* border: 1px solid red; */
+}
+
+
+.addition-btn,
+.subtract-btn{
+    width: 20%;
+    border-radius: 10px;
+    border: 1px solid rgb(0, 0, 0, 0.450);
+    font-size: 12px !important;
+    font-weight: 900 !important;
+    background-color: #fff !important;
+}
+.qty-order-input{
+    width: 25%;
+    text-align: center !important;
+    border: 1px solid rgba(0, 0, 0, 0.450) !important;
+}   
+
+.qty-button-div{
+    display: flex;
+    gap: 0.25rem;
+    margin: 1rem 0 0 ;
+    justify-content: center;
+    max-height: 33.75px;
+    background-color:transparent;
+}
 
 @media screen and (min-width:480px) {
     .top-div{
@@ -200,7 +261,7 @@
     .dynamic-div-content{
         font-size: 3vw;
     }
-    .confirmButton, .rejectButton{
+    .confirmButton, .rejectButton,.remove-button{
         font-size: 2.25vw !important;
     }
     .bill-price-div p{
@@ -221,7 +282,7 @@
     .dynamic-div-content{
         font-size: 2.5vw;
     }
-    .confirmButton, .rejectButton{
+    .confirmButton, .rejectButton,.remove-button{
         font-size: 1.5vw !important;
     }
     .bill-price-div p{
@@ -245,7 +306,7 @@
     .dynamic-div-content{
         font-size: 2.75vw;
     }
-    .confirmButton, .rejectButton{
+    .confirmButton, .rejectButton,.remove-button{
         font-size: 1.75vw !important;
     }
     .bill-price-div p{
@@ -279,7 +340,7 @@
     .item-qty{
         width: 20%;
     }
-    .confirmButton, .rejectButton{
+    .confirmButton, .rejectButton,.remove-button{
         font-size: 14px !important;
     }
     .bill-price-div p{

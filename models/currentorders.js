@@ -11,12 +11,19 @@ const CurrentOrdersSchema = new Schema({
     },
     price:Number,
     qty:Number,
-    owner:String,
+    owner:{
+        type:Schema.Types.ObjectId,
+        ref:"User"
+    },
     tableno:Number,
     created_at :String,
     confirmed_at :String,
     customerId:String,
-    status:String
+    status:String,
+    bill_status:String,
+    invoice:Number,
+    paid_date:String,
+    paid_time:String,
 });
 
 const CurrentOrders = mongoose.model("CurrentOrders", CurrentOrdersSchema);

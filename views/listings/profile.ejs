@@ -3,10 +3,10 @@
 <%- include("../includes/flash.ejs") %>
 <%- include("../includes/adminFooter.ejs") %>
 
-<div class="row mt-3" >
+<div class="row mt-3" style="max-width: 100%;">
     <div class="col-8 offset-2 mb-3">
         <h1>Profile</h1>
-        <h3 class="admin-page-title-id" id="idAdmin">Your Owner ID is :- <%= currUser._id %></h3>
+        <h4 class="admin-page-title-id" id="idAdmin">Owner ID:- <%= currUser._id %></h4>
         <% if(!subscription){%>
             <button class="btn btn-primary" onclick="main();">Get Notified</button>  
         <% } %>

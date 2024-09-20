@@ -1,6 +1,6 @@
 <%- layout("/layouts/boilerplate.ejs") %>
 <%- include("../includes/navbar.ejs") %>
-<%- include("../includes/masterFooter.ejs") %>
+
 <%- include("../includes/flash.ejs") %>
 <head>
     <title>Cart</title>
@@ -27,7 +27,7 @@
 <% } %>
 
 <div class="master-div">
-<% for(item of items){ %>
+    <% for(item of items){ %>
     
         <div class="cart-card">
 
@@ -65,8 +65,10 @@
 
         </div>
 
-<% } %>
+    <% } %>
 </div>
+
+
 <% if(items.length){ %>
     <div class="orderBtnDiv">
         <div class="detailsDiv">
@@ -76,15 +78,15 @@
 
         <form action="/cart/order" method="post" id="order-form" class="needs-validation" >
             <input type="text" name="customername" class="form-control order-input" placeholder="Enter Your Name" value="<%= customerName %>" required />
-            <input type="text" id="mob_number" name="mob_number" class="form-control order-input" pattern="[0-9]{10}" title="Please enter a 10-digit mobile number without spaces" minlength="10" maxlength="10" placeholder="Enter Your Mobile Number" style="margin-top: 0.5rem;">
+            <input type="text" id="mob_number" name="mob_number" class="form-control order-input" pattern="[0-9]{10}"  minlength="10" maxlength="10" placeholder="Enter Your Mobile Number Without Spaces" >
             <button class="orderBtn btn btn-info" id="orderButton">Order All</button>
             <audio id="notification-sound" src="/sounds/small_sms_tone.mp3" type="audio/mp3" controls="false" style="display: none;"></audio> 
         </form>
-        
+        <!-- title="Please enter a 10-digit mobile number without spaces" -->
     </div>
 <% } %>
 
-
+<%- include("../includes/masterFooter.ejs") %>
 
 <script>
 

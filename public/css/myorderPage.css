@@ -22,8 +22,7 @@
 }
 .get-bill-button{
     font-size: medium !important;
-    color:#ffffff !important;
-    background-color: #12296c !important;
+    font-weight: bolder !important;
 }
 .master-div{
     padding-bottom: 12rem;

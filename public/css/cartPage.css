@@ -1,5 +1,5 @@
 .master-div{
-    padding-bottom: 12rem;
+    padding-bottom: 15rem;
 }
 .cart-title{
     margin:1rem 2rem;
@@ -41,11 +41,12 @@
 
 .name-price-div{
     display:flex;
+    padding: 0.5rem 0;
     width:100%;
-    min-height: 30%;
+    min-height: 60%;
     gap: 1rem;
     overflow: hidden;
-    align-items: center;
+    align-items: top;
     font-size: 4vw;
 }
 
@@ -113,11 +114,12 @@
     /* height: 8rem; */
     position: fixed;
     bottom: 4rem;
-    background-color: transparent;
+    background-color: white;
     display: block;
     align-items: center;
     text-align: center;
     background-color: #fff;
+    z-index: 1000;
 }
 .detailsDiv{
     width: 100%;
@@ -195,7 +197,7 @@
         font-size: 19px !important;
         width: 100% !important;
         justify-content: space-between !important;
-        height: 25% !important;
+        height: 75% !important;
     }
     .item-name-div{
         text-align: left;
