@@ -11,6 +11,7 @@ const History = require("../models/history.js");
 const Subscription = require("../models/subscription.js");
 const webPush = require("web-push");
 const Mixpanel = require('mixpanel');
+const nodemailer = require('nodemailer');
 const {jsPDF} = require('jspdf');
 require('jspdf-autotable'); // Ensure this is include
 // Mixpanel Setup //   
@@ -60,6 +61,44 @@ router.get("/", (req,res)=>{
     res.render("listings/root.ejs");
 })
 
+// Contact Us Route //
+router.post("/contact",wrapAsync(
+    async (req,res)=>{
+        let {name,hotelname,mobile, email, address} = req.body;
+
+        const transporter = nodemailer.createTransport({
+            host: process.env.EMAIL_HOST,  // smtp.gmail.com
+            port: 587,                     // TLS port
+            secure: false,                 // Use true for 465, false for other ports
+            auth: {
+                user: process.env.EMAIL_USER,  // your Gmail email
+                pass: process.env.EMAIL_PASS,  // your App Password from Google
+            },
+        });
+        
+        
+          const mailOptions = {
+            from: process.env.EMAIL_USER,
+            to: 'support@magicmenu.in',
+            subject: `New Request For Demo From ${name}`,
+            text: `Name: ${name}\nHotel: ${hotelname}\nMobile: ${mobile}\nEmail: ${email}\nAddress: ${address}`,
+          };
+        
+        try {
+            // Await the sendMail function
+            await transporter.sendMail(mailOptions);
+            req.flash("flashSuccess", "Form Submitted Successfully");
+        } catch (error) {
+            console.error('Error sending email:', error);
+            req.flash("flashError", "Error sending data");
+        }
+
+        res.redirect("/")
+        return
+    }
+));
+
+
 // Home Route //
 
     router.get("/home", wrapAsync(
@@ -90,37 +129,43 @@ router.get("/", (req,res)=>{
     }));
 
 // Menu Food Route //
-    router.get("/menu/food",async (req,res)=>{
-        let hotelID = res.locals.hotelID;
-        const vegItems = await Listing.find({owner:hotelID, category:"Veg", subcategory: { $in: ["Other", "Default", null] } });
-        const nonvegItems = await Listing.find({owner:hotelID, category:"Non-Veg", subcategory: { $in: ["Other", "Default", null] } });
-        const allItems = await Listing.find({owner:hotelID, category: { $in: ["Veg", "Non-Veg"] }, subcategory: { $nin: ["Default", "Other",null] } });
-        const uniqueItems = [...new Set(allItems.map(item => item.subcategory))];
-        const hotel = await User.findById(hotelID);
-        return res.render("listings/menu.ejs", {vegItems,uniqueItems,nonvegItems, hotelID, hotel});
-    });
+    router.get("/menu/food",wrapAsync(
+        async (req,res)=>{
+            let hotelID = res.locals.hotelID;
+            const vegItems = await Listing.find({owner:hotelID, category:"Veg", subcategory: { $in: ["Other", "Default", null] } });
+            const nonvegItems = await Listing.find({owner:hotelID, category:"Non-Veg", subcategory: { $in: ["Other", "Default", null] } });
+            const allItems = await Listing.find({owner:hotelID, category: { $in: ["Veg", "Non-Veg"] }, subcategory: { $nin: ["Default", "Other",null] } });
+            const uniqueItems = [...new Set(allItems.map(item => item.subcategory))];
+            const hotel = await User.findById(hotelID);
+            return res.render("listings/menu.ejs", {vegItems,uniqueItems,nonvegItems, hotelID, hotel});
+        }
+    ));
 
 
     // Menu Beverage Route //
-    router.get("/menu/beverage",async (req,res)=>{
-        let hotelID = res.locals.hotelID;
-        const beverageItems = await Listing.find({owner:hotelID, category:"Beverage", subcategory: { $in: ["Other", "Default", null] } });
-        const allItems = await Listing.find({owner:hotelID, subcategory: { $nin: ["Default", "Other",null] } });
-        const uniqueItems = [...new Set(allItems.map(item => item.subcategory))];
-        const hotel = await User.findById(hotelID);
-        return res.render("listings/beverage.ejs", {beverageItems,uniqueItems, hotelID, hotel});
-    });
+    router.get("/menu/beverage",wrapAsync(
+        async (req,res)=>{
+            let hotelID = res.locals.hotelID;
+            const beverageItems = await Listing.find({owner:hotelID, category:"Beverage", subcategory: { $in: ["Other", "Default", null] } });
+            const allItems = await Listing.find({owner:hotelID, subcategory: { $nin: ["Default", "Other",null] } });
+            const uniqueItems = [...new Set(allItems.map(item => item.subcategory))];
+            const hotel = await User.findById(hotelID);
+            return res.render("listings/beverage.ejs", {beverageItems,uniqueItems, hotelID, hotel});
+        }
+    ));
 
 // Category Items Route //
-    router.get("/items/:name",async (req,res)=>{
-        let hotelID = res.locals.hotelID;
-        let {name} = req.params;
-        const allItems = await Listing.find({owner:hotelID,subcategory:name});
-        const hotel = await User.findById(hotelID);
-        
-        res.render("listings/items.ejs", {allItems, hotel,hotelID});
-        return
-    });
+    router.get("/items/:name",wrapAsync(
+        async (req,res)=>{
+            let hotelID = res.locals.hotelID;
+            let {name} = req.params;
+            const allItems = await Listing.find({owner:hotelID,subcategory:name});
+            const hotel = await User.findById(hotelID);
+            
+            res.render("listings/items.ejs", {allItems, hotel,hotelID});
+            return
+        }
+    ));
     
 
     // Order Route //
