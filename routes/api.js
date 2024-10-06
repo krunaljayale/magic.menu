@@ -57,8 +57,8 @@ router.get("/policy", (req,res)=>{
     res.render("listings/policy.ejs");
 })
 // Root Route //
-router.get("/", (req,res)=>{
-    res.render("listings/root.ejs");
+router.get("/", async(req,res)=>{
+    await res.render("listings/root.ejs");
 })
 
 // Contact Us Route //
