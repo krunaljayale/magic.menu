@@ -593,7 +593,7 @@ router.post("/contact",wrapAsync(
         }else if(!newTable){
             let table = new Table();
             table.number = tableno;
-            table.owner = specialItem.owner._id;
+            table.owner = specialItem.owner;
             table.user = res.locals.sessionId;
             table.customername = customername;
             table.mob_number = mob_number;
@@ -607,7 +607,7 @@ router.post("/contact",wrapAsync(
             let id = item._id;
             let image = item.image;
             let price = item.price;
-            let owner = item.owner._id;
+            let owner = item.owner;
             let qty = 1;
             const newMyOrders = new CurrentOrders({customername,name,image,qty,owner,price,created_at,tableno,mob_number});
             newMyOrders.customerId = res.locals.sessionId;
@@ -633,7 +633,7 @@ router.post("/contact",wrapAsync(
             };
         }
 
-        let endPoint = await Subscription.find({userID:{ $in: [specialItem.owner._id , hotelID] }});
+        let endPoint = await Subscription.find({userID:{ $in: [specialItem.owner , hotelID] }});
         
         if (items.length === 1){
             for(let item of items){
@@ -659,7 +659,7 @@ router.post("/contact",wrapAsync(
                        })
                        .catch(async(error) => {
                          // Remove the endpoint from your database
-                         await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner._id , hotelID] }});
+                         await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner , hotelID] }});
                          console.log("Some Error in single cart order webpush notification", error)
                        }); 
                      }catch(error){
@@ -676,7 +676,7 @@ router.post("/contact",wrapAsync(
                    })
                    .catch(async(error) => {
                      // Remove the endpoint from your database
-                     await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner._id , hotelID] }});
+                     await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner , hotelID] }});
                      console.log("Some Error in bulk cart order webpush notification", error)
                    }); 
                  }catch(error){
@@ -691,7 +691,7 @@ router.post("/contact",wrapAsync(
                    })
                    .catch(async(error) => {
                      // Remove the endpoint from your database
-                     await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner._id , hotelID] }});
+                     await Subscription.findOneAndDelete({userID:{ $in: [specialItem.owner , hotelID] }});
                      console.log("Some Error in bulk cart order webpush notification", error)
                    }); 
                  }catch(error){
