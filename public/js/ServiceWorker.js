@@ -32,7 +32,7 @@ const urlBase64ToUint8Array = base64String =>{
 // }
 
 const saveSubscription = async (subscription) =>{
-    const response = await fetch('https://www.magicmenu.in/subscribe', {
+    const response = await fetch('https://magicmenu.in/subscribe', {
         method:'post',
         headers:{'Content-type':"application/json"},
         body: JSON.stringify(subscription)
